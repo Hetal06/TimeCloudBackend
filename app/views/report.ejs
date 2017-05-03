@@ -1,0 +1,212 @@
+<div class="main-container-inner" >
+	<div class="page-content">
+		<div class="row">
+			<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+ 				<form class="form">
+					<div class="row form-group">
+						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+							<label class="inline" style="width: 40px;"> Dates: </label>
+							<input  class="date-picker" ng-model="fromDate" id="id-date-picker-1" type="text" ng-change="searchDate(fromDate,toDate)" is-open="opened1" max="'2045-06-22'"  data-date-format="dd-mm-yyyy" datepicker-popup="{{format}}" />
+						</div>
+						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+							<label class="inline" style="width: 40px;"> To:- </label>
+							 <input  class="date-picker" ng-model="toDate"  id="id-date-picker-2" type="text"  ng-change="searchDate(fromDate,toDate)" is-open="opened" max="'2045-06-22'"  data-date-format="dd-mm-yyyy"  datepicker-popup="{{format}}" />
+						</div>
+					</div>
+					<div class="row form-group">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
+							<button popover-placement="top" popover-trigger="mouseenter" popover="Previous Period" popover-popup-delay="{{delayTime}}" class="btn btn-primary no-border" data-ng-click="prvPeriodFn()">Previous Period</button>					
+							<button popover-placement="top" popover-trigger="mouseenter" popover="Next Period" popover-popup-delay="{{delayTime}}" class="btn btn-primary no-border" data-ng-click="nextPeriodFn()">Next Period</button>
+						</div>
+					</div>
+					<div class="row form-group">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+							<a target="_blank" href="/calculateWeeklyOtOfCompany/2w" popover-placement="top" popover-trigger="mouseenter" popover="Finalize Pay" popover-popup-delay="{{delayTime}}" class="btn btn-primary no-border">Finalize Pay</a>
+						</div>
+					</div>
+				</form>
+			</div>			
+			<div class="col-lg-6 col-md-6 col-xs-12 col-sm-6" ng-show="showReportSystem1">
+				<div class="list-group ">
+					<div id="peyroll">
+						<a  class="list-group-item active" popover-placement="top" popover-trigger="mouseenter" popover="List of	payroll files available	for export." popover-popup-delay="{{delayTime}}">
+							Standard Reports
+						</a>
+						<a target="_blank" href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Attendance&reportUnit=/reports/Attendance/daycard_standard&companyId={{companyid}}&startDate={{currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item" ><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="The Day Card Standard Report">Day Card Standard</span><div class="clearfix"></div></a>
+						
+						<a target="_blank" href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Attendance&reportUnit=/reports/Attendance/daycard_standard_1&companyId={{companyid}}&startDate={{currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item" ><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="The Day Card Standard Report">Day Card Standard - Many Per Page</span><div class="clearfix"></div></a>
+
+						<a target="_blank"  href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Attendance&reportUnit=/reports/Attendance/Active_employees&companyId={{companyid}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="Employee list -Shows a list of all current employees,their employee number, and department" >Employee List</span><div class="clearfix"></div></a>
+						<a target="_blank"  href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Attendance&reportUnit=/reports/Attendance/employee_total&companyId={{companyid}}&startDate={{currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="Employee Total - ­Shows the total accrued hours for each employee for the selected period." >Employee Total</span><div class="clearfix"></div></a> 
+						<a target="_blank"  href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Attendance&reportUnit=/reports/Attendance/day_summary&companyId={{companyid}}&startDate={{currentDate}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="Day summary - shows Total Hours per employee for specified Day" >Day summary</span><div class="clearfix"></div></a>
+
+						<a target="_blank"  href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Attendance&reportUnit=/reports/Attendance/empcard&companyId={{companyid}}&startDate={{currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="Day summary - shows Total Hours per employee for specified Day" > Flag Reports</span><div class="clearfix"></div></a>
+						<a target="_blank"  href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Dev&reportUnit=/reports/Dev/TC04_daycard_standard_exceptions_1&companyId={{companyid}}&startDate={{currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="Day summary - shows Total Hours per employee for specified Day" > Exception Report</span><div class="clearfix"></div></a>	
+					  <a target="_blank"  href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Dev&reportUnit=/reports/Attendance/TC04_daycard_standard_exceptions&companyId={{companyid}}&startDate={{currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="Day summary - shows Total Hours per employee for specified Day" > Day Card Standard - With Exception</span><div class="clearfix"></div></a>
+					  <a target="_blank" href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Dev&reportUnit=/reports/Attendance/employee_total_exceptions&companyId={{companyid}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="Day summary - shows Total Hours per employee for specified Day" > Employee Total - With Exceptions</span><div class="clearfix"></div></a>
+			 			<a target="_blank" href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Dev&reportUnit=/reports/Attendance/TC05_daycard_standard_exceptions_many&companyId={{companyid}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="Day summary - shows Total Hours per employee for specified Day" > Daycard with exceptions - many per page </span><div class="clearfix"></div></a>
+					</div>
+				</div>
+				<div data-ng-show="payrollExport" id="peyroll">
+					<a  class="list-group-item active" popover-placement="top" popover-trigger="mouseenter" popover="List of	payroll files available	for export." popover-popup-delay="{{delayTime}}"> Export To </a>
+					<a data-ng-show="IMS" target="_blank"  href="{{reportsIp}}/jasperserver_att/rest_v2/reports/Reports/Attendance/ims_export.csv?companyId={{companyid}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="IMS compatible payroll file." popover-popup-delay="{{delayTime}}">IMS - export
+			   	</span><div class="clearfix"></div></a>
+			   	<a data-ng-show="Ipayroll" target="_blank"  href="{{reportsIp}}/jasperserver_att/rest_v2/reports/Reports/Attendance/ims_export.csv?companyId={{companyid}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="Ipayroll compatible payroll file." popover-popup-delay="{{delayTime}}">Ipayroll - export
+			   	</span><div class="clearfix"></div></a>
+			   	<a data-ng-show="Ace" target="_blank"  href="{{reportsIp}}/jasperserver_att/rest_v2/reports/Reports/Attendance/Ace_payroll_export.csv?companyId={{companyid}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="ACE compatible payroll file." popover-popup-delay="{{delayTime}}">Ace - export
+			   	</span><div class="clearfix"></div></a>
+			   	<a data-ng-show="Datacom" target="_blank"  href="{{reportsIp}}/jasperserver_att/rest_v2/reports/Reports/Attendance/datatrans.csv?companyId={{companyid}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="Datacomm compatible payroll file." popover-popup-delay="{{delayTime}}">Datacomm - export
+			   	</span><div class="clearfix"></div></a>
+			   	<a data-ng-show="MYOB" target="_blank"  href="{{reportsIp}}/jasperserver_att/rest_v2/reports/Reports/Attendance/myob_weekly_export.csv?companyId={{companyid}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="MYOB compatible payroll file." popover-popup-delay="{{delayTime}}">MYOB - export</span><div class="clearfix"></div></a>
+	   			<a data-ng-show="FivestarPayroll" target="_blank"  href="{{reportsIp}}/jasperserver_att/rest_v2/reports/Reports/Attendance/Fivestar_jira.txt?companyId={{companyid}}&employeeNos={{empNo}}&startDate={{currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="Fivestar Payroll - export." popover-popup-delay="{{delayTime}}">Fivestar Payroll - export</span><div class="clearfix"></div></a>
+	   			<a data-ng-show="MYOBEXO" target="_blank"  href="{{reportsIp}}/jasperserver_att/rest_v2/reports/Reports/Attendance/Myob_exo.csv?companyId={{companyid}}&employeeNos=&startDate={{currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="Fivestar Payroll - export." popover-popup-delay="{{delayTime}}">MYOB-EXO</span><div class="clearfix"></div></a>
+	   			<a data-ng-show="Crystal" target="_blank"  href="{{reportsIp}}/jasperserver_att/rest_v2/reports/Reports/Attendance/CPTimesheet1Export.csv?companyId={{companyid}}&employeeNos=&startDate={{currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="Crystal payroll." popover-popup-delay="{{delayTime}}">Crystal
+					   </span><div class="clearfix"></div></a>
+		   	</div>
+	   		<div data-ng-show="customReport" id="peyroll">
+	   			<a  class="list-group-item active" popover-placement="top" popover-trigger="mouseenter" popover="List of	payroll files available	for export." popover-popup-delay="{{delayTime}}"> Custom Reports </a>
+	   			<div data-ng-repeat="reports in CustomreportsData">
+		   			<a target="_blank" my-attr="{{reports.link}}" reset-link class="list-group-item"><span class="pull-left">{{reports.reportName}}</span><div class="clearfix"></div></a>
+		   		</div>
+	   		</div>
+	   		<a  class="list-group-item active" popover-placement="top" popover-trigger="mouseenter" popover="Beta Reports are reports that are available for	use but	not fully tested from a development perspective." popover-popup-delay="{{delayTime}}">
+   			Beta Reports(Reports in Testing/Development)</a>
+   			<a target="_blank" href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Attendance&reportUnit=/reports/Attendance/daycard_stdv2&companyId={{companyid}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left">Day Card Standard - by Department</span><div class="clearfix"></div></a> 
+   			<a target="_blank" href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Attendance&reportUnit=/reports/Attendance/daycard_many&companyId={{companyid}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left">Day Card Standard many per page</span><div class="clearfix"></div></a>
+   			<a target="_blank"  href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Attendance&reportUnit=/reports/Attendance/daycard_acual_paid&companyId={{companyid}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left">Day Card Actuals & paid times</span><div class="clearfix"></div></a>
+   			<a target="_blank"  href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Attendance&reportUnit=/reports/Attendance/absentee_report&companyId={{companyid}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left">Absentee</span><div class="clearfix"></div></a> 
+   			<a target="_blank"  href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Attendance&reportUnit=/reports/Attendance/daycard_cost&companyId={{ companyId }}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left">Daycard cost report</span><div class="clearfix"></div></a>
+   			<a target="_blank"  href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Attendance&reportUnit=/reports/Attendance/daycard_cost_charge&companyId={{companyid}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left">Daycard cost and charges </span><div class="clearfix"></div></a>
+		   	<a target="_blank"  href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Attendance&reportUnit=/reports/Attendance/roster&companyId={{companyid}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left">Roster </span><div class="clearfix"></div></a>
+		   	<a target="_blank"  href="{{reportsIp}}/jasperserver_att//flow.html?_flowId=viewReportFlow&reportUnit=/reports/Dev/TC01_attendance_by_departments&standAlone=true&ParentFolderUri=/reports/Dev&companyId={{companyid}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left">Euro Departments </span><div class="clearfix"></div></a>
+		   	<a target="_blank"  href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Attendance&reportUnit=/reports/Attendance/cost_by_department&companyId={{companyid}}&startDate={{ currentDate}}&endDate={{ nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left">Department Cost </span><div class="clearfix"></div></a>
+		   	<a target="_blank"  href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&reportUnit=/reports/Dev/TC01_attendance_by_departments&standAlone=true&ParentFolderUri=/reports/Dev&companyId={{companyid}}&startDate={{ currentDate}}&endDate={{ nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left">Euro summary </span><div class="clearfix"></div></a>
+		   	<a target="_blank"  href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2FAttendance&reportUnit=%2Freports%2FAttendance%2Fmyob_weekly_export&companyId={{companyid}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left">Sample1 </span><div class="clearfix"></div></a>
+		   	<a target="_blank"  href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Attendance&reportUnit=/reports/Attendance/employee_ace_export_new1&companyId={{companyid}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left">Sample3 </span><div class="clearfix"></div></a>
+		   	<a target="_blank"  href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Attendance&reportUnit=/reports/Attendance/department_report&companyId={{companyid}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left">Sample4 </span><div class="clearfix"></div></a>
+		   	<a target="_blank"  href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Attendance&reportUnit=/reports/Attendance/employee_week_card&companyId={{companyid}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left">Sample5 </span><div class="clearfix"></div></a>
+	   	</div>
+		</div>
+		<hr>
+		<div class="row">
+			<div class="col-lg-3 col-md-3 col-xs-12 col-sm-3" ng-show="departmentsList">
+				<b> Select Departments </b>
+				<div class="row form-group">
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" data-ng-repeat="dept in departmentsList">
+						<input type="checkbox" data-ng-model="departmentName" id="{{dept._id}}" ng-click="selectRecordByDepartmentName(dept._id,dept.name);" />{{dept.name}}
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-5 col-md-5 col-xs-12 col-sm-5">
+				<b> Quick Select </b>
+				<table id="sample-table-2" class="table table-bordered">
+					<thead >
+						<tr>	
+							<th> </th>						
+							<th ng-click="sortByempNo()" >
+								<label id="sort" popover-placement="top" popover-trigger="mouseenter" popover="Sort by Employee No" popover-popup-delay="{{delayTime}}"> No </label>
+							</th>
+							<th class="empname" ng-click="sortByName()"> <label id="sort" popover-placement="top" popover-trigger="mouseenter" popover="Sort by First Name" popover-popup-delay="{{delayTime}}"> First Name </label> </th>
+							<th ng-click="sortByLastName()">  <label id="sort" popover-placement="top" popover-trigger="mouseenter" popover="Sort by Last Name" popover-popup-delay="{{delayTime}}">  Last Name </label>
+							</th>
+							<th>
+								<label id="sort" popover-placement="top" popover-trigger="mouseenter" popover="Sort by Department" popover-popup-delay="{{delayTime}}"> Department </label>	
+							</th>
+						</tr>
+					</thead>
+					<tbody data-ng-repeat="employee in employeeList">
+						<tr>
+							<td>
+								<input name="employeenumbers" type="checkbox"  class=" {{employee.department|removeSpacesFromDept}} ace" data-ng-model="employeenum" value="{{employee.employeeNo}}" data-ng-change="resetLinks()" />
+								<span class="lbl" data-rel="popover" data-trigger="hover" data-placement="right" data-content=""> </span>
+							</td>
+							<td>{{employee.employeeNo}}</td>
+							<td class="empname">
+								<a id="employee" style="cursor:pointer" data-ng-click="changeEmployee(employee.employeeNo,fromDate,toDate)" >
+								{{employee.firstName}}
+								</a>
+							</td>
+							<td>{{employee.lastName}}</td>
+							<td>{{employee.department}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+				<div class="row">				
+					<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+						<b>Report System 2</b>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+						<div class="list-group ">							
+							<div id="peyroll">
+								<a  class="list-group-item active" popover-placement="top" popover-trigger="mouseenter" popover="List of	payroll files available	for export." popover-popup-delay="{{delayTime}}"> Standard Reports </a>
+					  		<a target="_blank" href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Attendance&reportUnit=/reports/Attendance/daycard_standard_c&companyId={{companyid}}&employeeNos={{empNo}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&sortBy=lastName&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item" ><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="The Day Card Standard Report">Day Card Standard</span><div class="clearfix"></div></a> 
+					  		<a target="_blank"  href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Attendance&reportUnit=/reports/Attendance/Active_employees_c&companyId={{companyid}}&employeeNos={{empNo}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="Employee list -Shows a list of all current employees,their employee number, and department" >Employee List</span><div class="clearfix"></div></a> 
+					  		<a target="_blank"  href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Attendance&reportUnit=/reports/Attendance/employee_total_c&companyId={{companyid}}&employeeNos={{empNo}}&startDate={{currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="Employee Total - ­Shows the total accrued hours for each employee for the selected period." >Employee Total</span><div class="clearfix"></div></a>
+					  		<a target="_blank"  href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Attendance&reportUnit=/reports/Attendance/day_summary_c&companyId={{companyid}}&employeeNos={{empNo}}&startDate={{currentDate}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="Day summary - shows Total Hours per employee for specified Day" >Day summary</span><div class="clearfix"></div></a>
+					  		<a target="_blank"  href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Attendance&reportUnit=/reports/Attendance/TC04_daycard_standard_exceptions_c&companyId={{companyid}}&employeeNos={{empNo}}&startDate={{currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="Day summary - shows Total Hours per employee for specified Day" >Exception Report</span><div class="clearfix"></div></a>
+					  		<a target="_blank" href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Dev&reportUnit=/reports/Dev/daycard_standard_c&companyId={{companyid}}&startDate={{currentDate}}&endDate={{nextPeriod}}&sortBy=lastName&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="Day summary - shows Total Hours per employee for specified Day" >Daycard Standard sorted by Last Name</span><div class="clearfix"></div></a>
+					  		<a target="_blank" href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Dev&reportUnit=/reports/Attendance/employee_total_exceptions&companyId={{companyid}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="Day summary - shows Total Hours per employee for specified Day" > Employee Total - With Exceptions</span><div class="clearfix"></div></a>
+			 					<a target="_blank" href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Dev&reportUnit=/reports/Attendance/TC05_daycard_standard_exceptions_many&companyId={{companyid}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="Day summary - shows Total Hours per employee for specified Day" > Daycard with exceptions - many per page </span><div class="clearfix"></div></a>
+					  	</div>
+				  	</div>
+				  	<div data-ng-show="payrollExport" id="peyroll">
+				  		<a  class="list-group-item active" popover-placement="top" popover-trigger="mouseenter" popover="List of	payroll files available	for export." popover-popup-delay="{{delayTime}}"> Export to </a>
+
+				  		<a data-ng-show="IMS" target="_blank"  href="{{reportsIp}}/jasperserver_att/rest_v2/reports/Reports/Attendance/ims_export.csv?companyId={{companyid}}&employeeNos={{empNo}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="IMS compatible payroll file." popover-popup-delay="{{delayTime}}">IMS - export </span><div class="clearfix"></div></a>
+
+				  		<a data-ng-show="Ipayroll" target="_blank"  href="{{reportsIp}}/jasperserver_att/rest_v2/reports/Reports/Attendance/ims_export.csv?companyId={{companyid}}&employeeNos={{empNo}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="Ipayroll compatible payroll file." popover-popup-delay="{{delayTime}}">Ipayroll - export </span><div class="clearfix"></div></a>
+
+				  		<a data-ng-show="Ace" target="_blank"  href="{{reportsIp}}/jasperserver_att/rest_v2/reports/Reports/Attendance/Ace_payroll_export.csv?companyId={{companyid}}&employeeNos={{empNo}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="ACE compatible payroll file." popover-popup-delay="{{delayTime}}">Ace - export </span><div class="clearfix"></div></a>
+
+				  		<a data-ng-show="Datacom" target="_blank"  href="{{reportsIp}}/jasperserver_att/rest_v2/reports/Reports/Attendance/datatrans.csv?companyId={{companyid}}&employeeNos={{empNo}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="Datacomm compatible payroll file." popover-popup-delay="{{delayTime}}">Datacomm - export </span><div class="clearfix"></div></a>
+
+				  		<a data-ng-show="MYOB" target="_blank"  href="{{reportsIp}}/jasperserver_att/rest_v2/reports/Reports/Attendance/myob_weekly_export.csv?companyId={{companyid}}&employeeNos={{empNo}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="MYOB compatible payroll file." popover-popup-delay="{{delayTime}}">MYOB - export</span><div class="clearfix"></div></a>
+				  		<a data-ng-show="Crystal" target="_blank"  href="{{reportsIp}}/jasperserver_att/rest_v2/reports/Reports/Attendance/CPTimesheet1Export.csv?companyId={{companyid}}&employeeNos=&startDate={{currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="Crystal payroll." popover-popup-delay="{{delayTime}}">Crystal
+					   </span><div class="clearfix"></div></a>
+				  	</div>
+				  	<div data-ng-show="customReport" id="peyroll">
+					  	<a  class="list-group-item active" popover-placement="top" popover-trigger="mouseenter" popover="List of	payroll files available	for export." popover-popup-delay="{{delayTime}}"> Custom Reports</a>
+					   	<div data-ng-repeat="reports in CustomreportsData">
+					   		<a target="_blank" my-attr="{{reports.link}}" reset-link class="list-group-item"><span class="pull-left">{{reports.reportName}}</span><div class="clearfix"></div></a>
+					   	</div>
+				   	</div>
+				   	<a  class="list-group-item active" popover-placement="top" popover-trigger="mouseenter" popover="Beta Reports are reports that are available for	use but	not fully tested from a development perspective." popover-popup-delay="{{delayTime}}"> Beta Reports(Reports in Testing/Development)</a>
+				   	<a target="_blank" href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Attendance&reportUnit=/reports/Attendance/daycard_stdv2&companyId={{companyid}}&employeeNos={{empNo}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left">Day Card Standard - by Department</span><div class="clearfix"></div></a> 
+
+				    <a target="_blank" href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Attendance&reportUnit=/reports/Attendance/daycard_many&companyId={{companyid}}&employeeNos={{empNo}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left">Day Card Standard many per page</span><div class="clearfix"></div></a>
+
+				    <a target="_blank"  href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Attendance&reportUnit=/reports/Attendance/daycard_acual_paid&companyId={{companyid}}&employeeNos={{empNo}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left">Day Card Actuals & paid times</span><div class="clearfix"></div></a> 
+
+				    <a target="_blank"  href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Attendance&reportUnit=/reports/Attendance/absentee_report&companyId={{companyid}}&employeeNos={{empNo}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left">Absentee</span><div class="clearfix"></div></a> 
+
+				   	<a target="_blank"  href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Attendance&reportUnit=/reports/Attendance/daycard_cost&companyId={{ companyId }}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left">Daycard cost report</span><div class="clearfix"></div></a>
+
+				   	<a target="_blank"  href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Attendance&reportUnit=/reports/Attendance/daycard_cost_charge&companyId={{companyid}}&employeeNos={{empNo}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left">Daycard cost and charges
+				   	</span><div class="clearfix"></div></a>
+
+				   	<a target="_blank"  href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Attendance&reportUnit=/reports/Attendance/roster&companyId={{companyid}}&employeeNos={{empNo}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left">Roster
+				   	</span><div class="clearfix"></div></a>
+
+				   	<a target="_blank"  href="{{reportsIp}}/jasperserver_att//flow.html?_flowId=viewReportFlow&reportUnit=/reports/Dev/TC01_attendance_by_departments&standAlone=true&ParentFolderUri=/reports/Dev&companyId={{companyid}}&employeeNos={{empNo}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left">Euro Departments </span><div class="clearfix"></div></a>
+				   	<a target="_blank"  href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Attendance&reportUnit=/reports/Attendance/cost_by_department&companyId={{companyid}}&employeeNos={{empNo}}&startDate={{ currentDate}}&endDate={{ nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left">Department Cost </span><div class="clearfix"></div></a>
+				   	<a target="_blank"  href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&reportUnit=/reports/Dev/TC01_attendance_by_departments&standAlone=true&ParentFolderUri=/reports/Dev&companyId={{companyid}}&employeeNos={{empNo}}&startDate={{ currentDate}}&endDate={{ nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left">Euro summary </span><div class="clearfix"></div></a>
+
+				   	<a target="_blank"  href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2FAttendance&reportUnit=%2Freports%2FAttendance%2Fmyob_weekly_export&companyId={{companyid}}&employeeNos={{empNo}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left">Sample1 </span><div class="clearfix"></div></a>
+
+				   	<a target="_blank"  href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Attendance&reportUnit=/reports/Attendance/employee_ace_export_new1&companyId={{companyid}}&employeeNos={{empNo}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left">Sample3 </span><div class="clearfix"></div></a>
+
+						<a target="_blank"  href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Attendance&reportUnit=/reports/Attendance/department_report&companyId={{companyid}}&employeeNos={{empNo}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left">Sample4 </span><div class="clearfix"></div></a>
+
+						<a target="_blank"  href="{{reportsIp}}/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Attendance&reportUnit=/reports/Attendance/employee_week_card&companyId={{companyid}}&employeeNos={{empNo}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left">Sample5 </span><div class="clearfix"></div></a>
+					</div>
+				</div>					
+			</div>			
+		</div>
+	</div>			
+</div>
+</div>
+

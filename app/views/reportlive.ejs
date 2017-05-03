@@ -1,0 +1,81 @@
+<div class="main-container-inner" >
+				<div class="page-content">
+					<div class="row">
+						<div class="col-sm-6">
+							<form class="form-inline" id="report">
+
+									<label class="inline"> Dates: </label>
+														
+<input  class="input-medium date-picker" data-ng-model="from" id="id-date-picker-1" type="text" data-date-format="dd-mm-yyyy"  datepicker-popup="{{format}}"  is-open="opened1" max="'2045-06-22'" datepicker-options="dateOptions"  data-ng-change="searchDate(from,to)" popover-placement="bottom" popover-trigger="mouseenter" popover="Enter start Date for period you would like to view." popover-popup-delay="{{delayTime}}"/>
+
+														<label class="inline"> To: </label>
+
+<input  class="input-medium date-picker" data-ng-model="to"  id="id-date-picker-2" type="text"  data-date-format="dd-mm-yyyy"  datepicker-popup="{{format}}"  is-open="opened" max="'2045-06-22'" datepicker-options="dateOptions" data-ng-change="searchDate(from,to)"  popover-placement="bottom" popover-trigger="mouseenter" popover="Enter end Date for period you would like to view." popover-popup-delay="{{delayTime}}"/>
+</br>
+</br>
+<button popover-placement="top" popover-trigger="mouseenter" popover="Next Period" popover-popup-delay="{{delayTime}}" class="btn btn-primary no-border btn-sm" data-ng-click="prvPeriodFn()">Previous Period</button>
+
+<!-- <button popover-placement="top" popover-trigger="mouseenter" popover="Current Period" popover-popup-delay="{{delayTime}}" class="btn btn-primary no-border btn-sm" data-ng-click="currentPeriod()" >Current Period</button> -->
+
+<button popover-placement="top" popover-trigger="mouseenter" popover="Next Period" popover-popup-delay="{{delayTime}}" class="btn btn-primary no-border btn-sm" data-ng-click="nextPeriodFn()">Next Period</button>
+
+							</form>
+						</div>
+						<div class="col-sm-5">
+							<div class="list-group ">							
+							<!-- <div my-attr="testString" my-directive>testing</div> -->
+
+							 <div id="peyroll">
+
+								   <a  class="list-group-item active" popover-placement="top" popover-trigger="mouseenter" popover="List of	payroll files available	for export." popover-popup-delay="{{delayTime}}">
+								  	Standard Reports
+								   </a>
+
+								  <a target="_blank" href="http://128.199.213.212:9180/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Attendance&reportUnit=/reports/Attendance/daycard_standard&companyId={{companyid}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item" ><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="The Day Card Standard Report">Day Card Standard</span><div class="clearfix"></div></a> 
+
+							 
+
+							  <a target="_blank"  href="http://128.199.213.212:9180/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Attendance&reportUnit=/reports/Attendance/Active_employees&companyId={{companyid}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="Employee list -Shows a list of all current employees,their employee number, and department" >Employee List</span><div class="clearfix"></div></a> 
+
+							  
+							   <a target="_blank"  href="http://128.199.213.212:9180/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Attendance&reportUnit=/reports/Attendance/employee_total&companyId={{companyid}}&startDate={{currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="Employee Total - ­Shows the total accrued hours for each employee for the selected period." >Employee Total</span><div class="clearfix"></div></a> 
+
+							   <a target="_blank"  href="http://128.199.213.212:9180/jasperserver_att/flow.html?_flowId=viewReportFlow&standAlone=true&decorate=no&ParentFolderUri=/reports/Attendance&reportUnit=/reports/Attendance/day_summary&companyId={{companyid}}&startDate={{currentDate}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="Day summary - shows Total Hours per employee for specified Day" >Day summary</span><div class="clearfix"></div></a> 
+								   
+								   </div>
+							 </div>
+							 
+							   
+							<div data-ng-show="payrollExport" id="peyroll">
+							   <a  class="list-group-item active" popover-placement="top" popover-trigger="mouseenter" popover="List of	payroll files available	for export." popover-popup-delay="{{delayTime}}">
+							  	Export to
+							   </a>	
+
+							   <a data-ng-show="IMS" target="_blank"  href="http://128.199.213.212:9180/jasperserver_att/rest_v2/reports/Reports/Attendance/ims_export.csv?companyId={{companyid}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="IMS compatible payroll file." popover-popup-delay="{{delayTime}}">IMS - export
+							   </span><div class="clearfix"></div></a>
+
+							   <a data-ng-show="Ace" target="_blank"  href="http://128.199.213.212:9180/jasperserver_att/rest_v2/reports/Reports/Attendance/Ace_payroll_export.csv?companyId={{companyid}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="ACE compatible payroll file." popover-popup-delay="{{delayTime}}">Ace - export
+							   </span><div class="clearfix"></div></a>
+
+							   <a data-ng-show="Datacom" target="_blank"  href="http://128.199.213.212:9180/jasperserver_att/rest_v2/reports/Reports/Attendance/datatrans.csv?companyId={{companyid}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="Datacomm compatible payroll file." popover-popup-delay="{{delayTime}}">Datacomm - export
+							   </span><div class="clearfix"></div></a>
+
+							   <a data-ng-show="MYOB" target="_blank"  href="http://128.199.213.212:9180/jasperserver_att/rest_v2/reports/Reports/Attendance/myob_weekly_export.csv?companyId={{companyid}}&startDate={{ currentDate}}&endDate={{nextPeriod}}&j_acegi_security_check?&j_username=joeuser&j_password=anonymous" class="list-group-item"><span class="pull-left" popover-placement="top" popover-trigger="mouseenter" popover="MYOB compatible payroll file." popover-popup-delay="{{delayTime}}">MYOB - export</span><div class="clearfix"></div></a>
+
+							</div>
+							 	<div data-ng-show="customReport" id="peyroll">
+								   <a  class="list-group-item active" popover-placement="top" popover-trigger="mouseenter" popover="List of	payroll files available	for export." popover-popup-delay="{{delayTime}}">
+								  	Custom Reports
+								   </a>
+
+								   <div data-ng-repeat="reports in CustomreportsData">		
+								   		<!-- <div> testing </div> --> 
+										<a target="_blank" my-attr="{{reports.link}}" reset-link class="list-group-item"><span class="pull-left">{{reports.reportName}}</span><div class="clearfix"></div></a>
+							   		</div>
+							   </div>
+							   
+							</div> 
+						</div>
+					</div>
+				</div>
+</div>

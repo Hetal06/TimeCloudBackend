@@ -1,0 +1,103 @@
+<div class="main-container-inner">
+	<div class="page-content">
+		<div class="row">
+			<div class="col-sm-3">
+				<div class="list-group">
+					<a class="list-group-item active" popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}">List of Shift Patterns (Click Pattern to Edit)
+					</a>
+					<div data-ng-repeat="shift in shiftPatternList track by $index">
+						<div ng-if="shift.name == 'OPEN'">
+							<a class="list-group-item">
+								<span class="pull-left">
+									<b>{{shift.name}}</b>
+								</span>
+								<span class=" pull-right">
+									<i class="icon-edit"></i>
+								</span>
+								<div class="clearfix"></div>
+							</a>
+						</div>
+						<div ng-if="shift.name !== 'OPEN'">
+							<a href="#/shiftpattern/edit/{{shift._id}}" class="list-group-item"><span class="pull-left"><b>{{shift.name}}</b> </span><span class=" pull-right"><i class="icon-edit"></i></span><div class="clearfix"></div></a>
+						</div>
+					</div>
+					</br>
+				</div>
+			</div>
+			<div class="col-sm-9">
+				<div class="page-header">
+					<h1>Time Cloud<small>
+						<i class="icon-double-angle-right"></i>
+						Create Shift Pattern
+						</small>
+					</h1>
+				</div>
+				<!-- /.page-header -->
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="row">
+							<div class="col-xs-12">
+								<div ng-show="message.paternErr != null">
+									<div id="errors" class="span3 alert alert-danger">{{message.paternErr}}</div>
+								</div>
+								<div ng-show="message.patternAdded != null">
+									<div id="errors" class="span3 alert alert-success">{{message.patternAdded}}</div>
+								</div>
+								<form class="form-horizontal" role="form" name="ruleFrm" method="post">
+									<div class="space-4"></div>
+									<div class="form-group">
+										<label class="col-sm-3" for="form-field-1"> <span popover-placement="top" popover-trigger="mouseenter" popover="This is the length of time the shift pattern covers. You can select either days or weeks." popover-popup-delay="{{delayTime}}">Length Of Period</span> </label>
+										<div class="col-sm-9">
+											<div class="btn-group pull-left" data-toggle="buttons">
+												<label id="Weekly" class="btn btn-primary" data-ng-click="noOfDaysFn('Weekly')" popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}">
+														<input id="Weekly" type="radio" name="options" id="option3"> Weeks
+													</label>
+												<label id="Daily" class="btn btn-primary" data-ng-click="noOfDaysFn('Daily')" popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}">
+														<input id="Daily" type="radio" name="options" id="option1"> Days
+													</label>
+											</div>
+											<!---->
+											<input type="text" id="noOfDays" data-ng-model="daysInput" placeholder="Enter no of days" class="col-xs-12 col-sm-7" data-ng-change="showDate()" popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}"
+											/>
+											<input type="hidden" data-ng-model="DaysNo">
+										</div>
+										<input type="hidden" data-ng-model="WeekdayStart">
+										<input type="hidden" data-ng-model="SelectedOption">
+										<input type="hidden" data-ng-model="rule.noOfDays">
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3" for="form-field-1"> <span popover-placement="top" popover-trigger="mouseenter" popover="Call the pattern something easily identifiable. For example, if it is the shift pattern of a particular department then call it something that relates to that department. " popover-popup-delay="{{delayTime}}">Pattern Name </span> </label>
+										<div class="col-sm-9">
+											<input type="text" data-ng-model="rule.name" id="form-field-1" placeholder="Enter Name of Shift Pattern" class="col-xs-10 col-sm-5" />
+										</div>
+									</div>
+									<div class="form-group" ng-hide="weekDayshow">
+										<label class="col-sm-3" for="form-field-1"> <span popover-placement="top" popover-trigger="mouseenter" popover="This is the date that the shift pattern starts from. " popover-popup-delay="{{delayTime}}"> First Date of Rule </span> </label>
+										<input type="text" ng-change="updateText(rule.ruleStartDate)" datepicker-popup="{{format}}" show-weeks=f alse showTimezone=t rue timezone='+0100' ng-model="rule.ruleStartDate" is-open="opened" max="'2045-06-22'" datepicker-options="dateOptions" close-text="Close"
+										/>
+									</div>
+									<div id="daysDiv">
+									</div>
+									<div class="clearfix form-actions">
+										<div class="col-md-offset-3 col-md-9">
+											<button type="button" data-ng-click="submitform()" class="btn btn-primary" popover-placement="top" popover-trigger="mouseenter" popover="Select 'submit' to save the shift pattern." popover-popup-delay="{{delayTime}}"> <i class="icon-ok bigger-110"></i> Save
+												</button>
+										</div>
+									</div>
+								</form>
+								<!-- -->
+							</div>
+						</div>
+					</div>
+					<!-- /.col -->
+				</div>
+				<!-- /.row -->
+			</div>
+			<!--col-sm-9-->
+		</div>
+		<!--row--fluid-->
+		<!-- pagecontent-->
+	</div>
+	<!-- /.main-container-inner -->
+</div>
+<!-- /.main-container -->

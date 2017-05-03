@@ -1,0 +1,139 @@
+<div class="main-container-inner">
+	<div class="page-content">
+		<div class="row">
+				<div class="col-sm-3">
+						<a popover-placement="right" popover-trigger="mouseenter" popover="Add and edit employees- change the shift pattern assigned to them - archive the ones that left and much more" popover-popup-delay="{{delayTime}}" class="btn btn-primary" href="#/createemployee"><i class="icon-plus"></i>Add/Edit Employee</a> 
+						<br/>
+						<br/>
+						<a popover-placement="right" popover-trigger="mouseenter" popover="Bring back archived employees by simply clicking on them and sliding active slider from no to yes " popover-popup-delay="{{delayTime}}" class="btn btn-primary" href="#/archivedemployee"><i class="icon-reply"></i>Archived Employee</a> 
+						<br/>
+						<br/>
+						<div ng-show="departments">
+							<label class="inline" popover-placement="right" popover-trigger="mouseenter" popover="Filter employees by department " popover-popup-delay="{{delayTime}}"> <b>Department: </b></label> 
+							<div>
+								<select data-ng-model="department" class="input-medium ng-pristine ng-valid" id="form-field-select-2" ng-change="departmentFilter(department)">
+									<option value=''>All
+									</option>					
+									<option  data-ng-repeat="departmentValue in departments" value="{{departmentValue.name}}">{{departmentValue.name}}</option>
+								</select>
+							</div>
+						</div>		
+						<br/>
+						<div data-ng-show="subDepartmentList">
+							<label class="inline" popover-placement="right" popover-trigger="mouseenter" popover="Filter employees by department " popover-popup-delay="{{delayTime}}" > <b>Sub-Department: </b></label>
+							<div >
+								<select data-ng-model="subDepartment" class="input-medium ng-pristine ng-valid" id="form-field-select-2" ng-change="subDepartmentFilter(department)">
+									<option value=''>All
+									</option>					
+									<option  data-ng-repeat="deptValue in subDepartmentList|filter:{parentDeptName:department}" value="{{deptValue.name}}">{{deptValue.name}}</option>
+								</select>
+							</div>
+						</div>
+					</div>
+				<div class="col-sm-9">		
+			<div class="page-header">
+				<h1>
+					Timecloud
+					<small>
+						<i class="icon-double-angle-right"></i>
+						Home
+					</small>
+				</h1>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="row">
+						<div class="col-xs-12">
+							<div>
+							<form class="" role="search" id="searchfrm" ng-submit="getSearch()" >
+						      <div>
+						        <input type="text" class="form-control" placeholder="Search" ng-model="searchtext" id="searchText">
+						      </div>
+						       <input type="submit" id="submit" value="Submit" style="visibility:hidden"/>
+						    </form>
+							</div>
+							<div class="table-header">
+								Employee
+							</div>
+							<div ng-if="!employeeList">
+							    <img src="/images/loading.gif" class="ajax-loader"/>
+							</div>
+
+							<div class="table-responsive">								
+								<table id="sample-table-2" class="table table-bordered">
+									<thead >
+										<tr>	
+											<th ng-click="sortByempNo()"> <label id="sort" popover-placement="top" popover-trigger="mouseenter" popover="Sort by Employee No" popover-popup-delay="{{delayTime}}"> No </label></th>							
+											<th ng-click="sortByName()"> <label id="sort" popover-placement="top" popover-trigger="mouseenter" popover="Sort by First Name" popover-popup-delay="{{delayTime}}"> First Name </label> </th>
+
+											<th ng-click="sortByLastName()">  <label id="sort" popover-placement="top" popover-trigger="mouseenter" popover="Sort by Last Name" popover-popup-delay="{{delayTime}}">  Last Name </label>  </th>
+
+											<th ng-click="sortByShiftPattern()">
+											<label id="sort" popover-placement="top" popover-trigger="mouseenter" popover="Sort by Shift Pattern" popover-popup-delay="{{delayTime}}">  Shift Pattern </label> </th>
+
+											<th ng-click="sortByDepartment()"> <label id="sort" popover-placement="top" popover-trigger="mouseenter" popover="Sort by Department" popover-popup-delay="{{delayTime}}">Department </label>
+											</th>
+
+											<th ng-click="sortByDepartment()" data-ng-show="subDepartmentList"> <label id="sort" popover-placement="top" popover-trigger="mouseenter" popover="Sort by Sub-Department" popover-popup-delay="{{delayTime}}">Sub-Department </label>
+											</th>
+
+											<th ng-click="sortByStatus()"> <label id="sort" popover-placement="top" popover-trigger="mouseenter" popover="Sort by Status" popover-popup-delay="{{delayTime}}"> Status </label> </th>
+											
+										</tr>
+									</thead>
+									
+									<tbody data-ng-repeat="employee in employeeList|filter:{'subDepartment':subDepartment}">	
+										<td>
+											{{employee.employeeNo}}
+										</td>						
+										<td>
+											<a id="employee" href="#/attendanceedit/{{employee.employeeNo}}">
+													{{employee.firstName}}
+											</a>
+										</td>
+										<td>{{employee.lastName}}</td>
+										<td class="hidden-480">{{employee.shift}}</td>
+										<td ng-show="employee.department">{{employee.department}}</td>
+										<td ng-hide="employee.department">---</td>
+										<td ng-show="subDepartmentList">
+											<span  ng-show="employee.subDepartment">
+												{{employee.subDepartment}}
+											</span>
+											<span ng-hide="employee.subDepartment">
+												---
+											</span>
+										</td>
+										<td>
+											<span ng-if="employee.status == 'Out'" class="label label-danger">{{employee.status}} </span>
+											<span ng-if="employee.status == 'Break'" class="label label-warning">{{employee.status}} </span>
+											<span ng-if="employee.status == 'In'" class="label label-success">{{employee.status}} </span>
+											<span ng-if="!employee.status " class="label label-danger">Out</span>
+										</td>
+										<!-- </tr> -->
+									</tbody>
+								</table>
+							</div>
+							<div class="modal-footer no-margin-top" ng-if="pages>1">									
+								<ul class="pagination pull-right no-margin">
+	                <li  ng-if="currentPage>0" id="previousbtn" >
+	                    <a href="#/home/{{currentPage}}" ng-click="getPagePrevious(currentPage)"><i class="icon-double-angle-left"></i></a>
+	                </li >
+                 	<ul class="pagination" ng-repeat="a in range" class="col-sm-5">
+	                       <li id="{{a}}" ng-if="currentPage==a" class="active"><a href="#/home/{{a}}" ng-click="getPage($index + 1)">{{a}}</a></li>
+	                       <li id="{{a}}" ng-if="currentPage!=a"><a href="#/home/{{a}}" ng-click="getPage($index + 1)">{{a}}</a></li>
+	                </ul>
+	                <li  ng-if="pages>=currentPage" id="nextbtn">
+	                   <a href="#/home/{{currentPage}}"  ng-click="getPageNext(currentPage)"> <i class="icon-double-angle-right"></i></a>
+	                </li >
+								</ul>
+							</div>
+						</div><!-- /.modal-content -->
+					</div><!-- /.modal-dialog -->
+				</div><!-- PAGE CONTENT ENDS -->
+			</div><!-- /.col -->
+		</div><!-- /.row -->
+	</div><!--col-sm-9-->
+</div><!--row--fluid-->
+		<!-- pagecontent-->
+</div><!-- /.main-container-inner -->
+</div><!-- /.main-container -->

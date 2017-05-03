@@ -1,0 +1,316 @@
+<div class="main-container-inner">
+	<div class="page-content">
+		<div class="row">
+			<div class="col-sm-3">
+				<div class="list-group ">
+					<a class="list-group-item active">
+						List of Shifts  (Click Shift to Edit)
+					</a>
+					<div data-ng-repeat="shift in shiftList track by $index">
+						<div ng-if="shift.name !== 'OPEN' && shift.name != 'not Working'">
+							<a href="#/shift/edit/{{shift._id}}" class="list-group-item"><span class="pull-left">{{shift.name}} </span><i class="icon-edit pull-right"></i><div class="clearfix"></div></a>
+						</div>  
+					  <div ng-if="shift.name == 'OPEN'">
+					  	<a class="list-group-item"><span class="pull-left">{{shift.name}} </span><i class="icon-edit pull-right"></i><div class="clearfix"></div></a>
+					  </div>
+				  </div>
+				</div>
+			</div>
+			<div class="col-sm-9">
+				<div class="row">
+					<div class="col-xs-12 ">
+						<div class="page-header">
+							<h1>Time Cloud
+								<small>
+									<i class="icon-double-angle-right"></i>
+									Edit Shift
+								</small>
+							</h1>
+						</div>						
+					</div><!-- /.col -->
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div ng-show = "message.shiftAdded != null">
+							<div id="errors" class="span3 alert alert-success">{{message.shiftAdded}}</div>
+						</div>
+						<form class="form-horizontal" role="form" name="shiftFrm" method="post">
+							<div class="space-4"></div>
+							<div ng-show = "message.shiftErr != null">
+								<div id="errors" class="span3 alert alert-danger">{{message.shiftErr}}</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+									<label>
+										<span popover-placement="top" popover-trigger="mouseenter" popover="Enter a name for the shift. Use names that are easy to recognise if you will have several shifts." popover-popup-delay="{{delayTime}}">Title </span>
+									</label>
+								</div>
+								<div class="col-lg-4 col-md-4 col-sm-5 col-xs-6">
+									<input type="text" id="form-field-1" data-ng-model="shift.name" placeholder="Enter Shift Name" class="form-control" disabled/>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+									<label>
+										<span popover-placement="top" popover-trigger="mouseenter" popover="This is the time that the shift starts. It is based on a 24hour clock. You can use the arrows or type the time in the boxes." popover-popup-delay="{{delayTime}}">Start Time </span>
+									</label>
+								</div>
+								<div class="col-lg-3 col-md-3 col-sm-4 col-xs-5">
+									<input id="startTimetxt" class="form-control" type="text" min="01:00" max="24:00" data-ng-model="startTime" placeholder="HH:MM" ng-change="formatTime(startTime,'startTime')"  ng-blur="formatTimeFinal(startTime,'startTime')"/>
+								</div>
+								<div class="col-lg-1 col-md-1 col-sm-2 col-xs-2" style="padding:0px;">
+									<span popover-placement="top" popover-trigger="mouseenter" popover="Selecting the “limit” box means that you only pay for the hours of the shift and not extra. For example, if the shift starts at 9am but the employee clocks in early at 8.50am they will only be paid from 9am. However, if they clock in late it does not mean that they will be paid from 9am." popover-popup-delay="{{delayTime}}">
+										<label class="pull-left">&nbsp;
+											<input name="form-field-checkbox" type="checkbox" data-ng-model="shift.startLimit" class="ace" />
+											<span class="lbl" data-rel="popover" data-trigger="hover" data-placement="right" data-content="ticking the limit box means your employee won't get paid before the starttime" > Limit</span>
+										</label>
+									</span>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+									<label>
+										<span popover-placement="top" popover-trigger="mouseenter" popover="This is the time the shift finishes. It is based on a 24hour clock. You can use the arrows or type the time in the boxes." popover-popup-delay="{{delayTime}}">Finish Time </span>
+									</label>
+								</div>
+								<div class="col-lg-3 col-md-3 col-sm-4 col-xs-5">
+									<input id="finishTimetxt" class="form-control" type="text" min="01:00" max="24:00" data-ng-model="finishTime" placeholder="HH:MM" ng-change="formatTime(finishTime,'finishTime')"  ng-blur="formatTimeFinal(finishTime,'finishTime')"/>
+								</div>
+								<div class="col-lg-1 col-md-1 col-sm-2 col-xs-2" style="padding:0px;">
+									<span popover-placement="top" popover-trigger="mouseenter" popover="Selecting the “limit” box means that you only pay for the hours of the shift and no extra. For example, if the shift finishes at 5pm but the employee clocks out at 5.15pm, the employee will only be paid until 5pm." popover-popup-delay="{{delayTime}}">
+										<label class="pull-left">&nbsp;
+											<input name="form-field-checkbox" type="checkbox" data-ng-model="shift.finishLimit" class="ace" />
+											<span class="lbl" data-rel="popover" data-trigger="hover" data-placement="right" data-content="ticking the limit box means your employee won't get paid before the finishtime." > Limit</span>
+										</label>
+									</span>
+								</div>
+							</div>
+
+
+							<div class="row form-group" ng-show="overtime1">
+								<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+									<label>Normal Time </label>
+								</div>
+								<div class="col-lg-4 col-md-4 col-sm-5 col-xs-6">											
+									<input id="ordinarytimetxt" class="form-control" type="text" min="01:00" max="24:00" data-ng-model="ordinarytime" placeholder="HH:MM" ng-change="formatTime(ordinarytime,'ordinarytime')"  ng-blur="formatTimeFinal(ordinarytime,'ordinarytime')"/>
+								</div>
+							</div>
+							<div class="row form-group" ng-show="overtime2">
+								<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+									<label>Normal Time </label>
+								</div>
+								<div class="col-lg-4 col-md-4 col-sm-5 col-xs-6">
+									<input id="ordinarytimeTxt" type="text" min="01:00" max="24:00" class="form-control" data-ng-model="ordinarytime" placeholder="HH:MM" ng-change="formatTime(ordinarytime,'ordinarytime')"  ng-blur="formatTimeFinal(ordinarytime,'ordinarytime')"/>
+								</div>
+							</div>
+							<div class="row form-group" ng-show="overtime2">
+								<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+									<label>Overtime 1</label>
+								</div>
+								<div class="col-lg-4 col-md-4 col-sm-5 col-xs-6">								<input id="overTime1txt" type="text" min="01:00" max="24:00" class="form-control" data-ng-model="overTime1" placeholder="HH:MM" ng-change="formatTime(overTime1,'overTime1')"  ng-blur="formatTimeFinal(overTime1,'overTime1')"/>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+									<label>
+										<span popover-placement="top" popover-trigger="mouseenter" popover="This is the amount of time deducted for breaks within the shift. So if they have 1 unpaid 30 minute lunch break then you will enter 30." popover-popup-delay="{{delayTime}}">Break Time</span>
+									</label>
+								</div>
+								<div class="col-lg-4 col-md-4 col-sm-5 col-xs-6">											
+									<input id="breakTimetxt" class="form-control" type="text" min="01:00" max="24:00" data-ng-model="breakTime" placeholder="HH:MM" ng-change="formatTime(breakTime,'breakTime')"  ng-blur="formatTimeFinal(breakTime,'breakTime')"/>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+									<label>
+										<span popover-placement="top" popover-trigger="mouseenter" popover="This is the amount of time deducted for breaks within the shift. So if they have 1 unpaid 30 minute lunch break then you will enter 30." popover-popup-delay="{{delayTime}}" ng-show="!shift.breakIn">Deduct Break After </span>
+
+										<span popover-placement="top" popover-trigger="mouseenter" popover="This is the amount of time deducted for breaks within the shift. So if they have 1 unpaid 30 minute lunch break then you will enter 30." popover-popup-delay="{{delayTime}}" ng-show="shift.breakIn">Add Break After</span>
+
+									</label>
+								</div>
+								<div class="col-lg-3 col-md-3 col-sm-4 col-xs-5">
+									<input type="text" id="breakAftertxt" data-ng-model="breakAfter" placeholder="HH:MM" ng-change="formatTime(breakAfter,'breakAfter')"  ng-blur="formatTimeFinal(breakAfter,'breakAfter')" class="form-control"/>
+								</div>
+								<div class="col-lg-2 col-md-2 col-sm-2 col-xs-3" style="padding:0px;">
+									<label  popover-placement="top" popover-trigger="mouseenter" popover="This means that the employee will be paid for the breaks taken and it will be added back in to the paid hours." popover-popup-delay="{{delayTime}}">
+										<input name="form-field-checkbox" type="checkbox" data-ng-model="shift.breakIn" class="ace" />
+										<span class="lbl" data-rel="popover" data-trigger="hover" data-placement="right" data-content="ticking the limit box means your employee won't get paid before the finishtime." > Break</span>
+									</label>
+								</div>
+							</div>
+							<div class="row form-group" ng-show="showsecondBreak">
+								<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+									<label>
+									<!-- 	<span popover-placement="top" popover-trigger="mouseenter" popover="This is the amount of time deducted for breaks within the shift. So if they have 1 unpaid 30 minute lunch break then you will enter 30." popover-popup-delay="{{delayTime}}" ng-show="!shift.breakIn2">Deduct Break After2 </span> -->
+
+										<span popover-placement="top" popover-trigger="mouseenter" popover="This is the amount of time deducted for breaks within the shift. So if they have 1 unpaid 30 minute lunch break then you will enter 30." popover-popup-delay="{{delayTime}}">Break Time 2</span>
+
+										<!-- <span popover-placement="top" popover-trigger="mouseenter" popover="This is the amount of time deducted for breaks within the shift. So if they have 1 unpaid 30 minute lunch break then you will enter 30." popover-popup-delay="{{delayTime}}" ng-show="shift.breakIn2">Add Break After2 </span> -->
+									</label>
+								</div>
+								<div class="col-lg-4 col-md-4 col-sm-5 col-xs-6">											
+									<input id="breakTimetxt2" class="form-control" type="text" min="01:00" max="24:00" data-ng-model="breakTime2" placeholder="HH:MM" ng-change="formatTime(breakTime2,'breakTime2')"  ng-blur="formatTimeFinal(breakTime2,'breakTime2')"/>
+								</div>
+							</div>
+							<div class="row form-group" ng-show="showsecondBreak">
+								<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+									<label>
+										<span popover-placement="top" popover-trigger="mouseenter" popover="This is the amount of time deducted for breaks within the shift. So if they have 1 unpaid 30 minute lunch break then you will enter 30." popover-popup-delay="{{delayTime}}" ng-show="!shift.breakIn2">Deduct Break After2 </span>
+
+										<span popover-placement="top" popover-trigger="mouseenter" popover="This is the amount of time deducted for breaks within the shift. So if they have 1 unpaid 30 minute lunch break then you will enter 30." popover-popup-delay="{{delayTime}}" ng-show="shift.breakIn2">Add Break After2 </span>
+									</label>
+								</div>
+								<div class="col-lg-3 col-md-3 col-sm-4 col-xs-5">
+									<input type="text" id="breakAftertxt2" data-ng-model="breakAfter2" placeholder="HH:MM" ng-change="formatTime(breakAfter2,'breakAfter2')"  ng-blur="formatTimeFinal(breakAfter2,'breakAfter2')" class="form-control"/>
+								</div>
+								<div class="col-lg-2 col-md-2 col-sm-2 col-xs-3" style="padding:0px;">
+									<label  popover-placement="top" popover-trigger="mouseenter" popover="This means that the employee will be paid for the breaks taken and it will be added back in to the paid hours." popover-popup-delay="{{delayTime}}">
+										<input name="form-field-checkbox" type="checkbox" data-ng-model="shift.breakIn2" class="ace" />
+										<span class="lbl" data-rel="popover" data-trigger="hover" data-placement="right" data-content="ticking the limit box means your employee won't get paid before the finishtime." > Break2</span>
+									</label>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+									<label>Color<label>
+								</div>
+								<div class="col-lg-4 col-md-4 col-sm-5 col-xs-6">
+									<select class="form-control" id="form-field-select-2" ng-model="shift.color">
+										<option value="">Select Color</option>
+										<option value="#6495ED" style="background-color:#6495ED; color:black">Blue</option>
+										<option value="#7CFC00" style="background-color:#7CFC00; color:black">Green</option>
+										<option value="#00FFFF" style="background-color:#00FFFF; color:black">Aqua</option>
+										<option value="#A9A9A9" style="background-color:#A9A9A9; color:black">Gray</option>
+										<option value="#9400D3" style="background-color:#9400D3; color:black">Violet</option>
+										<option value="#4682B4" style="background-color:#4682B4; color:black">Steel Blue</option>
+										<option value="#008B8B" style="background-color:#008B8B; color:black">Cyan</option>
+										<option value="#E9967A" style="background-color:#E9967A; color:black">Salmon</option>
+										<option value="#FFC0CB" style="background-color:#FFC0CB; color:black">Pink</option>
+										<option value="#DDA0DD" style="background-color:#DDA0DD; color:black">Plum</option>
+										<option value="#BC8F8F" style="background-color:#BC8F8F; color:black">Brown</option>
+										<option value="#F4A460" style="background-color:#F4A460; color:black">Sandy Brown</option>
+										<option value="#D2B48C" style="background-color:#D2B48C; color:black">Tan</option>
+										<option value="#D8BFD8" style="background-color:#D8BFD8; color:black">Thistle</option>
+										<option value="#F5DEB3" style="background-color:#F5DEB3; color:black">Wheat</option>
+										<option value="#FAEBD7" style="background-color:#FAEBD7; color:black">Antique White</option>
+										<option value="#FFA07A" style="background-color:#FFA07A; color:black">Light Salmon</option>
+										<option value="#BC8F8F" style="background-color:#BC8F8F; color:black">Rosy Brown</option>
+										<option value="#708090" style="background-color:#708090; color:black">Slate Gray</option> 
+										<option value="#FFDAB9" style="background-color:#FFDAB9; color:black">Peach Puff</option> 
+										<option value="#20B2AA" style="background-color:#20B2AA; color:black">Sea Green</option>  
+										<option value="#F0E68C" style="background-color:#F0E68C; color:black">Khaki</option> 
+										<option value="#E6E6FA" style="background-color:#E6E6FA; color:black">Lavender</option> 
+										<option value="#BA55D3" style="background-color:#BA55D3; color:black">Orchid</option> 
+										<option value="#FAFAD2" style="background-color:#FAFAD2; color:black">Light Yellow</option> 
+										<option value="#7F5A58" style="background-color:#7F5A58; color:black">Puce</option>
+									</select>
+								</div>
+							</div>
+							<div id="Tag">
+								<li data-ng-repeat="allowance in allowanceList track by $index">
+									<div class="form-group">
+										<label class="col-sm-3">
+											<input name="allowanceCheck" name="form-field-checkbox" type="checkbox" value="{{allowance.name}}" class="ace" />
+											<span class="lbl"> {{allowance.name}} </span>
+										</label>
+										<input type="hidden" data-ng-model="shift.allowance" value=''>
+										<div class="col-sm-9"><label class="pull-left"><span class="lbl "> Pay After &nbsp;</span></label>
+											<input id="{{allowance.name}}" ng-model="allownce" type="text" id="form-field-1" placeholder="HH:MM" class="col-xs-10 col-sm-5" ng-change="otherTime(allowance.name)" />
+										</div>
+									</div>
+								</li>
+							</div>
+							<div class="row form-group"  ng-show="showShiftTags">
+								<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+									<label>Departments<label>
+								</div>
+								<div class="col-lg-5 col-md-5 col-sm-6 col-xs-8">
+									<div class="row">
+										<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+											<input type="checkbox" id="selectAllDept" ng-click="selectAllDept();"/>Select All Departments
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" data-ng-repeat="dept in departments track by $index">
+											<input type="checkbox" checklist-model="shift.tags" checklist-value="dept.name" id="{{dept._id}}" ng-click="addDepartmentName(dept._id,dept.name);" class="selectAllDept" name="departmentName" value="{{dept.name}}"> {{dept.name}}
+										</div>										
+									</div>
+								</div>
+							</div>									
+							<div class="row" data-ng-repeat="timezonelist in shift.timeZones track by $index" data-ng-show="showShiftTimezone">
+								<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+									<input type="text" id="timezone{{timezonelist._id}}" data-ng-model="timezonelist.name" placeholder="Timezone Title" class="removealerts form-control" name="name"/><br/>
+								</div>
+								<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+									<input type="text" id="tStartTime{{timezonelist._id}}" data-ng-model="timezonelist.startTime" placeholder="Start Time"  class="removealerts form-control" ng-change="otherTime('tStartTime{{timezonelist._id}}')" name="startTime"/><br/>
+								</div>
+								<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+									<input type="text" id="tFinishTime{{timezonelist._id}}" data-ng-model="timezonelist.finishTime" placeholder="Finish Time"  class="removealerts form-control" ng-change="otherTime('tFinishTime{{timezonelist._id}}')" name="finishTime"/><br/>
+								</div>
+								<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+									<select class="removealerts form-control" id="payPeriod{{timezonelist._id}}" ng-model="timezonelist.payPeriod" name="payPeriod">
+										<option value="">--Select--</option>
+										<option value="NT">NT</option>
+										<option value="OT1">OT1</option>
+										<option value="OT2">OT2</option>
+									</select><br/>
+								</div>
+								<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+									<!-- {{timezonelist.zoneName}} -->
+									<select class="removealerts form-control" id="zoneName{{timezonelist._id}}" ng-model="timezonelist.zoneName" name="zoneName">
+										<option value="">--ZoneTag--</option>
+										<option value="{{zones.name}}" data-ng-repeat="zones in zoneTagList track by $index" ng-selected="timezonelist.zoneName==zones.name">{{zones.name}}</option>
+									</select><br/>
+								</div>
+							</div>
+							<div class="form-group" data-ng-show="showShiftTimezone">
+								<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 text-right">
+									<button type="button" class="btn btn-primary" data-ng-click="addMoreTimezone()" popover-placement="top" popover-trigger="mouseenter" popover="Select to add the new timezone." popover-popup-delay="{{delayTime}}">
+										<i class="icon-plus bigger-110"></i> Add More
+									</button>
+								</div>
+							</div>
+							<div class="clearfix form-actions">
+								<div class="col-md-offset-3 col-md-9">
+									<button type="button" class="btn btn-primary btn-space" data-ng-click="submitform()" popover-placement="top" popover-trigger="mouseenter" popover="Select to save the new shift." popover-popup-delay="{{delayTime}}">
+										<i class="icon-ok bigger-110"></i>Save
+									</button>
+									<!-- &nbsp; &nbsp; &nbsp; -->
+									<button popover-placement="top" popover-trigger="mouseenter" popover="tooltip" popover-popup-delay="{{delayTime}}" class="btn btn-inverse  btn-space" data-ng-click="deleteShift()" ng-if="shift.allowDelete">
+										<i class="icon-trash bigger-110"></i>Delete
+									</button>
+									<!-- &nbsp; &nbsp; &nbsp;				 -->
+									<button type="button" class="btn btn-primary  btn-space" data-ng-click="createPattern()" popover-placement="top" popover-trigger="mouseenter" popover="A shift pattern is a selection of shifts to make up a pay period. It is a good tool if staff don’t work the same hours each day or days each week." popover-popup-delay="{{delayTime}}">
+										<i class="icon-plus bigger-110"></i>
+										Create Shift Pattern
+									</button>
+								</div>
+							</div>
+						</form>
+						<script type="text/ng-template" id="shift.html">
+							<div class="modal-header">
+								<h3>Create Shift</h3>
+							</div>
+							<div class="modal-body">
+								<h4> Select a date from which date you wants to apply this start and finish Time. </h4>
+								</br>
+								<div ng-show = "message.date != null">
+									<div id="errors" class="span3 alert alert-danger">{{message.date}}
+									</div>
+								</div>
+								<label class="col-sm-3"> Date:  </label>
+								<input type="text" datepicker-popup=" {{format}}" ng-model="dateStart" is-open="opened" max="'2045-06-22'" datepicker-options="dateOptions" close-text="Close" />
+								</div>
+								<div class="modal-footer">
+									<button class="btn btn-primary" ng-click="ok(dateStart)">OK</button>
+									<button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+								</div>
+							</div>
+						</script>
+					</div>
+				</div>
+			</div><!--col-sm-9-->
+		</div><!--row--fluid-->
+	</div><!-- /.main-container-inner -->
+</div><!-- /.main-container -->

@@ -1,0 +1,218 @@
+<div class="main-container" id="main-container">
+	<div class="main-container-inner">
+		<div class="page-content">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="page-header">
+						<h1>Timecloud <small> <i class="icon-double-angle-right"></i> View Attendance </small> </h1>
+					</div>
+					<!-- /.page-header -->
+					<div class="clearfix"></div>
+					<form class="form-inline">
+						<div class="row">
+							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+								<label class="inline" popover-placement="right" popover-trigger="mouseenter" popover="Select the employee you would like to view." popover-popup-delay="{{delayTime}}"> Selected User: </label>
+								<input type="text" class="gridtextBelow" popover-placement="right" popover-trigger="mouseenter" popover="Your Name {{delayTime}}" style="pointer-events:none;background:#eee none repeat scroll 0 0 !important" placeholder="{{employeeList.employeeNo}}). {{employeeList.firstName}} {{employeeList.lastName}}"
+												readonly="readonly" />
+								<label class="inline" popover-placement="top" popover-trigger="mouseenter" popover=" shows start date - you can select any start date by clicking on the box" popover-popup-delay="{{delayTime}}"> Dates: </label>
+								<input class="input-medium date-picker" data-ng-model="fromDate" id="id-date-picker-1" style="width:94px" type="text" data-date-format="mm-dd-yyyy" datepicker-popup="{{format}}" is-open="opened1" max="'2045-06-22'" datepicker-options="dateOptions" data-ng-change="searchDate(fromDate,toDate)"
+								/>
+								<label class="inline" popover-placement="top" popover-trigger="mouseenter" popover="shows the finish date - you can select any finish date by clicking on the box" popover-popup-delay="{{delayTime}}"> To: </label>
+								<input class="input-medium date-picker" data-ng-model="toDate" id="id-date-picker-2" style="width:94px" type="text" data-date-format="mm-dd-yyyy" datepicker-popup="{{format}}" is-open="opened" max="'2045-06-22'" datepicker-options="dateOptions" data-ng-change="searchDate(fromDate,toDate)"
+								/>
+								<a popover-placement="top" popover-trigger="mouseenter" popover="click to go back to the previous pay period " popover-popup-delay="{{delayTime}}" class="btn btn-primary no-border btn-sm " ng-click="previousFn(prvDate, nextPrvDate)">Previous Period</a>
+								<a popover-placement="top" popover-trigger="mouseenter" popover="click to got to Next pay period" popover-popup-delay="{{delayTime}}" href="#/viewAttendance/{{selectedEmp}}/{{date | formatDate }}" class="btn btn-primary no-border btn-sm ">Next Period</a>
+							</div>
+						</div>
+					</form><br/>
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="table-responsive">
+								<table id="sample-table-2" class="table table-striped table-bordered table-hover">
+									<thead></thead>
+									<tbody data-ng-repeat="attendance in attendanceList">
+										<tr ng-style="attendance.definedColor">
+											<td style="width:135px">
+												{{attendance.date | dateFormat}}
+											</td>
+											<td style="width:40px" class="action-buttons" ng-show="attendance.readEmployee">
+												<div ng-click="openModel(attendance.attendanceId,attendance.date)" style="display:inline-block">
+													<a class="blue ace-icon bigger-130 cursorCss" popover-placement="top" popover-trigger="mouseenter" popover="click to add times manually" popover-popup-delay="{{delayTime}}" for="form-field-1"> <i class="icon-plus"></i></a>
+												</div>
+											</td>
+											<td style="width:40px" class="disable action-buttons" ng-hide="attendance.readEmployee">
+												<div ng-click="openModel(attendance.attendanceId,attendance.date)" style="display:inline-block">
+													<a class="blue ace-icon bigger-130 cursorCss" popover-placement="top" popover-trigger="mouseenter" popover="click to add times manually" popover-popup-delay="{{delayTime}}" for="form-field-1"> <i class="icon-plus"></i></a>
+												</div>
+											</td>
+											<td>
+												<table>
+													<tr>
+														<div class="pull-right">
+															<td ng-repeat="atData in attendance.checkinData" style="border-top:none">
+																<div id="{{atData.id}}" ng-show="atData.hideInputBox && attendance.readEmployee">
+																	<label id="changeType" ng-dblclick="changeType(atData.id, attendance.attendanceId, atData.checktype)"> {{atData.label}}</label>
+																	<input ng-style="atData.alterColor" min="01:00" max="24:00" ng-model="atData.checktype" type="text" class="gridtext {{$index}}_{{attendance.attendanceId}}" data-ng-enter="changeTime(atData.checktype, atData.label, attendance.date, attendance.attendanceId, atData.id, attendance.shift)"
+																					id="{{atData.id}}" ng-change="formatTime($index, attendance.attendanceId)" />
+																	<input name="attendance" ng-if="atData.inid" type="checkbox" id="{{atData.inid}}" value="{{atData.inid}}" class="{{attendance.date|date:'MM-dd-yyyy'}} delete" disabled/>
+
+																	<input ng-if="atData.inid && atData.showConfirmBox" id="confirmIn{{attendance.attendanceId}}" type="checkbox" class="regular-checkbox" name="selected" ng-click="confirmTheTimeAdding('In',attendance)" disabled/>
+																	<label for="confirmIn{{attendance.attendanceId}}"></label>
+
+																	<input name="attendance" ng-if="atData.checkBoxid" type="checkbox" id="{{atData.checkBoxid}}" value="{{atData.checkBoxid}}" class="{{attendance.date|date:'MM-dd-yyyy'}} delete" disabled/>
+
+																	<input ng-if="atData.checkBoxid && atData.showConfirmBox" type="checkbox" id="confirmOut{{attendance.attendanceId}}" name="selected" class="regular-checkbox" ng-click="confirmTheTimeAdding('Out',attendance)" disabled/>
+																	<label for="confirmOut{{attendance.attendanceId}}"></label>
+																</div>
+																<div id="{{atData.id}}" ng-hide="atData.hideInputBox && attendance.readEmployee">
+																	<label ng-if="atData.workCode">JC</label>
+																	<input ng-if="atData.workCode" type="text" class="gridtext" value="{{atData.workCode}}" style="pointer-events:none;background:#eee none repeat scroll 0 0 !important" />
+																	<label id="changeType"> {{atData.label}}</label>
+																	<input ng-style="atData.alterColor" min="01:00" max="24:00" ng-model="atData.checktype" type="text" class="gridtext {{$index}}_{{attendance.attendanceId}}" id="{{atData.id}}" style="pointer-events:none;background:#eee none repeat scroll 0 0 !important"
+																					readonly="readonly" />
+																	<input name="attendance" ng-if="atData.inid" type="checkbox" id="{{atData.inid}}" value="{{atData.inid}}" class="{{attendance.date|date:'MM-dd-yyyy'}} delete" style="pointer-events:none;background:#eee none repeat scroll 0 0 !important" disabled/>
+																	<input name="attendance" ng-if="atData.checkBoxid" type="checkbox" id="{{atData.checkBoxid}}" value="{{atData.checkBoxid}}" class="{{attendance.date|date:'MM-dd-yyyy'}} delete" style="pointer-events:none;background:#eee none repeat scroll 0 0 !important"
+																					disabled/>
+																</div>
+															</td>
+															<div class="pull-right" style="margin-top:10px" ng-hide="attendance.holiday==false">
+																<label ng-if="attendance.stringExc">{{attendance.stringExc}}</label>
+															</div>
+													</tr>
+												</table>
+											</td>
+											<td class="center" style="width:98px">
+												<span ng-show="attendance.shift">
+													<input type="text" class="" popover-placement="right" popover-trigger="mouseenter" popover="Your Name {{delayTime}}" style="pointer-events:none;background:#eee none repeat scroll 0 0 !important;color:#000;" value="{{attendance.shift}}" ng-hide="attendance.shiftColor" readonly="readonly"/>
+
+													<input type="text" class="" popover-placement="right" popover-trigger="mouseenter" popover="Your Name {{delayTime}}" style="pointer-events:none;background-color:{{attendance.shiftColor}};color:#000;" value="{{attendance.shift}}" ng-show="attendance.shiftColor" readonly="readonly"/>
+												</span>
+												<span ng-hide="attendance.shift">
+													<input type="text" class="" popover-placement="right" popover-trigger="mouseenter" popover="Your Name {{delayTime}}" style="pointer-events:none;background:#eee none repeat scroll 0 0 !important;color:#000;" value="{{attendance.ExceptionAssign}}" ng-hide="attendance.shiftColor" readonly="readonly"/>
+
+													<input type="text" class="" popover-placement="right" popover-trigger="mouseenter" popover="Your Name {{delayTime}}" style="pointer-events:none;background-color:{{attendance.shiftColor}};color:#000;" value="{{attendance.ExceptionAssign}}" ng-show="attendance.shiftColor" readonly="readonly"/>
+												</span>
+											</td>
+											<td style="width:65px">
+												<input popover-placement="top" popover-trigger="mouseenter" popover='Displays total time calculated after applying rules…' ng-hide="{{attendance.flag}}" type="text" class="gridtext" value="{{attendance.totalRounded}}" style="pointer-events:none;background:#eee none repeat scroll 0 0 !important"
+																readonly="readonly" />
+												<input ng-show="{{attendance.flag}}" type="text" class="gridtext" value="FLAG" style="pointer-events:none;background:#eee none repeat scroll 0 0 !important" readonly="readonly" />
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="table-responsive">
+									<table id="sample-table-2" class="table table-striped table-bordered table-hover">
+										<thead class="thin-border-bottom header-color-blue">
+											<tr>
+												<th class="center">
+													<label popover-placement="top" popover-trigger="mouseenter" popover="Shows you the normal time calculated for the period {{delayTime}}">
+													Normal Time
+												</label>
+												</th>
+												<th class="center">
+													Over Time1
+												</th>
+												<th class="center">
+													Over Time2
+												</th>
+												<th class="center">
+													Exceptions
+												</th>
+												<th class="center">
+													Allowances
+												</th>
+												<th class="center">
+													Total
+												</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td class="center">
+													<input type="text" class="gridtextBelow" data-ng-model="normalTime" popover-placement="right" popover-trigger="mouseenter" popover="Shows you the normal time calculated for the period {{delayTime}}" style="pointer-events:none;background:#eee none repeat scroll 0 0 !important"
+																	readonly="readonly" />
+												</td>
+												<td class="center">
+													<input type="text" class="gridtextBelow" data-ng-model="overTime1" popover-placement="right" popover-trigger="mouseenter" popover="shows you the Over time 1 calculated for the period ( only if overtime is enabled) {{delayTime}}" style="pointer-events:none;background:#eee none repeat scroll 0 0 !important"
+																	readonly="readonly" />
+												</td>
+												<td class="center">
+													<input type="text" class="gridtextBelow" data-ng-model="overTime2" popover-placement="right" popover-trigger="mouseenter" popover="shows you the Over time 2 calculated for the period ( only if overtime is enabled) {{delayTime}}" style="pointer-events:none;background:#eee none repeat scroll 0 0 !important"
+																	readonly="readonly" />
+												</td>
+												<td class="center">
+													<input type="text" class="gridtextBelow" data-ng-model="Exception" popover-placement="right" popover-trigger="mouseenter" popover="shows you the exception times calculated for the period ( only if exceptions are defined) {{delayTime}}" style="pointer-events:none;background:#eee none repeat scroll 0 0 !important"
+																	readonly="readonly" />
+												</td>
+												<td class="center">
+													<input type="text" class="gridtextBelow" popover-placement="right" popover-trigger="mouseenter" popover="shows allowances allocated for period {{delayTime}}" style="pointer-events:none;background:#eee none repeat scroll 0 0 !important" readonly="readonly"
+													/>
+												</td>
+												<td class="center">
+													<input type="text" class="gridtextBelow" data-ng-model="Total" popover-placement="top" popover-trigger="mouseenter" popover="shows you the Total Time calculated for the period {{delayTime}}" style="pointer-events:none;background:#eee none repeat scroll 0 0 !important"
+																	readonly="readonly" />
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- /.col -->
+					<br/>
+					<script type="text/ng-template" id="employee.html">
+						<div class="modal-header">
+							<h3>Create Shift</h3>
+						</div>
+						<div class="modal-body">
+							<h4> Select a date of clocking</h4></br>
+							<div ng-show="message.date != null">
+								<div id="errors" class="span3 alert alert-danger">{{message.date}}</div>
+							</div>
+							<label class="col-sm-3"> Date:  </label>
+							<input type="text" datepicker-popup="{{format}}" ng-model="dateStart" is-open="opened" max="'2045-06-22'" datepicker-options="dateOptions" close-text="Close" />
+						</div>
+						<div class="modal-footer">
+							<button class="btn btn-primary" ng-click="ok(dateStart)">OK</button>
+							<button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+						</div>
+					</script>
+					<script type="text/ng-template" id="checkTime.html">
+						<div class="modal-header">
+							<h3>Create In/Out</h3>
+						</div>
+						<div class="modal-body">
+							<div ng-show="message.timeErr != null">
+								<div id="errors" class="span3 alert alert-danger">{{message.timeErr}}</div>
+							</div>
+							<div class="row">
+								<label class="col-sm-1"> In  </label>
+								<input id="inTimetxt" class="col-sm-2" type="text" min="01:00" max="24:00" class="gridtextBelow" data-ng-model="inTime" placeholder="HH:mm" ng-change="formatTime('inTimetxt')" />
+
+								<label class="col-sm-1"> Out </label>
+								<input id="outTimetxt" class="col-sm-2" type="text" min="01:00" max="24:00" class="gridtextBelow" data-ng-model="outTime" placeholder="HH:mm" ng-change="formatTime('outTimetxt')" />
+
+								<label ng-show="showJobCosting" class="col-sm-3 center"> Work Code</label>
+
+								<input class="col-sm-2" type="text" ng-show="showJobCosting" class="gridtextBelow" data-ng-model="workCode" />
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button class="btn btn-primary" ng-click="ok(inTime, outTime, workCode)">OK</button>
+							<button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+						</div>
+					</script>
+				</div>
+				<!--col-sm-9-->
+			</div>
+			<!--row--fluid-->
+		</div>
+	</div>
+	<!-- /.main-container-inner -->

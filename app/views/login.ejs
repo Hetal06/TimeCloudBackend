@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="registration" ng-cloak>
+
+<head>
+	<meta charset="utf-8" />
+	<title>Login Page</title>
+
+	<meta name="description" content="User login page" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+	<!-- basic styles -->
+
+	<link href="css/bootstrap.min.css" rel="stylesheet" />
+	<link href="css/bootstrap-responsive.min.css" rel="stylesheet" />
+	<link rel="stylesheet" href="css/font-awesome.min.css" />
+
+	<!--[if IE 7]>
+		  <link rel="stylesheet" href="css/font-awesome-ie7.min.css" />
+		<![endif]-->
+
+	<!-- page specific plugin styles -->
+
+	<!-- fonts -->
+
+	<link rel="stylesheet" href="css/ace-fonts.css" />
+
+	<!-- ace styles -->
+
+	<link rel="stylesheet" href="css/ace.min.css" />
+	<link rel="stylesheet" href="css/ace-responsive.min.css" />
+	<link rel="stylesheet" href="css/ace-skins.min.css" />
+	<link rel="stylesheet" href="/css/styles.css" />
+	<!--[if lte IE 8]>
+		  <link rel="stylesheet" href="css/ace-ie.min.css" />
+		<![endif]-->
+
+	<!-- inline styles related to this page -->
+
+	<!-- ace settings handler -->
+
+	<script src="js/ace-extra.min.js"></script>
+	<script src="/js/angular.min.js"></script>
+
+	<script src="/js/angular-route.js"></script>
+	<script src="/js/angular-sanitize.min.js"></script>
+
+	<script src="../../controllers/app.js"></script>
+
+</head>
+
+<body class="login-layout">
+	<div class="main-container container-fluid">
+		<div class="main-content">
+			<div class="row-fluid">
+				<div class="span12">
+					<div class="login-container">
+						<div class="row-fluid">
+							<div class="center">
+								<h1>
+											<i class="icon-leaf green"></i>
+											<span class="red">Time</span>
+											<span class="white">Cloud</span>
+										</h1>
+								<h6 class="blue">&copy;Timecloud LTD</h6>
+							</div>
+						</div>
+						<div class="space-6"></div>
+						<div class="row-fluid">
+							<div class="position-relative">
+								<div id="login-box" class="login-box visible widget-box no-border" data-ng-controller="loginController">
+									<div class="widget-body">
+										<div class="widget-main">
+											<h4 class="header blue lighter bigger">
+														<i class="icon-coffee green"></i>
+														Please Enter Your Information
+													</h4>
+											<div class="space-6"></div>
+											<div ng-show="message.login != null" style="margin-left:-12px;" class="row  form-group">
+												<div class="errors col-lg-12 col-md-12 col-xs-12 col-sm-12alert alert-danger ng-binding">{{message.login}}
+												</div>
+											</div>
+											<!-- LOGIN FORM -->
+											<form method="post" name="userForm">
+												<div class="row" style="margin-left:-12px;">
+													<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 form-group">
+														<span class="block input-icon input-icon-right">
+																	<input type="email" class="form-control span12" id="emailTxt" ng-init="getCookie('emails');" data-ng-model="userForm.email" placeholder="Email" />
+																	<i class="icon-user"></i>
+																</span>
+													</div>
+												</div>
+												<div class="row" style="margin-left:-12px;">
+													<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 form-group">
+														<span class="block input-icon input-icon-right">
+																	<input type="password" class="form-control span12" data-ng-model="userForm.pwd"placeholder="Password" />
+																	<i class="icon-lock"></i>
+																</span>
+													</div>
+												</div>
+												<br/>
+												<div class="checkbox">
+													<label for="rememberme" class="checkbox"><input type="checkbox" data-ng-model="userForm.rememberme" >Keep me Logged In</label>
+												</div>
+												<div class="checkbox">
+													<label for="rememberme" class="checkbox"><input type="checkbox" data-ng-model="userForm.remember" onchange="setCookie()">Remember me</label>
+												</div>
+												<div class="space"></div>
+												<div class="clearfix">
+													<button type="submit" data-ng-click="login()" class="width-35 pull-right btn btn-small btn-primary">
+																<i class="icon-key"></i>Login
+															</button>
+												</div>
+												<div class="space-4"></div>
+											</form>
+
+
+
+
+										</div>
+										<!-- /widget-main -->
+
+										<div class="toolbar clearfix">
+											<div>
+												<a href="#" onclick="show_box('forgot-box'); return false;" class="forgot-password-link">
+													<i class="icon-arrow-left"></i> I forgot my password
+												</a>
+											</div>
+											<div>
+												<a href="#" onclick="show_box('signup-box'); return false;" class="user-signup-link">
+															I want to register
+															<i class="icon-arrow-right"></i>
+														</a>
+											</div>
+										</div>
+									</div>
+									<!-- /widget-body -->
+								</div>
+								<!-- /login-box -->
+
+								<div id="forgot-box" class="forgot-box widget-box no-border" data-ng-controller="forgotPasswordController">
+									<div class="widget-body">
+										<div class="widget-main">
+											<h4 class="header red lighter bigger">
+														<i class="icon-key"></i>
+														Retrieve Password
+													</h4>
+											<div class="space-6"></div>
+											<p>
+												Enter your email and to receive instructions
+											</p>
+											<div class="row form-group" style="margin-left:-12px;" ng-show="message.error != null">
+												<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 form-group alert alert-danger" id="errors" style="padding: 10px; text-align: center; border-radius: 5px;">
+													{{message.error}}
+												</div>
+											</div>
+											<div class="row form-group" style="margin-left:-12px;" ng-show="message.success != null">
+												<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 form-group alert alert-success" id="errors" style="padding: 10px; text-align: center; border-radius: 5px;">
+													{{message.success}}
+												</div>
+											</div>
+											<form method="POST" name="userFormForgot">
+												<div class="row form-group" style="margin-left:-12px;">
+													<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 form-group">
+														<span class="block input-icon input-icon-right">
+																	<input type="email" data-ng-model="userFormForgot.email" class="form-control span12" placeholder="Email" />
+																	<i class="icon-envelope"></i>
+																</span>
+													</div>
+												</div>
+												<div class="row" style="margin-left:-12px;">
+													<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 form-group">
+														<button type="submit" class="width-35 pull-right btn btn-small btn-danger" data-ng-click="forgot()">
+																	<i class="icon-lightbulb"></i>
+																	Send Me!
+																</button>
+													</div>
+												</div>
+											</form>
+										</div>
+										<!-- /widget-main -->
+										<div class="toolbar center">
+											<a href="#" onclick="show_box('login-box'); return false;" class="back-to-login-link">
+														Back to login
+														<i class="icon-arrow-right"></i>
+													</a>
+										</div>
+									</div>
+									<!-- /widget-body -->
+								</div>
+								<!-- /forgot-box -->
+
+								<div id="signup-box" class="signup-box widget-box no-border" data-ng-controller="signupController">
+									<div class="widget-body">
+										<div class="widget-main">
+											<h4 class="header green lighter bigger">
+														<i class="icon-group blue"></i>
+														New User Registration
+													</h4>
+											<div class="row" style="margin-left:-12px;">
+												<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+													<p> Enter your details to begin: </p>
+												</div>
+											</div>
+											<div class="row  form-group " style="margin-left:-12px;" ng-show="message.signup != null">
+												<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12alert alert-danger" id="errors" >{{message.signup}}
+												</div>
+											</div>
+											<form method="POST" name="userFormSign">
+												<div class="row" style="margin-left:-12px;">
+													<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 form-group">
+														<span class="block input-icon input-icon-right">
+																	<input type="email" class="form-control span12" data-ng-model="userFormSign.email" placeholder="Email" />
+																	<i class="icon-envelope"></i>
+																</span>
+													</div>
+												</div>
+												<div class="row" style="margin-left:-12px;">
+													<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 form-group">
+														<span class="block input-icon input-icon-right">
+																	<input type="text" class="form-control span12" data-ng-model="userFormSign.repeatEmail" placeholder="Repeat Email" />
+																	<i class="icon-envelope"></i>
+																</span>
+													</div>
+												</div>
+												<div class="row" style="margin-left:-12px;">
+													<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 form-group">
+														<span class="block input-icon input-icon-right">
+																	<input type="password" class="form-control span12" data-ng-model="userFormSign.password"placeholder="Password" />
+																	<i class="icon-lock"></i>
+																</span>
+													</div>
+												</div>
+												<div class="row" style="margin-left:-12px;">
+													<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 form-group">
+														<span class="block input-icon input-icon-right">
+																	<input type="password" class="form-control span12" data-ng-model="userFormSign.repeatPassword"placeholder="Repeat Password" />
+																	<i class="icon-lock"></i>
+																</span>
+													</div>
+												</div>
+												<div class="row" style="margin-left:-12px;">
+													<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 form-group">
+														<span class="block input-icon input-icon-right">
+																	<input type="text"  id="form-field-1" data-ng-model="userFormSign.firstname" ng-pattern="/^[a-zA-Z]/"  placeholder="Firstname " class="form-control pan12" />
+																	<i class="icon-user"></i>
+																</span>
+													</div>
+												</div>
+												<div class="row" style="margin-left:-12px;">
+													<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 form-group">
+														<span class="block input-icon input-icon-right">
+																	<input type="text"  id="form-field-1" data-ng-model="userFormSign.lastname" ng-pattern="/^[a-zA-Z]/"  placeholder="Lastname " class="form-control span12" />
+																	<i class="icon-user"></i>
+																</span>
+													</div>
+												</div>
+
+												<div class="row" style="margin-left:-12px;">
+													<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 form-group">
+														<select data-ng-model="userFormSign.country" class="form-control" id="form-field-select-2">
+																	<option value="">Choose a Location</option>
+																	<option value="Pacific/Auckland+nzl">New Zealand</option>
+																	<option value="Pacific/Rarotonga+">Rarotonga</option>
+																	<option value="Australia/Sydney+aus">Sydney</option>
+																	<option value="America/Los_Angeles+usa">Los Angeles</option>
+																	<option value="America/New_York">New York</option>
+																	<option value="Asia/Kolkata">India</option>
+																</select>
+													</div>
+												</div>
+												<div class="row" style="margin-left:-12px;">
+													<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 form-group">
+														<select data-ng-model="userFormSign.version" class="form-control" id="projectVersion">
+																	<option value="">Choose a Version</option>
+																	<option value="light">Light Version</option>
+																	<option value="standard">Standard Version</option>
+																</select>
+													</div>
+												</div>
+												<div class="row" style="margin-left:-12px;">
+													<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 form-group">
+														<span class="block input-icon input-icon-right">
+																	<input type="text"  id="form-field-1" data-ng-model="userFormSign.key" ng-pattern="/^[a-zA-Z]/"  placeholder="Registration Key " class="form-control span12" />
+																	<i class="icon-key"></i>
+																</span>
+													</div>
+												</div>
+												<div class="row" style="margin-left:-12px;">
+													<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 form-group">
+														<button type="reset" class="width-30 pull-left btn btn-small">
+																	<i class="icon-refresh"></i>
+																	Reset
+																</button>
+														<button type="submit" class="width-65 pull-right btn btn-small btn-success" data-ng-click="signup()">
+																	Register
+																	<i class="icon-arrow-right icon-on-right"></i>
+																</button>
+													</div>
+												</div>
+											</form>
+										</div>
+
+										<div class="toolbar center">
+											<a href="#" onclick="show_box('login-box'); return false;" class="back-to-login-link">
+												<i class="icon-arrow-left"></i> Back to login
+											</a>
+										</div>
+									</div>
+									<!-- /widget-body -->
+								</div>
+								<!-- /signup-box -->
+							</div>
+							<!-- /position-relative -->
+						</div>
+					</div>
+				</div>
+				<!-- /.span -->
+			</div>
+			<!-- /.row-fluid -->
+		</div>
+	</div>
+
+	<!--[if !IE]> -->
+
+	<script type="text/javascript">
+		window.jQuery || document.write("<script src='js/jquery-2.0.3.min.js'>" + "<" + "/script>");
+	</script>
+
+
+
+	<!-- <![endif]-->
+
+	<!--[if IE]>
+		<script type="text/javascript">
+		 window.jQuery || document.write("<script src='js/jquery-1.10.2.min.js'>"+"<"+"/script>");
+		</script>
+		<![endif]-->
+
+	<script type="text/javascript">
+		if ("ontouchend" in document) document.write("<script src='js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
+	</script>
+	<script src="js/bootstrap.min.js"></script>
+
+	<!-- page specific plugin scripts -->
+
+	<!-- ace scripts -->
+
+	<script src="js/ace-elements.min.js"></script>
+	<script src="js/ace.min.js"></script>
+
+	<!-- inline scripts related to this page -->
+
+	<script type="text/javascript">
+		function show_box(id) {
+			jQuery('.widget-box.visible').removeClass('visible');
+			jQuery('#' + id).addClass('visible');
+		}
+		/*function getCookie(cname) {
+		    var name = cname + "=";
+		    var ca = document.cookie.split(';');
+		    for(var i=0; i<ca.length; i++) {
+		        var c = ca[i];
+		        while (c.charAt(0)==' ') c = c.substring(1);
+		        if (c.indexOf(name) != -1) {
+		            return c.substring(name.length, c.length);
+		        }
+		    }
+		    return "";
+		}
+		var n = getCookie("emails");
+		alert(n);
+		if(n != ''){
+			$('#email').val(n);
+		}*/
+
+		function setCookie() {
+			var value = $('#emailTxt').val();
+			var d = new Date();
+			d.setTime(d.getTime() + (30 * 24 * 60 * 60 * 1000));
+			var expires = "expires=" + d.toGMTString();
+			document.cookie = 'emails' + "=" + value + "; " + expires;
+		}
+	</script>
+</body>
+
+</html>

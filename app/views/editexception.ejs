@@ -1,0 +1,186 @@
+
+
+<div class="main-container" id="main-container">
+
+
+	<div class="main-container-inner">
+		<div class="page-content">
+			<div class="row">
+
+				<div class="col-sm-3">
+					<!--links-->
+					<div class="list-group ">
+						<a class="list-group-item active">
+							List of Exceptions (Click Exception to Edit)
+						</a>
+						<div data-ng-repeat="exception in exceptionList">
+							<a href="#/exception/edit/{{exception._id}}" class="list-group-item"><span class="pull-left"> {{exception.title}} </span><i class="icon-edit pull-right"></i><div class="clearfix"></div></a>
+						</div>
+					</div>
+					<input type="hidden" data-ng-model="exception._id" />
+
+
+					<!-- -->
+				</div>
+				<div class="col-sm-9">
+
+
+					<div class="row">
+						<div class="col-xs-12">
+							<!-- PAGE CONTENT BEGINS -->
+							<div class="page-header">
+								<h1>
+									Time Cloud
+									<small>
+										<i class="icon-double-angle-right"></i>
+										Edit Exceptions
+									</small>
+								</h1>
+							</div><!-- /.page-header -->
+
+							<div class="row">
+								<div class="col-xs-12">
+									<div ng-show = "message1.exceptionAdded != null">
+										<div id="errors" class="span3 alert alert-success">{{message1.exceptionAdded}}</div>
+									</div>
+									<div ng-show = "message.exceptionErr1 != null">
+										<div id="errors" class="span3 alert alert-danger">{{message.exceptionErr1}}
+										</div>
+									</div>
+									<!-- Form-->
+									<form class="form-horizontal" role="form" name="exceptionFrm" method="post">
+										<!-- -->	
+
+
+										<div class="space-4"></div>
+										<div class="form-group">
+											<label class="col-sm-3" for="form-field-1"> Title</label>
+
+											<div class="col-sm-9">
+												<input type="text" id="form-field-1" data-ng-model="exception.title" ng-pattern="/^[A-Za-z0-9 ]*$/" placeholder="Enter Title" class="col-xs-10 col-sm-5" />
+											</div>
+										</div>
+										<div ng-show = "message.exceptionErr != null">
+											<div id="errors" class="span3 alert alert-danger">{{message.exceptionErr}}
+											</div>
+										</div>
+
+
+
+										<!-- -->
+										<!-- -->	
+
+
+										<div class="space-4"></div>
+										<div class="form-group">
+											<label popover-placement="top" popover-trigger="mouseenter" popover="This is the amount of hours that would be accounted for. For example, if a standard day is 8 hours then sick leave would usually be 8 hours." popover-popup-delay="{{delayTime}}" class="col-sm-3" for="form-field-1"> Exception Type </label>
+
+											<div class="col-sm-9">	
+												<select data-ng-model="exception.exceptiontype" class="col-xs-10 col-sm-5" id="form-field-select-2">
+													<option value="">Choose an Exception Type</option>
+													<option value="Sick Leave">Sick Leave</option>
+													<option value="Annual Leave">Annual Leave</option>
+													<option value="Day in Lieu">Day in Lieu</option>
+													<option value="Unpaid Leave">Unpaid Leave</option>
+													<option value="Bereavement">Bereavement</option>
+													<option value="Acc">Acc</option>
+													<option value="Holiday">Holiday</option>
+													<option value="Alternative Holiday">Alternative Holiday</option>
+												</select>
+											</div>
+										</div>
+
+
+
+										<!-- -->
+										<!-- -->	
+
+
+										<div class="space-4"></div>
+										<div class="form-group">
+											<label class="col-sm-3" for="form-field-1">Payroll Code</label>
+
+											<div class="col-sm-9">
+												<input type="text" id="form-field-1" data-ng-model="exception.payrollCode" placeholder="Enter Payroll Code" class="col-xs-10 col-sm-5" />
+											</div>
+										</div>
+
+
+
+										<!-- -->
+										<!-- -->
+										<div class="space-4"></div>
+										<div class="form-group" ng-hide="newModeExceptionTotal">
+											<label class="col-sm-3">Add to Standard Hours1</label>
+											<div class="col-sm-9">
+												<input data-ng-model="exception.addToStandardHours"  name="switch-field-1" class="ace ace-switch ace-switch-5" type="checkbox" />
+												<span class="lbl"></span>
+											</div>
+										</div>										
+										<div class="form-group" ng-show="newModeExceptionTotal">
+											<label class="col-sm-3">Add to Standard Hours</label>
+											<div class="col-sm-9">
+												<input data-ng-model="exception.exceptionTotal"  name="switch-field-1" class="ace ace-switch ace-switch-5" type="checkbox" />
+												<span class="lbl"></span>
+											</div>
+
+											<!-- {{newModeExceptionTotal}} -->
+
+										</div>
+										
+
+										<div>
+											<div class="space-4"></div>
+											<div class="form-group" ng-show="weekly">
+												<label class="col-sm-3">Include in weekly Overtime </label>
+												<div class="col-sm-9">
+													<input data-ng-model="exception.weeklyOtinclude"  name="switch-field-2" class="ace ace-switch ace-switch-5" type="checkbox" />
+													<span class="lbl"></span>
+												</div>
+
+
+
+
+
+											</div>
+
+											<!-- -->
+											<div class="clearfix form-actions">
+												<div class="col-md-offset-3 col-md-9">
+													<button type="button" class="btn btn-primary" data-ng-click="submitform()">
+														<i class="icon-ok bigger-110"></i>
+														Save
+													</button>
+
+													&nbsp; &nbsp; &nbsp;
+													<button type="reset" class="btn btn-inverse" data-ng-click="deleteRecord()">
+														<i class="icon-trash bigger-110"></i>
+														Delete
+													</button>
+												</div>
+											</div><!--buttons submit-->
+
+										</form>
+										<!-- -->
+										
+
+
+									</div>
+								</div>
+
+
+							</div><!-- /.col -->
+						</div><!-- /.row -->
+
+					</div><!--col-sm-9-->
+				</div><!--row--fluid-->
+				<!-- pagecontent-->
+
+
+				
+
+				
+			</div><!-- /.main-container-inner -->
+
+
+		</div><!-- /.main-container -->

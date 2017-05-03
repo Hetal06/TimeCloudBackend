@@ -1,0 +1,124 @@
+<div class="main-container-inner">
+	<div class="page-content">
+		<div class="row">
+			<div class="col-lg-3 col-md-3 col-xs-12 col-sm-3">
+				<a class="btn btn-primary" href="#/shift" popover-placement="right" popover-trigger="mouseenter" popover="Create an unlimited number of shifts. You can apply rules to each shift with start and finish times, break allocations, and limits." popover-popup-delay="{{delayTime}}"><i class="icon-plus"></i>&nbsp;Create Shifts</a>
+				<br/><br/>
+				<a class="btn btn-primary" href="#/shiftpattern/create" popover-placement="right" popover-trigger="mouseenter" popover="A shift pattern is a selection of shifts to make up a pay period. It is a good tool if staff don’t work the same hours each day or days each week."
+								popover-popup-delay="{{delayTime}}"><i class="icon-plus"></i>&nbsp;Create Shift Pattern</a>
+				<br/><br/>
+				<div ng-if="manageLeaves">
+					<a class="btn btn-primary" href="#/createexception" popover-placement="right" popover-trigger="mouseenter" popover="Exceptions are for any leave that aren’t Public Holidays. This is where you would add things like annual leave and sick day so that these can be accounted for within the timesheets if an employee is away."
+									popover-popup-delay="{{delayTime}}"><i class="icon-plus"></i>&nbsp;Create Exceptions</a>
+					<br/><br/></div>
+				<a class="btn btn-primary" href="#/globalrules" popover-placement="right" popover-trigger="mouseenter" popover="This is used to set up rules relating to rounding of hours." popover-popup-delay="{{delayTime}}"><i class="icon-plus"></i>&nbsp;Global Rules</a>
+				<br/><br/>
+				<div ng-if="manageLeaves">
+					<a class="btn btn-primary" href="#/leaves" popover-placement="right" popover-trigger="mouseenter" popover="This is where you can manage employee leave requests. If a leave is approved it will automatically populate into the employee timesheet." popover-popup-delay="{{delayTime}}"><i class="icon-th-list"></i>&nbsp;Manage Leaves</a>
+					<br/><br/></div>
+				<a ng-show="showHolidays" class="btn btn-primary" href="#/holidays" popover-placement="right" popover-trigger="mouseenter" popover="Select to add public holidays." popover-popup-delay="{{delayTime}}"><i class="icon-plus"></i>&nbsp;Public Holidays</a>
+				<br/><br/>
+			</div>
+			<div class="col-lg-9 col-md-9 col-xs-12 col-sm-9">
+				<div class="page-header">
+					<h1 style="margin-left:0px;">
+						Time Cloud
+						<small>
+							<i class="icon-double-angle-right"></i>
+							<span popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}"> Shift Patterns </span>
+						</small>
+					</h1>
+				</div>
+				<div class="row">
+					<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+						<form class="form-search" role="form">
+							<div class="form-group">
+								<div class="input-icon">
+									<input type="text" data-ng-model="queryStr" id="form-field-icon-1 col-sm-12" placeholder="Filter items" class=" col-xs-12" />
+									<i class="icon-search blue"></i>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+							<div class="clearfix"></div>
+						</form>
+					</div>
+				</div>
+				<!-- Shift draggable start-->
+				<div class="row list-group-item active" style="margin-right: 0px; margin-left: 0px; padding-left: 0px;">
+					<div class="col-lg-12 col-md-12 colsm-12 col-xs-12" popover-placement="top" popover-trigger="mouseenter" popover="List of available	shifts." popover-popup-delay="{{delayTime}}">
+						<b>Shift</b>
+					</div>
+				</div>
+
+				<div class="nestedDemo row form-group">
+					<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 dropzones box box-yellow">
+						<ul dnd-list="shiftList" style="margin:0px;">
+							<li ng-repeat="item in shiftList" dnd-draggable="item" dnd-effect-allowed="move" dnd-moved="shiftList.splice($index, 1)" ng-model="item.name" style="padding:10px;background-color:{{item.color}}">
+								<!--  <a href="#/shift/edit/{{item._id}}" style="color:#555;">
+							      <div class="item" style="height:30px;">
+							      	<span class="pull-left"><b>{{item.name}}</b> </span>
+							      	<span class=" pull-right">
+							      		<small>Time item.{{item.startTime | timeago }}   to {{item.finishTime | timeago }}</small>&nbsp;&nbsp;<i class="icon-edit"></i>
+							      	</span>
+							      </div>
+							    </a> -->
+								<a href="javascript:void(0)" ng-if="item.name=='OPEN'" class="disable">
+									<div class="item" style="height:30px;">
+										<span class="pull-left"><b>{{item.name}}</b> </span>
+										<span class=" pull-right">
+							      		<small>Time item.{{item.startTime | timeago }}   to {{item.finishTime | timeago }}</small>&nbsp;&nbsp;<i class="icon-edit"></i>
+							      	</span>
+									</div>
+								</a>
+
+								<a href="#/shift/edit/{{item._id}}" ng-if="item.name!='OPEN'" style="color:#555;" class="notdisable">
+									<div class="item" style="height:30px;">
+										<span class="pull-left"><b>{{item.name}}</b> </span>
+										<span class=" pull-right">
+							      		<small>Time item.{{item.startTime | timeago }}   to {{item.finishTime | timeago }}</small>&nbsp;&nbsp;<i class="icon-edit"></i>
+							      		<i ng-if="item.allowDelete" style="margin-left: 5px;" class="icon-trash"> </i>
+							      	</span>
+									</div>
+								</a>
+
+							</li>
+						</ul>
+					</div>
+				</div>
+				<!-- Shift draggable end -->
+
+				<div class="row">
+					<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+						<form class="form-search" role="form">
+							<div class="form-group">
+								<div class="input-icon">
+									<input type="text" data-ng-model="queryStr" id="form-field-icon-1 col-sm-12" placeholder="Filter items" class=" col-xs-12" />
+									<i class="icon-search blue"></i>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+							<div class="clearfix"></div>
+						</form>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+						<div class="list-group">
+							<a class="list-group-item active" popover-placement="top" popover-trigger="mouseenter" popover="List of available shifts Patterns." popover-popup-delay="{{delayTime}}">
+								<b>Shift Patterns</b>
+							</a>
+							<div data-ng-repeat="shift in shiftPatternList| filter:patternQuery track by $index">
+								<div ng-if="shift.name == 'OPEN'">
+									<a href="javascript:void(0)" class="list-group-item disable"><span class="pull-left"><b>{{shift.name}}</b> </span><span class=" pull-right"><i class="icon-edit"></i></span><div class="clearfix"></div></a>
+								</div>
+								<div ng-if="shift.name != 'OPEN'">
+									<a href="#/shiftpattern/edit/{{shift._id}}" class="list-group-item"><span class="pull-left"><b>{{shift.name}}</b> </span><span class=" pull-right"><i class="icon-edit"></i></span><div class="clearfix"></div></a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

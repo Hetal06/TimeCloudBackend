@@ -1,0 +1,85 @@
+<div class="main-container-inner">
+	<div class="page-content">
+		<div class="row">			
+			<div class="col-sm-12">
+				<div class="page-header">
+					<h1>
+						Timecloud
+						<small>
+							<i class="icon-double-angle-right"></i>
+							Admin 
+						</small>
+					</h1>
+				</div><!-- /.page-header -->
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="row">
+							<div class="col-xs-12">	
+								<div ng-show = "messageSucess">
+									<div id="errors" class="span3 alert alert-success">{{messageSucess}}</div>
+								</div>
+								<div ng-show = "Emailerr">
+									<div id="errors" class="span3 alert alert-danger">{{Emailerr}}
+									</div>
+								</div>
+								<div class="table-header">
+									Company Employees
+								</div>
+								
+								<div class="table-responsive">
+								<table id="sample-table-2" class="table table-striped table-bordered table-hover">
+									<thead>
+										<tr>	
+											<th> Employee No </th>							
+											<th> First Name </th>
+
+											<th> Last Name </th>
+
+											<th> email </th>
+
+											<th> Password </th>
+
+											<th> Pin</th>
+
+											<th> Department </th>
+										</tr>
+									</thead>
+									<tbody data-ng-repeat="employee in employeeData track by $index">	
+											<tr>
+											<td>
+											<input  ng-model="employee.employeeNo" type="text" class="gridtext"  data-ng-enter="changeEmpNo(employee.employeeNo, employee.companyId, employee.email)" />
+ 
+											</td>						
+												<td>
+													{{employee.firstName}} 
+												</td>
+												<td>
+													{{employee.lastName}}
+												</td>
+												<td>
+													<input  ng-model="employee.email" type="text"   data-ng-enter="changeEmpEmail(employee.employeeNo, employee.companyId, employee.email)" /> 
+												</td>
+												<td>
+													<input  ng-model="employee.password" type="text"   data-ng-enter="changeEmpPwd(employee.employeeNo, employee.companyId, employee.password)"  ng-focus="employee.password ='';" ng-blur="reloadData()"/>
+												</td>
+												<td>	
+													<input  ng-model="employee.pin" type="text"  data-ng-enter="changeEmpPin(employee.employeeNo, employee.companyId, employee.pin)" />
+												</td>
+												<td>
+													{{employee.department}}
+												</td>		
+											</tr>
+										</tbody>
+									</table>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	
+</div>

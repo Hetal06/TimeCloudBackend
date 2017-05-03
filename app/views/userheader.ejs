@@ -1,0 +1,49 @@
+<div id="header_container" data-ng-controller="userheaderController">
+	<div class="navbar navbar-default" id="navbar">
+		<div class="navbar-container" id="navbar-container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle pull-left" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+			</div>
+			<div class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li class="light-blue">
+						<a>
+							<i class="icon-user"></i>
+							<span>Welcome {{userName}}</span>
+						</a>
+					</li>
+					<li class="light-blue">
+						<a href="#/viewAttendance/{{empNo}}" popover-popup-delay="{{delayTime}}" popover-placement="bottom" popover-trigger="mouseenter" popover="Look at Your time stamps and totals for the day and edit them">
+							<i class="icon-home"></i>
+							<span>Attendance</span>
+						</a>
+					</li>
+					<li class="light-blue">
+						<a href="#/leave" popover-popup-delay="{{delayTime}}" popover-placement="bottom" popover-trigger="mouseenter" popover="Apply For Leave">
+							<i class="icon-calendar"></i>
+							<span>Leave</span>
+						</a>
+					</li>
+
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li class="light-blue">
+						<a href="/logout" popover-placement="bottom" popover-trigger="mouseenter" popover-popup-delay="{{delayTime}}" popover="Leave the App" ng-click="toggleFn()">
+							<i class="icon-off"></i>
+							<span>Logout</span>
+						</a>
+					</li>
+				</ul>
+				<!-- /.ace-nav -->
+			</div>
+			<!-- /.navbar-header -->
+		</div>
+		<!-- /.container -->
+	</div>
+	<div class="clearfix"></div>
+</div>

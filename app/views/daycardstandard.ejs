@@ -1,0 +1,195 @@
+<style>
+#container{
+	padding-top: 0px !important;
+}
+</style>
+<div class="main-container-inner">
+				<div class="page-content">
+					<div class="row">
+						<div class="col-sm-12">					
+							<div class="page-header center">
+								<h1>
+									<b> Day Card Standard </b></br>
+									{{companyname}} 
+
+								</h1>
+								<h4> Period: {{start}} - {{end}}</h4>
+							</div> 
+							<div class="table-responsive">
+		<table id="sample-table-2" class="table table-striped table-bordered table-hover">
+												
+		<tbody data-ng-repeat="employee in  employeeData track by $index">
+		<tr>													
+			<th class="center">
+				No
+
+			</th>
+			
+			<th class="center">
+				First Name
+
+			</th>
+			<th class="center">
+				Last Name
+
+			</th>
+			<th class="center" colspan = "2">
+				Period
+
+			</th>
+			<th class="center" ng-if="ot">
+				
+
+			</th>
+			<th class="center" ng-if="ot">
+				
+
+			</th>
+			<th class="center" ng-if="ot">
+				
+
+			</th>	
+			<th class="center">
+				
+
+			</th>
+			
+		</tr>												
+			<tr>
+				<td class="col-sm-1 center tdClass">
+					{{employee.employeeNo}}					
+				</td>
+				<td class="col-sm-2 center tdClass" >
+					{{employee.firstName}}
+				</td>
+				<td class="col-sm-2 center tdClass" >
+					{{employee.lastName}}
+				</td>
+				<td class="col-sm-2 center tdClass">
+					{{start}}
+				</td>
+				<td class="col-sm-2 center tdClass" >
+					{{end}}
+				</td>
+				<td class="col-sm-2 center tdClass">
+					
+				</td>
+				<td class="col-sm-2 center tdClass" ng-if="ot">
+					
+				</td>
+				<td class="col-sm-2 center tdClass" ng-if="ot">
+					
+				</td>
+				<td class="col-sm-2 center tdClass" ng-if="ot">
+					
+				</td>
+				<td class="col-sm-2 center tdClass">
+					
+				</td>				
+			</tr>
+			<tr data-ng-repeat="report in  reportData track by $index">
+				<th ng-if="report.employeeNo == employee.employeeNo"> Date </th>
+				<th ng-if="report.employeeNo == employee.employeeNo"> Weekday </th>
+				<th ng-if="report.employeeNo == employee.employeeNo"> Shift </th>
+				<th ng-if="report.employeeNo == employee.employeeNo" class="center" colspan = "3"> CheckTime </th>
+				
+				<th ng-if="report.employeeNo == employee.employeeNo" ng-Show="ot"> Normal Time </th>
+				<th ng-if="report.employeeNo == employee.employeeNo" ng-Show="ot"> Overtime1 </th>
+				<th ng-if="report.employeeNo == employee.employeeNo" ng-Show="ot"> Overtime2 </th>
+				<th ng-if="report.employeeNo == employee.employeeNo" > Total </th>
+			</tr>
+			<tr data-ng-repeat="report in  reportData track by $index">
+					
+					<td ng-if="report.employeeNo == employee.employeeNo"> 
+						
+						<div ng-repeat=" atn in report.attendanceDates" ng-style="atn.definedColor">
+							{{atn.date}} 
+						</div>
+					</td>
+					
+					<td ng-if="report.employeeNo == employee.employeeNo"> 
+
+						<div ng-repeat=" atn in report.attendanceDates" ng-style="atn.definedColor">
+							{{atn.weekday}}
+						</div>
+					</td>
+					<td ng-if="report.employeeNo == employee.employeeNo"> 
+
+						<div ng-repeat=" atn in report.attendanceDates" ng-style="atn.definedColor">
+							{{atn.shift}}
+						</div>
+					</td>
+					
+					<td ng-if="report.employeeNo == employee.employeeNo" colspan = "3"> 
+
+						<div ng-repeat=" atn in report.attendanceDates" >
+							<div ng-if="atn.checkinData" style="display:inline" ng-repeat=" checkins in atn.checkinData" >
+							<b> {{checkins.label}} </b>
+							 <span ng-if="checkins.checktype">{{checkins.checktype}}</span>	
+							 <span ng-if="!checkins.checktype">-</span>	
+							</div>
+							<div ng-if="atn.checkinData == ''"  >
+							 <span style="visible:hide">- </span>
+							</div>
+								 				
+						</div>
+					</td>
+					<td ng-if="report.employeeNo == employee.employeeNo" ng-Show="ot"> 
+
+						<div ng-repeat=" atn in report.attendanceDates" ng-style="atn.definedColor">
+							{{ atn.NT | changeFormat}}
+						</div>
+					</td>
+					<td ng-if="report.employeeNo == employee.employeeNo" ng-Show="ot"> 
+
+						<div ng-repeat=" atn in report.attendanceDates" ng-style="atn.definedColor">
+							{{ atn.OT1 | changeFormat}}
+						</div>
+					</td>
+					<td ng-if="report.employeeNo == employee.employeeNo" ng-Show="ot"> 
+
+						<div ng-repeat=" atn in report.attendanceDates" ng-style="atn.definedColor">
+							{{ atn.OT2 | changeFormat}}
+						</div>
+					</td>
+					<td ng-if="report.employeeNo == employee.employeeNo" ng-style="atn.definedColor"> 
+
+						<div ng-repeat=" atn in report.attendanceDates" ng-style="atn.definedColor">
+							{{ atn.Totaltime | changeFormat}}
+						</div>
+					</td>
+					
+					
+			</tr>
+			<tr>
+				<td> </td>
+				<td> </td>
+				<td> </td>
+				<td> </td>
+				<td> </td>
+				<td> </td>
+				<td ng-Show="ot"> </td>
+				<td ng-Show="ot"> </td>
+				<td ng-Show="ot"> </td>
+				<td> {{employee.TotalAdjs | changeFormat}} </td>
+			</tr>
+			<tr>
+				<td> </td>
+				<td> </td>
+				<td> </td>
+				<td> </td>
+				<td> </td>
+				<td> </td>
+				<td> </td>
+				
+			</tr>
+		</tbody>
+
+							</table>
+							
+							</div>
+				
+						</div>
+					</div>
+				</div>
+</div>

@@ -1,0 +1,43 @@
+<div class="main-container" id="main-container">
+	<div class="main-container-inner">
+		<div class="page-content">
+			<div class="row-fluid">
+				<div class="col-sm-3">
+				</div>
+				<div class="col-sm-9">
+					<div class="page-content">
+						<div class="page-header">
+							<h1>
+								Archived Project
+								<small>
+									<i class="icon-double-angle-right"></i>
+									
+								</small>
+								</br>
+							</h1>
+						</div>
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="list-group ">
+									<a class="list-group-item active">
+										List of Archived Project
+									</a>
+									<div data-ng-repeat="project in archievedProject track by $index">
+										<a href="#/archievedProject/edit/{{project._id}}" class="list-group-item">
+											<span class="pull-left">{{project.JC}}) {{project.projectname}} </span>
+											<i class="icon-edit pull-right"></i>
+											<div class="clearfix"></div>
+										</a>
+									</div>
+									<div ng-hide="archievedProject" class="list-group-item text-center">
+										---
+									</div>
+								</div>
+							</div><!-- /.col
+						</div><!-- /.row -->
+					</div><!-- /.page-content -->
+				</div><!--col-sm-9-->
+			</div><!--row--fluid-->
+		</div><!-- pagecontent-->
+	</div><!-- /.main-container-inner -->
+</div>

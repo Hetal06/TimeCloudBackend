@@ -1,0 +1,16 @@
+[{
+    "name"       : "server",
+    "script"     : "server.js",
+    "instances"  : "3",
+    "error_file" : "node-app.stderr.log",   
+    "exec_mode"  : "cluster_mode",
+    "min_uptime" : "100",
+    "max_restarts"     : "10"
+  },{
+    "name"       : "cron.js",
+    "script"     : "appCron.js",
+    "error_file" : "node-app.stderr.log",   
+    "exec_mode"  : "cluster_mode"
+    
+  }]
+

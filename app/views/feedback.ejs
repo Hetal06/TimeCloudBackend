@@ -1,0 +1,229 @@
+
+		<div class="main-container" id="main-container">	
+
+			<div class="main-container-inner">
+				<div class="page-content">
+					<div class="row-fluid">
+						
+							<div class="col-sm-3">
+								<!--links-->
+								<div class="page-header">
+							<h4>
+								Feedback
+								<!-- <small>
+									<i class="icon-double-angle-right"></i>
+									Static &amp; Dynamic Tables
+								</small> -->
+							</h4>
+						</div><!-- /.page-header -->
+								<div class="text-success">Here at Timecloud our aim is to provide the best user experience possible. We really value feedback from our clients and look forward to hearing about how you are finding the software, how you think we can make improvements, or any questions that you may have</div>
+								<!-- -->
+							</div>
+							<div class="col-sm-9">
+					<div class="page-content">
+						
+
+						<div class="row">
+							<div class="col-xs-12">
+								<!-- PAGE CONTENT BEGINS -->
+<div class="page-header">
+							<h1>
+								Time Cloud
+								<small>
+									<i class="icon-double-angle-right"></i>
+									Your Feedback
+								</small>
+							</h1>
+							
+						</div><!-- /.page-header -->
+
+								<div class="row">
+									<div class="col-xs-12">
+
+									<div ng-show = "message.feedback != null">
+											<div id="errors" class="span3 alert alert-success">{{message.feedback}}</div>
+									</div>
+
+									<h4>
+									Thank you for visiting Timecloud-How can i help you today?
+									</h4>
+										<!-- Form-->
+										<form class="form-horizontal" role="form" method="post">
+												<!-- -->
+												<div class="space-4"></div>
+									<div class="form-group">
+										<label class="col-sm-3">Subject</label>
+										<div class="col-sm-9">
+											<input data-ng-model="feedback.title" type="text" id="form-field-1" placeholder="" class="col-xs-10 col-sm-5" />
+										</div>
+
+									</div>
+									<div ng-show = "message.title != null">
+											<div id="errors" class="span3 alert alert-danger">{{message.title}}
+										</div>
+										
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-6">
+										 I would like to make a referral</label>
+										<input type="checkbox" name="label[]" value="reference">
+									</div>
+									<div class="form-group">
+										<label class="col-sm-6">
+										 I would like to report an issue/bug </label>
+										<input type="checkbox" name="label[]" value="issuebug" >
+									</div>
+									<div class="form-group">
+										<label class="col-sm-6">
+										 I would like to suggest a new features/improvements </label>
+										<input type="checkbox" name="label[]" value="featuresimprovements">
+									</div>
+									<div class="form-group">
+										<label class="col-sm-6">
+										 I would like to ask a support question </label>
+										<input type="checkbox" name="label[]" value="supportquestion">
+									</div>
+									
+									<div class="row">
+									<label class="col-sm-6">
+										<h5> How would you rate your question? </h5>
+									</label>
+									</div>
+
+									<div class="form-group">
+										<label class="col-sm-6">
+										Urgent </label>
+										<input type="checkbox" name="label[]" value="urgent">
+									</div>
+									<div class="form-group">
+										<label class="col-sm-6">
+										Not so Urgent </label>
+										<input type="checkbox" name="label[]"  value="noturgent" >
+									</div>
+									<div class="form-group">
+										<label class="col-sm-6">
+										There is not time pressue at all</label>
+										<input type="checkbox" name="label[]" value="nottimepressure">
+									</div>
+
+									
+									<div class="row">
+									<label class="col-sm-6">
+										<h5> what browser are you using? </h5>
+									</label>
+									</div>
+
+									<div class="form-group">
+										<label class="col-sm-6">
+										Firefox </label>
+										<input type="checkbox" name="browser[]" value="firefox">
+									</div>
+									<div class="form-group">
+										<label class="col-sm-6">
+										Chrome </label>
+										<input type="checkbox" name="browser[]"  value="chrome" >
+									</div>
+									<div class="form-group">
+										<label class="col-sm-6">
+										Safari</label>
+										<input type="checkbox" name="browser[]" value="safari">
+									</div>
+									<div class="form-group">
+										<label class="col-sm-6">
+										IE </label>
+										<input type="checkbox" name="browser[]" value="ie">
+									</div>
+									<div class="form-group">
+										<label class="col-sm-6">
+										Other </label>
+										<input type="checkbox" name="browser[]" value="other">
+									</div>
+
+									
+
+									<div class="form-group">
+										<label class="col-sm-3">
+										Message </label>
+										<textarea rows="10" cols="50" data-ng-model="feedback.description" required></textarea>
+									</div>
+									<div ng-show = "message.description != null">
+											<div id="errors" class="span3 alert alert-danger">{{message.description}}
+										</div>
+									</div>
+
+									
+									<div class="form-group">
+										<label class="col-sm-3">
+										Your Name </label>
+
+										<input data-ng-model="feedback.name" type="text" id="form-field-1" placeholder="" class="col-xs-10 col-sm-5" ng-pattern="/^[a-zA-Z]/" />
+										
+									</div>
+									<div ng-show = "message.name != null">
+											<div id="errors" class="span3 alert alert-danger">{{message.name}}
+										</div>
+									</div>
+									
+									
+									<div class="form-group">
+										<label class="col-sm-3">
+										 What is the best phone no to contact you on: </label>
+
+										<input data-ng-model="feedback.phone" type="text" id="form-field-1" placeholder="" class="col-xs-10 col-sm-5" ng-pattern="/^[0-9]/" ng-minlength="6" />
+										<span class="help-inline col-xs-12 col-sm-7">
+									</div>
+									<div ng-show = "message.phone != null">
+											<div id="errors" class="span3 alert alert-danger">{{message.phone}}
+										</div>
+									</div>
+
+									
+									<div class="form-group">
+										<label class="col-sm-3">
+										 What is the best email to contact you on: </label>
+
+										<input data-ng-model="feedback.email" type="email" id="form-field-1" placeholder="" class="col-xs-10 col-sm-5" required />
+										
+
+									</div>
+									<div ng-show = "message.email != null">
+											<div id="errors" class="span3 alert alert-danger">{{message.email}}
+										</div>
+									</div>
+
+									
+
+												<!-- -->	
+												
+												
+								
+												<!-- -->
+											<div class="clearfix form-actions">
+										<div class="col-md-offset-3 col-md-9">
+											<button type="button" data-ng-click="submitform()" class="btn btn-primary" popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}">
+												<i class="icon-ok bigger-110"></i>
+												Send
+											</button>
+
+											<!-- &nbsp; &nbsp; &nbsp;
+											<button type="reset" class="btn">
+												<i class="icon-undo bigger-110"></i>
+												Reset
+											</button> -->
+										</div>
+									</div><!--buttons submit-->
+							
+										</form>
+										<!-- -->
+									</div>
+								</div>
+							
+							</div><!-- /.col -->
+						</div><!-- /.row -->
+					</div><!-- /.page-content -->
+							</div><!--col-sm-9-->
+						</div><!--row--fluid-->
+					<!-- pagecontent-->
+			</div><!-- /.main-container-inner -->
+		</div><!-- /.main-container -->

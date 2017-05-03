@@ -1,0 +1,137 @@
+<div class="main-container-inner">
+	<div class="page-content">
+		<div class="row">
+
+			<div class="col-sm-2">
+
+			</div>
+			<div class="col-sm-10">
+
+
+				<div class="page-header">
+					<h1>
+									Time Cloud
+									<small>
+										<i class="icon-double-angle-right"></i>
+										 <span popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}"> Messages  </span>
+									</small>
+								</h1>
+				</div>
+				<!-- /.page-header -->
+
+				<div class="row">
+					<div class="col-xs-12">
+						<!-- PAGE CONTENT BEGINS -->
+
+						<div class="row">
+							<div class="col-xs-12">
+								<!-- shift pattern list -->
+								<form class="form-search" role="form">
+									<div class="form-group">
+
+										<div class="clearfix"></div>
+									</div>
+
+
+									<div class="clearfix"></div>
+
+									<!-- list-->
+
+
+									<div>
+										<button popover-placement="top" popover-trigger="mouseenter" popover="Delete" popover-popup-delay="{{delayTime}}" class="btn btn-primary" ng-click="delete()"><i class="icon-trash" ></i>Delete</button>
+
+										<button popover-placement="top" popover-trigger="mouseenter" popover="markRead" popover-popup-delay="{{delayTime}}" class="btn btn-primary" ng-click="markRead()"><i class="icon-delete" ></i>Mark as read</button>
+
+									</div>
+									</br>
+									<div ng-show="messageSucess">
+										<div id="errors" class="span3 alert alert-success">{{messageSucess}}</div>
+									</div>
+									<div class="table-responsive">
+
+										<table id="sample-table-2" class="table table-striped table-bordered table-hover">
+											<thead>
+												<tr>
+													<th>
+
+														<input type="checkbox" data-ng-model="selectedAll" ng-click="checkAll()" />
+													</th>
+													<th> Subject </th>
+
+													<th> From </th>
+
+													<th> Received </th>
+
+
+												</tr>
+											</thead>
+											<tbody data-ng-repeat="msg in messageList">
+												<td> <input type="checkbox" name="messageChk" value="{{msg._id}}" ng-model="msg.Selected"> </td>
+												<td>
+													<a ng-show="{{msg.read}}" id="employee" href="#/openmessage/{{msg._id}}">
+												{{msg.subject}}
+											</a>
+													<a id="unread" ng-hide="{{msg.read}}" id="employee" href="#/openmessage/{{msg._id}}">
+												{{msg.subject}}
+											</a>
+												</td>
+												<td> {{msg.from}} </td>
+												<td> {{msg.received | utcTime}}</td>
+												</tr>
+
+											</tbody>
+										</table>
+									</div>
+									<div class="modal-footer no-margin-top" ng-if="pages>1">
+
+										<ul class="pagination pull-right no-margin">
+											<li ng-if="currentPage>0" id="previousbtn">
+												<a href="#/usermessages/{{currentPage}}" ng-click="getPagePrevious(currentPage)"><i class="icon-double-angle-left"></i></a>
+											</li>
+											<ul class="pagination" ng-repeat="a in range" class="col-sm-5">
+												<li id="{{a}}" ng-if="currentPage==a" class="active"><a href="#/usermessages/{{a}}" ng-click="getPage($index + 1)">{{a}}</a></li>
+												<li id="{{a}}" ng-if="currentPage!=a"><a href="#/usermessages/{{a}}" ng-click="getPage($index + 1)">{{a}}</a></li>
+											</ul>
+											<li ng-if="pages>=currentPage" id="nextbtn">
+												<a href="#/usermessages/{{currentPage}}" ng-click="getPageNext(currentPage)"> <i class="icon-double-angle-right"></i></a>
+											</li>
+										</ul>
+									</div>
+
+
+									<!--list -->
+									<!-- shift pattern list -->
+
+									<form class="form-search" role="form">
+										<div class="form-group">
+
+											<div class="clearfix"></div>
+										</div>
+
+
+										<div class="clearfix"></div>
+
+										<!-- list-->
+										<div class="list-group ">
+
+
+										</div>
+										<!--list -->
+										<!-- -->
+							</div>
+						</div>
+					</div>
+					<!-- /.col -->
+				</div>
+				<!-- /.row -->
+
+			</div>
+			<!--col-sm-9-->
+		</div>
+		<!--row--fluid-->
+		<!-- pagecontent-->
+	</div>
+	<!-- /.main-container-inner -->
+</div>
+<!-- /.main-container -->

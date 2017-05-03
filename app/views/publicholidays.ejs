@@ -1,0 +1,214 @@
+<div class="main-container" id="main-container">
+	<div class="main-container-inner">
+		<div class="page-content">
+			<div class="row">
+				<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+					<div class="row">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group" style="margin-left: -5px;">
+							<div class="page-header">
+								<h1><b>Public Holidays</b>
+								</h1>
+								
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
+							<div class="text-success">Add public holidays to the system and create holiday setting for staff</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group" ng-show = "message.Added != null">
+							<div id="errors" class="alert alert-success">{{message.Added}}</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
+							<div class="widget-box">
+								<div class="widget-header">
+									<h5>Settings Version:</h5>
+									<div class="widget-toolbar"></div>
+								</div>
+								<div class="widget-body">
+									<div class="widget-main no-padding">
+										<form>
+											<fieldset>
+												<div class="row">
+													<label popover-placement="right" popover-trigger="mouseenter" popover="Select the rate of pay if the public holiday is worked. This will be selected from your overtime rates or normal time." popover-popup-delay="{{delayTime}}" class="col-sm-4">Multiplier if worked </label>
+													<div class="col-sm-8">
+														<select data-ng-model="holiday.holidaymultiplier"  class="col-xs-10 col-sm-8" id="form-field-select-2">
+															<option value="">Choose Multiplier</option>
+															<option value="NT">NT</option>
+															<option value="OT1">OT1</option>
+															<option value="OT2">OT2</option>
+														</select>
+													</div>
+												</div>
+												<hr/>
+												<div class="row">
+													<label class="col-sm-4">Payroll code </label>
+													<div class="col-sm-8">
+														<input type="text" id="form-field-1" data-ng-model="holiday.payrollCode" placeholder="Payroll code" class="col-xs-12 col-sm-12" />
+													</div>
+													<hr/>
+												</div>
+												<div class="row">
+													<hr/>
+													<label popover-placement="right" popover-trigger="mouseenter" popover="Select yes if you would like the leave type to be added to the standard hours calculated for the pay period. For example, if the standard working week was 40 hours, an employee worked 32 hours and had 8 hours sick then the total of standard hours would be 40 including the sick hours. " popover-popup-delay="{{delayTime}}" class="col-sm-4">Add to Standard Hours</label>
+													<div class="col-sm-6">
+														<input data-ng-model="holiday.holidayaddToStandardHours"  name="switch-field-1" class="ace ace-switch ace-switch-5" type="checkbox" />
+														<span class="lbl"></span>
+													</div>
+												</div>
+												<div class="row">
+													<hr/>
+													<div  ng-show="weekly">
+														<label popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}" class="col-sm-4">Include in weekly Overtime </label>
+														<div class="col-sm-6">
+															<input data-ng-model="holiday.holidayweeklyOtinclude"  name="switch-field-2" class="ace ace-switch ace-switch-5" type="checkbox" />
+															<span class="lbl"></span>
+														</div>
+													</div>
+												</div>
+												<hr/>
+											</fieldset>
+											<div class="form-actions center">
+												<button type="button" class="btn btn-primary" data-ng-click="submitform()" popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}">
+													<i class="icon-ok bigger-110"></i>Save
+												</button>
+											</div>
+										</form>
+									</div>
+								</div><!-- widget body-->
+							</div><!-- widgetbox-->
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+					<div class="row">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group page-header">
+							<h1>Time Cloud
+								<small>
+									<i class="icon-double-angle-right"></i>
+									Public Holidays
+								</small>
+							</h1>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+							<div class="widget-box">
+								<div class="widget-header header-color-blue">
+									<h5>Create Holiday</h5>
+								</div>
+								<div class="widget-body">
+									<!-- <form class="form-holiday" role="form" method="post" > -->
+										<!-- <div class="form-group"> -->
+										<div class="row form-group">
+											<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-show = "message.AddedHoliday != null">
+													<div id="errors" class="alert alert-success" style="padding: 10px; border-radius: 5px; margin: 4px;">{{message.AddedHoliday}}</div>
+											</div>
+										</div>
+										<div class="row form-group">
+											<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" ng-show = "SelectErrors != null">
+													<div id="errors" class="alert alert-danger" style="padding: 10px; border-radius: 5px; margin: 4px;">{{SelectErrors}}</div>
+											</div>
+										</div>
+										<div class="">
+											<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 form-group">
+												<label class="inline"> Date of Holiday: </label>
+												<input  class="date-picker" data-ng-model="holidayDate"  id="id-date-picker-2" type="text"  data-date-format="dd-mm-yyyy"  datepicker-popup="{{format}}"  is-open="opened" max="'2045-06-22'" datepicker-options="dateOptions" />
+											</div>
+											<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 form-group">
+												<label class="inline"> Holiday Name: </label>
+												<input input type="text" id="form-field-1" placeholder=""  data-ng-model="holiDays.holidayName"/>
+											</div>
+										</div>
+										<div class="" ng-show="holidayDeptWise!='false' && holidayDeptWise!=''">
+											<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
+												<b> Select Departments </b>
+												<div class="row form-group">
+													<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" data-ng-repeat="dept in departmentsList">
+														<input type="checkbox" data-ng-model="departmentName" id="{{dept._id}}" ng-click="selectRecordByDepartmentName(dept._id,dept.name);" />{{dept.name}}
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row form-group">
+											<div class="col-sm-1"></div>
+											<div class="col-sm-6">
+												<button type="button" class="btn btn-primary center" data-ng-click="createHoliday()" popover-placement="top" popover-trigger="mouseenter" popover="Add public holidays not already loaded." popover-popup-delay="{{delayTime}}">
+													Create
+												</button>
+												<!-- <button type="button" class="btn btn-primary center" data-ng-click="createHoliday()" popover-placement="top" popover-trigger="mouseenter" popover="Add public holidays not already loaded." popover-popup-delay="{{delayTime}}">
+													Create
+												</button> -->
+											</div>
+										</div>
+									<!-- </div> -->
+									<!-- </form> -->
+								</div><!-- widget-body-->
+							</div>
+						</div>			
+					</div>
+					<div class="row form-group">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+							<form class="form-search" role="form">
+								<div class="form-group">
+									<div class="input-icon">
+										<input type="text" id="form-field-icon-1 col-sm-12"  placeholder="Filter items" class=" col-xs-12"/>
+										<i class="icon-search blue"></i>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+					<div class="row form-group">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+							<div class="widget-box">
+								<div class="row" ng-show="DeletedHolidaysMsg">
+									<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center alert alert-success" style="border-radius:5px;padding:10px;">
+										{{DeletedHolidaysMsg}}
+									</div>
+								</div>
+								<div class="widget-header header-color-blue">
+									<h5>List Of Currently loaded Holidays</h5>
+								</div>
+								<div class="widget-body">
+									<div class="widget-main no-padding">
+										<table class="table table-striped table-bordered table-hover">
+											<thead class="thin-border-bottom">
+												<tr>
+													<th>
+														Delete
+													</th>
+													<th>
+														Date
+													</th>
+													<th>Desc</th>
+												</tr>
+											</thead>
+											<tbody ng-repeat="holiday in holidaysList">
+												<tr>
+													<td>
+														<a class="blue ace-icon bigger-130 cursorCss" ng-click="deleteHoliDays(holiday.date)" popover-popup-delay="2000" popover="" popover-trigger="mouseenter" popover-placement="top"><i class="icon-trash"></i></a>
+													</td>
+													<td>
+														{{holiday.date | formatDate}}
+													</td>
+													<td>
+														{{holiday.holidayName}}
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>			
+			</div>			
+		</div><!--row--fluid-->
+	</div><!-- /.main-container-inner -->
+</div><!-- /.main-container -->

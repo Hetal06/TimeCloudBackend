@@ -1,0 +1,62 @@
+<div class="main-container-inner">
+	<div class="page-content">
+		<div class="row">			
+			<div class="col-sm-12">
+				<div class="page-header">
+					<h1>
+						Timecloud
+						<small>
+							<i class="icon-double-angle-right"></i>
+							Apply For Leave
+						</small>
+					</h1>
+				</div><!-- /.page-header -->
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="row">
+							<form id="report" class="form-horizontal" role="form" name="userFrm" method="post">
+								<div ng-show = "message.leaveApply != null">
+									<div id="errors" class="span3 alert alert-success">{{message.leaveApply}}</div>
+								</div>
+								<div ng-show = "message.leaveErr != null">
+									<div id="errors" class="span3 alert alert-danger">{{message.leaveErr}}</div>
+								</div>
+								<div class="col-sm-1">
+								</div>
+								<div class="col-sm-7">
+									<div class="form-group">
+										<label class="col-sm-2 inline">Start Day </label>
+										<input  class="input-medium date-picker col-sm-1 " data-ng-model="userFrm.startingDate" id="id-date-picker-1" type="text" data-date-format="dd-mm-yyyy"  datepicker-popup="{{format}}"  is-open="opened1" max="'2045-06-22'" datepicker-options="dateOptions"  />
+										<label class="col-sm-2 inline">  Finish Day </label>
+										<input  class="input-medium date-picker col-sm-1" data-ng-model="userFrm.finishedDate"  id="id-date-picker-2" type="text"  data-date-format="dd-mm-yyyy"  datepicker-popup="{{format}}"  is-open="opened" max="'2045-06-22'" datepicker-options="dateOptions" />
+									</div>
+									</br>
+									<div class="form-group">
+										<label class="col-sm-2">Comment </label>
+										<textarea rows="10" cols="50" data-ng-model="userFrm.comment" ></textarea>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2"></label>
+										<button type="button" data-ng-click="submitform(employeeData.employeeNo, employeeData.firstName)" class="btn btn-primary" popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}">
+											<i class="icon-ok bigger-110"></i>
+											Apply
+										</button>
+									</div>
+								</div>
+								<div class="col-sm-4">
+									<div class="form-group">
+										<label class="col-sm-4" for="form-field-1"> Exception </label>
+										<select class="col-sm-4" data-ng-model="userFrm.exception">
+											<option data-ng-repeat="exception in exceptionList"  value="{{exception.title}}">{{exception.title}}</option> </option>
+										</select>
+									</div>
+									</br>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

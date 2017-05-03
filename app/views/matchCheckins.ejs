@@ -1,0 +1,55 @@
+<div class="main-container-inner">
+	<div class="page-content">
+		<div class="row">
+		<div class="table-responsive"  >
+			<table id="sample-table-2" class="table table-striped table-bordered table-hover">
+				<thead>
+				<tr>
+					<th>	
+						CompanyId
+					</th>
+					<th>	
+						Company  Name
+					</th>
+					<th>	
+						SN
+					</th>
+					<th>	
+						Date
+					</th>
+					<th>	
+						EmployeeNo
+					</th>
+					<th>	
+						Checkin Time
+					</th>
+					
+				</tr>
+				</thead>
+				
+				<tbody data-ng-repeat="match in matching">	
+						<td>
+							{{match.companyId}}
+						</td>
+						<td>
+							{{match.companyname}}
+						</td>
+						<td>
+							{{match.SN}}
+						</td>
+						<td>
+							{{match.date}}
+						</td>
+						<td>
+							{{match.employeeNo}}
+						</td>
+						<td>
+							{{match.checkinTime}}
+						</td>
+						
+				</tbody>
+			</table>
+		</div>
+		</div>
+	</div>
+</div>

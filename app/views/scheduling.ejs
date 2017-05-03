@@ -1,0 +1,141 @@
+<div class="main-container-inner">
+	<div class="page-content">
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 alert alert-success text-center" ng-if="showSchedulingSuccessMsg">
+				Scheduling has been copied for next period
+				<div class="pull-right" style="margin-top: -15px; margin-right: -10px; cursor: pointer;" ng-click="hideRosterMsg();">
+					x
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-xs-12	col-sm-12">
+				<div class="page-header" style="padding-right:0px;">
+					<h1>Timecloud
+						<small>
+							<i class="icon-double-angle-right"></i>
+							Scheduling
+						</small>
+					</h1>
+				</div>
+			</div>
+		</div>
+		<div class="row form-group">
+			<div class="col-lg-12 col-md-12 col-xs-12	col-sm-12">
+				<form class="form-inline rstForm">
+					<div class="row">
+						<div class="col-sm-5">
+							<label class="inline"> Dates: </label>
+							<input  class="date-picker" ng-model="fromDate" id="id-date-picker-1" type="text" ng-change="searchDate(fromDate,toDate)" is-open="opened1" max="'2045-06-22'"  data-date-format="dd-mm-yyyy" datepicker-popup="{{format}}" />&nbsp;&nbsp;&nbsp;
+							<label class="inline"> To: </label>
+							<input  class="date-picker" ng-model="toDate"  id="id-date-picker-2" type="text"  ng-change="searchDate(fromDate,toDate)" is-open="opened" max="'2045-06-22'"  data-date-format="dd-mm-yyyy" datepicker-popup="{{format}}" />
+						</div>
+						<div class="col-sm-7">
+							<a popover-placement="bottom" popover-trigger="mouseenter" popover="Select to view Current Period" popover-popup-delay="{{delayTime}}" href="#/scheduling" class="btn btn-primary no-border btn-sm ">Current Period</a> &nbsp; &nbsp;
+							<a popover-placement="bottom" popover-trigger="mouseenter" popover="Select to view Next Period" popover-popup-delay="{{delayTime}}" href="#/scheduling/{{nextPeriod | date: 'yyyy-MM-dd' }}" class="btn btn-primary no-border btn-sm ">Next Period</a> &nbsp; &nbsp;
+							<a popover-placement="bottom" popover-trigger="mouseenter" popover="Select to view Next Period" popover-popup-delay="{{delayTime}}" href="" class="btn btn-primary no-border btn-sm" ng-click="copyToNextPeriod()">Copy To Next Period</a> &nbsp; &nbsp;
+						</div>
+					</div>
+					<br/>
+					<div class="row">
+						<div class="col-sm-3 pull-right" style="padding:0px;" ng-show="subDepartmentList">
+							<label class="inline" popover-placement="right" popover-trigger="mouseenter" popover="Filter Roster by department " popover-popup-delay="{{delayTime}}"> <b>Sub-Department: </b></label>&nbsp;&nbsp;
+							<select data-ng-model="subDepartment" class="input-medium pull-right" id="form-field-select-2" ng-change="subDepartmentFilter(subDepartment)" data-ng-show="subDepartmentList">
+								<option value=''>-All-
+								</option>					
+								<option  data-ng-repeat="deptValue in subDepartmentList|filter:{parentDeptName:department}" value="{{deptValue.name}}" ng-selected="{{deptValue.name ==subDeptName}}">{{deptValue.name}}</option>
+							</select>
+						</div>
+						<div class="col-sm-3 pull-right" ng-show="departments">
+							<label class="inline" popover-placement="right" popover-trigger="mouseenter" popover="Filter Roster by department " popover-popup-delay="{{delayTime}}"> <b>Department: </b></label>&nbsp;&nbsp;
+							<select data-ng-model="department" class="input-medium ng-pristine ng-valid" id="form-field-select-2" ng-change="departmentFilter(department)">
+								<option value=''>All</option>
+								<option  data-ng-repeat="departmentValue in departments" value="{{departmentValue.name}}">{{departmentValue.name}}</option>
+							</select>
+						</div>
+						<div class="col-sm-3 pull-right">
+							<label class="inline" popover-placement="right" popover-trigger="mouseenter" popover="Filter Roster by department " popover-popup-delay="{{delayTime}}"> <b> Sections: </b></label>&nbsp;&nbsp;
+							<select data-ng-model="sectionNames" class="input-medium ng-pristine ng-valid" id="form-field-select-2">
+								<option value=''>All</option>
+								<option  data-ng-repeat="shift in shiftLists" value="{{shift.sectionName}}">{{shift.sectionName}}</option>
+							</select>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="row form-group">
+			<div class="col-lg-2 col-md-2 col-xs-12 col-sm-2 nestedDemo" style="padding: 0px;">
+				<div sticky style="padding-top:27px; !important">
+					<div class="dropzones form-group">
+						<b>Employee List</b>
+	        	<ul style="margin: 0px; height: 800px; overflow-y: auto;">
+	        		<li ng-repeat="emp in employeeList|filter:filterDepartment" dnd-draggable="emp" dnd-effect-allowed="move" ng-model="emp.employeeNo" style="padding: 5px;cursor:pointer;margin:0px;">
+	        			{{emp.employeeNo}}) {{emp.firstName}} {{emp.lastName}}
+	        		</li>
+	        	</ul>
+	        </div>
+	       </div>
+			</div>
+			<div class="col-lg-10 col-md-10 col-xs-12 col-sm-10">
+				<br>
+				<table class="Scheduling">
+					<thead>
+						<tr>
+							<td class="center" style="width:120px;border-right:1px solid #ddd;color:#707070;font-size:13px;font-weight:bold;height:30px;">
+								Shift
+							</td>
+							<td class="center" ng-repeat="atnDate in attendanceDatesRow" style="width:120px;border-right:1px solid #ddd;color:#707070;font-size:13px;font-weight:bold;height:30px;">
+								{{atnDate.date| dateFormat }}
+							</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="center" colspan="{{colspanLen}}" style="padding:0px;">
+								<table style="border-right: 1px solid rgb(221, 221, 221); width: 100%; margin-left: -1px; border-left: 1px solid rgb(221, 221, 221);">
+									<tbody data-ng-repeat="shift in shiftLists|filter:{sectionName:sectionNames}">
+										<tr style="border-right:1px solid #ddd;width:100%;">
+											<td style="font-size: 15px; text-decoration: underline; font-weight: bold; text-align: left; padding: 5px; text-transform: capitalize;" colspan="3">{{shift.sectionName}}</td>
+										</tr>
+										<tr data-ng-repeat="sft in shift.shiftName|unique" style="width:100%;">
+											<td style="border:1px solid #ddd;width:120px;">
+												{{sft}}
+											</td>
+											<td style="border:1px solid #ddd;width:126px;" ng-repeat="atnDate in attendanceDatesRow">
+												<div class="nestedDemo" ng-show="atnDate.disabled">
+								        	<div class="dropzones">
+							            	<ul style="margin: 0px;min-height: 30px;">
+							            		<li ng-repeat="emps in employeeLists|orderBy:orderByFunction:reverse|filter:filterDepartment|filter:{date:atnDate.date,shift:sft}:true" id="{{sft}}/{{atnDate.date}}" >
+													      <div class="item">
+													      	{{emps.employeeNo}}). {{emps.firstName}} {{emps.lastName}}
+													      </div>
+													    </li>
+													  </ul>
+													</div>
+												</div>
+												<div class="nestedDemo" ng-hide="atnDate.disabled">
+								        	<div class="dropzones">
+							            	<ul dnd-list="employeeLists" dnd-drop="dropCallback(event, index, item, external, type,atnDate.date, sft)" style="min-height: 30px;">
+							            		<li ng-repeat="emps in employeeLists|orderBy:orderByFunction:reverse|filter:filterDepartment|filter:{date:atnDate.date,shift:sft}:true" id="{{sft}}/{{atnDate.date}}" >
+													      <div class="item">
+													      	<button type="button" class="close" data-dismiss="modal" style="margin-top:-8px;font-size:17px;" ng-click="removeShiftForTheEmployee(emps.employeeNo,atnDate.date,sft)">&times;</button>
+													      	{{emps.employeeNo}}). {{emps.firstName}} {{emps.lastName}}
+													      </div>
+													    </li>
+													  </ul>
+													</div>
+												</div>
+											</td>
+										</tr>										
+									</tbody>
+								</table>								
+							</td>
+						</tr>						
+					</tbody>				
+				</table>
+			</div>
+		</div>
+		<br/>			
+	</div>
+</div>

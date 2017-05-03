@@ -1,0 +1,112 @@
+<div class="main-container-inner">
+    <div class="col-xs-12">&nbsp;</div>
+	<div class="col-md-6 col-md-offset-3 col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2">
+			<div class="page-header">
+				<h1>
+					Time Cloud
+					<small>
+						<i class="icon-double-angle-right"></i>
+						 <span popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}"> Copy Database  </span>
+					</small>
+				</h1>
+			</div>
+	</div>	
+	<div class="col-xs-12">&nbsp;</div>
+	<div class="page-content page-header">
+
+		<!-- <div class="row form-group">	 -->
+<!-- 
+			<div class="page-header col-xs-offset-2 col-xs-10">
+				<h1>
+					Time Cloud
+					<small>
+						<i class="icon-double-angle-right"></i>
+						 <span popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}"> Send Messages  </span>
+					</small>
+				</h1>
+			</div> -->
+
+			<!-- <div class="col-lg-3 col-md-3 col-xs-4 col-sm-4" style="padding: 0px;">
+				<h1 style="margin-left:0px;">Timecloud<small><i class="icon-double-angle-right"></i>
+					Copy Database</small>
+				</h1>
+			</div> -->
+			<!-- <div class="col-lg-3 col-md-3 col-xs-4 col-sm-4 pull-right text-right" style="padding: 0px;">
+				<a href="#/dashboard/" popover-placement="left" popover-trigger="mouseenter" popover="Back" popover-popup-delay="{{delayTime}}" class="btn btn-primary no-border">Back</a>
+			</div> -->
+		<!-- </div> -->
+		<div class="row form-group">
+			<div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2">
+				<div class="row">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 alert alert-danger" ng-show="error.submitError">
+						{{error.submitError}}
+					</div>					
+				</div>
+				<div class="row">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 alert alert-success" ng-show="error.submitSuccess">
+						{{error.submitSuccess}}
+					</div>					
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+						<label>
+							CompanyId
+						</label>
+					</div>
+					<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+						<input id="cmpId" class="form-control" type="text" data-ng-model="cmpId" placeholder="Enter Company ID"/>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+						<label>
+							DataBase Ip
+						</label>
+					</div>
+					<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+						<input id="databaseIp" class="form-control" type="text" data-ng-model="databaseIp" placeholder="Enter database connection ip(where to copy?)"/>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+						<label>
+							DataBase Name
+						</label>
+					</div>
+					<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+						<input id="dbName" class="form-control" type="text" data-ng-model="dbName" placeholder="Enter database name"/>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+						<label>
+							Db Username
+						</label>
+					</div>
+					<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+						<input id="Username" class="form-control" type="text" data-ng-model="Username" placeholder="Enter Username of the database"/>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+						<label>
+							Db Password
+						</label>
+					</div>
+					<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+						<input id="Password" class="form-control" type="text" data-ng-model="Password" placeholder="Enter Password of the database"/>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+					</div>
+					<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+						<button type="button" class="btn btn-primary" data-ng-click="copyDbFun()" popover-placement="top" popover-trigger="mouseenter" popover="Select to copy the database." popover-popup-delay="{{delayTime}}" id="btnCopy">
+							<i class="icon-ok bigger-110"></i>Copy
+						</button>
+					</div>					
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

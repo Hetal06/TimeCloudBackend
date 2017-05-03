@@ -1,0 +1,467 @@
+<div class="container" ng-init="initDashboard(false)">
+    <div class="page-content" style="padding: 8px 0px 20px 24px ! important; position: absolute; top: 46%; z-index: 111111 ! important; background: transparent none repeat scroll 0% 0%; right: 50%;" ng-show="showLoading">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 form-group">
+                <img src="/images/loading.gif" />
+            </div>
+        </div>
+    </div>
+    <div class="page-content" style="padding: 8px 0px 20px 24px ! important;position: relative;" id="showLoading">
+        <div class="row form-group">
+            <a id="prvBtn" popover-placement="right" popover-trigger="mouseenter" popover="Click to go back to the previous period" popover-popup-delay="{{delayTime}}" class="buttonCustomCss" my-tag ng-click="previousDashBoardDataFn(dashboardData.weekStart, dashboardData.weekEnd,dashboardData.companyId)" ng-hide="hidePrev">Previous Period</a>
+            <a popover-placement="bottom" popover-trigger="mouseenter" popover="Click for current period" popover-popup-delay="{{delayTime}}" ng-click="initDashboard(true)" class="buttonCustomCss">Current Period</a>
+            <a id="nextBtn" popover-placement="bottom" popover-trigger="mouseenter" popover="Click to got to Next pay period" popover-popup-delay="{{delayTime}}" class="buttonCustomCss" ng-click="nextDashBoardDataFn(dashboardData.weekStart, dashboardData.weekEnd,dashboardData.companyId)">Next Period</a>
+            <label class="buttonCustomCss inline" popover-placement="top" popover-trigger="mouseenter" popover="shows the finish date - you can select any finish date by clicking on the box" popover-popup-delay="{{delayTime}}" style="border-style:none"> From: </label>
+            <input class="input-medium date-picker" data-ng-model="dashboardData.weekStart" id="id-date-picker-1" style="width:94px" type="text" data-date-format="mm-dd-yyyy" datepicker-popup="{{format}}" is-open="opened1" max="'2045-06-22'" datepicker-options="dateOptions" data-ng-change="searchDate(dashboardData.weekStart,dashboardData.weekEnd)" disabled/>
+            <label class="inline buttonCustomCss" popover-placement="top" popover-trigger="mouseenter" popover="shows the finish date - you can select any finish date by clicking on the box" popover-popup-delay="{{delayTime}}" style="border-style:none"> To: </label>
+            <input class="input-medium date-picker" data-ng-model="dashboardData.weekEnd" id="id-date-picker-2" style="width:94px" type="text" data-date-format="mm-dd-yyyy" datepicker-popup="{{format}}" is-open="opened" max="'2045-06-22'" datepicker-options="dateOptions" data-ng-change="searchDate(dashboardData.weekStart,dashboardData.weekEnd)" disabled/>
+
+            <a popover-placement="right" popover-trigger="mouseenter" popover="Click to go back to the previous period" popover-popup-delay="{{delayTime}}" class="buttonCustomDisable1" ng-click="periodicDashboard(dashboardData.weekStart, dashboardData.weekEnd,dashboardData.companyId)" id="weeklyDashboard" ng-if="showPeriod"> Weekly Dashboard </a>
+            <a popover-placement="right" popover-trigger="mouseenter" popover="Click to go back to the previous period" popover-popup-delay="{{delayTime}}" class="buttonCustomCss" ng-click="periodicDashboard(dashboardData.weekStart, dashboardData.weekEnd,dashboardData.companyId)" id="weeklyDashboard" ng-if="weekView"> Weekly Dashboard </a>
+            <a popover-placement="right" popover-trigger="mouseenter" popover="Click to go back to the previous period" popover-popup-delay="{{delayTime}}" class="buttonCustomCss" ng-click="currentDateDashboard(dashboardData.weekStart, dashboardData.weekEnd,dashboardData.companyId)" id="currentDateDashboard" ng-if="showPeriod"> currentDate Dashboard</a>
+
+            <!-- <a popover-placement="right" popover-trigger="mouseenter" popover="Click to go back to the previous period" popover-popup-delay="{{delayTime}}" class="buttonCustomCss" ng-click="periodicDashboard(dashboardData.weekStart, dashboardData.weekEnd,dashboardData.companyId)" ng-if="dashboardData.currentDayCal && showDashboard"> Weekly Dashboard </a>
+			<a popover-placement="right" popover-trigger="mouseenter" popover="Click to go back to the previous period" popover-popup-delay="{{delayTime}}" class="buttonCustomDisable1" ng-click="currentDateDashboard(dashboardData.weekStart, dashboardData.weekEnd,dashboardData.companyId)" ng-if="dashboardData.currentDayCal && showDashboard"> CurrentDate Dashboard </a>
+
+			<a popover-placement="right" popover-trigger="mouseenter" popover="Click to go back to the previous period" popover-popup-delay="{{delayTime}}" class="buttonCustomDisable1" ng-click="periodicDashboard(dashboardData.weekStart, dashboardData.weekEnd,dashboardData.companyId)" ng-if="!dashboardData.currentDayCal && showDashboard">Weekly Dashboard</a>
+
+			<a popover-placement="right" popover-trigger="mouseenter" popover="Click to go back to the previous period" popover-popup-delay="{{delayTime}}" class="buttonCustomCss" ng-click="currentDateDashboard(dashboardData.weekStart, dashboardData.weekEnd,dashboardData.companyId)" ng-if="!dashboardData.currentDayCal && showDashboard"> currentDate Dashboard</a> -->
+
+
+        </div>
+        <div class="text-right row form-group">
+            <!-- {{selectDate}} -->
+            <!-- 			<select data-ng-model="selectDate" class="input-medium" id="form-field-select-2" data-ng-change="dateWiseDashboard(selectDate,dashboardData.weekStart,dashboardData.weekEnd,dashboardData.companyId)">
+				<option value="">--Select--</option>				
+				<option  data-ng-repeat="date in dateArray" value="{{date}}"> {{date}}</option>
+			</select> -->
+            <!-- {{activeDay}} -->
+            <span data-ng-repeat="date in dateArray">
+			<button type="button" ng-click="dateWiseDashboard(date,dashboardData.weekStart,dashboardData.weekEnd,dashboardData.companyId)" style="margin-right:5px;" popover-placement="top" popover-trigger="mouseenter" popover="{{date.day}}" ng-class="{'btn btn-primary btn-circle btn-lg':date.activeDay,'btn btn-default btn-circle btn-lg':!date.activeDay}" popover-popup-delay="{{delayTime}}">
+			{{date.day | getDays}}
+			</button>	
+		</span>
+
+
+            <!-- 	<button type="button" class="btn btn-default btn-circle btn-lg"> 11 </button>
+			
+			<button type="button" class="btn btn-success btn-circle btn-lg"><i class="glyphicon glyphicon-link"></i></button>
+			<button type="button" class="btn btn-info btn-circle btn-lg"><i class="glyphicon glyphicon-ok"></i></button>
+			<button type="button" class="btn btn-warning btn-circle btn-lg"><i class="glyphicon glyphicon-remove"></i></button>
+			<button type="button" class="btn btn-danger btn-circle btn-lg"><i class="glyphicon glyphicon-heart"></i></button> -->
+
+        </div>
+        <div class="row" style="border-bottom: 1px solid #ddd;padding-bottom:15px;">
+            <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
+                <div class="row">
+                    <div class="col-lg-7 col-md-6 col-sm-7 col-xs-12">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-sm-12 col-xs-12" style="font-size: 18px;font-weight: bold;padding: 0 0 5px;" ng-show="subDepartmentUser!='subAdmin'">
+                                Company Total
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-sm-12 col-xs-12" style="font-size: 18px;font-weight: bold;padding: 0 0 5px;" ng-show="subDepartmentUser=='subAdmin'">
+                                Department Total
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-lg-7 col-sm-7 col-xs-7 col-md-7 buttonCustomCss" style="text-align:left;font-size:14px;">
+                                Hours Worked this {{dynamicText}}
+                            </div>
+                            <div class="col-lg-2 col-sm-2 col-xs-2 col-md-2 buttonCustomCss">
+                                <span ng-show="dashboardData.workedHours!='' && dashboardData.workedHours!='NaN'">{{dashboardData.workedHours | changeTimeFormatAllocate}}</span>
+                                <span ng-show="dashboardData.workedHours==''">0</span>
+                                <span ng-show="dashboardData.workedHours=='NaN'">0</span>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-lg-7 col-sm-7 col-xs-7 col-md-7 buttonCustomCss" style="text-align:left;font-size:14px;">
+                                Hours allocated this {{dynamicText}}
+                            </div>
+                            <div class="col-lg-2 col-sm-2 col-xs-2 col-md-2 buttonCustomCss">
+                                <span ng-show="dashboardData.allocatedHours!='' && dashboardData.allocatedHours!='NaN'">{{dashboardData.allocatedHours | changeTimeFormatAllocate}}</span>
+                                <span ng-show="dashboardData.allocatedHours==''">0</span>
+                                <span ng-show="dashboardData.allocatedHours=='NaN'">0</span>
+                            </div>
+                            <!-- <div class="col-lg-2 col-sm-2 col-xs-2 col-md-2" style="padding-left: 0px;font-size:14px;">
+								<input class="col-sm-1 pull-left" id="{{dashboardData._id}}" ng-model="totalallocatedHours" type="text" data-ng-enter="assigntotalHours(totalallocatedHours, dashboardData._id, 'main')" style="height:33px;width:100%;"/>
+							</div> -->
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-lg-7 col-sm-7 col-xs-7 col-md-7 buttonCustomCss" style="text-align:left;font-size:14px;">
+                                % of Hours Used
+                            </div>
+                            <div class="col-lg-2 col-sm-2 col-xs-2 col-md-2 buttonCustomCss">
+                                <span ng-show="dashboardData.percentageUsed!='' && dashboardData.percentageUsed!='NaN'">{{dashboardData.percentageUsed|parsePerInInt}}</span>
+                                <span ng-show="dashboardData.percentageUsed==''">0</span>
+                                <span ng-show="dashboardData.percentageUsed=='NaN'">0</span>
+                            </div>
+                        </div>
+                        <div class="row  form-group">
+                            <div class="col-lg-7 col-sm-7 col-xs-7 col-md-7 buttonCustomCss" style="text-align:left;font-size:14px;">
+                                Money Spent this {{dynamicText}}
+                            </div>
+                            <div class="col-lg-2 col-sm-2 col-xs-2 col-md-2 buttonCustomCss">
+                                <span ng-show="dashboardData.moneySpent!='' && dashboardData.moneySpent!='NaN'">
+									{{dashboardData.moneySpent|parsePerInInt}}
+								</span>
+                                <span ng-show="dashboardData.moneySpent==''">0</span>
+                                <span ng-show="dashboardData.moneySpent=='NaN'">0</span>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12" style="padding:0px;">
+                                <button type="button" class="buttonCustomCss" style="font-size:13.5px">alerts</button>
+                                <button type="button" class="buttonCustomCss" id="halfmain" style="font-size:14px;">50%</button>
+                                <button type="button" class="buttonCustomCss" id="halfupmain" style="font-size:14px;">75%</button>
+                                <button type="button" class="buttonCustomCss" id="fullmain" style="font-size:14px;">100%</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 col-md-6 col-sm-5 col-xs-12 pull-right" id="guageMeter" style="min-width: 220px; max-width: 220px; height:220px; margin: 0 auto">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
+                <div class="row">
+                    <div class="col-xs-4 col-lg-4 col-md-4 col-sm-4 ">
+                        <div class="buttonCustomCss">
+                            Planned Sales
+                        </div>
+                    </div>
+
+                    <div class="col-xs-8 col-lg-8 col-md-8 col-sm-8 form-group">
+                        <!-- 	<input type="text" class="form-control" ng-class="{'saved':saleSaved}" ng-enter="saveBudgetedSale(dashboardData.budgetedSales);" ng-model="dashboardData.budgetedSales" style="padding-right: 12px; padding-left: 12px;"/> -->
+                        <span class="form-control">{{dashboardData.budgetedSales}}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4 col-lg-4 col-md-4 col-sm-4 ">
+                        <div class="buttonCustomCss">
+                            Planned Wages
+                        </div>
+                    </div>
+                    <div class="col-xs-8 col-lg-8 col-md-8 col-sm-8 form-group">
+                        <span class="form-control">{{dashboardData.budgetedWages}}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4 col-lg-4 col-md-4 col-sm-4 ">
+                        <div class="buttonCustomCss">
+                            % of sales
+                        </div>
+                    </div>
+                    <div class="col-xs-8 col-lg-8 col-md-8 col-sm-8 form-group">
+                        <span class="form-control">{{dashboardData.budgetedWages * 100 /dashboardData.budgetedSales |filterPecentage}}</span>
+                        <!-- <span class="form-control" ng-hide="dashboardData.budgetedWages *  100 /dashboardData.budgetedSales |filterPecentage">0</span> -->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4 col-lg-4 col-md-4 col-sm-4 ">
+                        <div class="buttonCustomCss">
+                            Actual Sales
+                        </div>
+                    </div>
+                    <div class="col-xs-8 col-lg-8 col-md-8 col-sm-8 form-group">
+                        <!-- <input type="text" ng-class="{'saved':actSaleSaved}" class="form-control" ng-enter="saveMainActualSale(dashboardData.actualSales);" ng-model="dashboardData.actualSales" style="padding-right: 12px; padding-left: 12px;"/> -->
+                        <span class="form-control">{{dashboardData.actualSales}}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4 col-lg-4 col-md-4 col-sm-4 ">
+                        <div class="buttonCustomCss">
+                            Actual Wages
+                        </div>
+                    </div>
+                    <div class="col-xs-8 col-lg-8 col-md-8 col-sm-8 form-group">
+                        <span class="form-control">{{dashboardData.moneySpent|parsePerInInt}}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4 col-lg-4 col-md-4 col-sm-4 ">
+                        <div class="buttonCustomCss">
+                            % of sales
+                        </div>
+                    </div>
+                    <div class="col-xs-8 col-lg-8 col-md-8 col-sm-8 form-group" ng-init="actualSale=dashboardData.workedHours">
+                        <!-- <span class="form-control">{{actulPer|filterPecentage}}</span> -->
+                        <span class="form-control">{{dashboardData.moneySpent * 100 /dashboardData.actualSales |filterPecentage}}</span>
+                        <!-- <span class="form-control" ng-hide="dashboardData.moneySpent *  100 /dashboardData.actualSales |filterPecentage">0</span> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        </br>
+        <div class="row">
+
+            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12  form-group" data-ng-repeat="department in dashboardData.departments" style="border-bottom: 1px solid #ddd;">
+                </br>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12" style="font-size: 16px; font-weight: bold; padding: 0px 0px 5px; text-transform: capitalize;">
+                                {{department.departmentName}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-7 col-md-6 col-sm-6 col-xs-6">
+                                <div class="row form-group">
+                                    <div class="col-lg-7 col-sm-7 col-xs-7 col-md-7 buttonCustomCss" style="text-align:left;font-size:13.5px">
+                                        Hours Worked this {{dynamicText}}
+                                    </div>
+                                    <div class="col-lg-2 col-sm-2 col-xs-2 col-md-2 buttonCustomCss">
+                                        {{department.workedHours | changeTimeFormatAllocate}}
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-lg-7 col-sm-7 col-xs-7 col-md-7 buttonCustomCss" style="text-align:left;font-size:13.5px">
+                                        Hours allocated this {{dynamicText}}
+                                    </div>
+                                    <div class="col-lg-2 col-sm-2 col-xs-2 col-md-2 buttonCustomCss">
+                                        <span ng-show="department.allocatedHours!='' && department.allocatedHours!='NaN'">{{department.allocatedHours | changeTimeFormatAllocate}}</span>
+                                        <span ng-show="department.allocatedHours=='NaN'">0</span>
+                                        <span ng-show="department.allocatedHours==''">0</span>
+                                    </div>
+                                    <!-- 	<div class="col-lg-2 col-sm-2 col-xs-2 col-md-2" style="padding-left: 0px;font-size:14px;"> 
+										<input id="{{department._id}}" ng-model="allocatedHours" type="text" data-ng-enter="assignHours(allocatedHours, department._id)" style="height:33px;width:100%;"/>
+									</div> -->
+                                </div>
+                                <div class="row  form-group">
+                                    <div class="col-lg-7 col-sm-7 col-xs-7 col-md-7 buttonCustomCss" style="text-align:left;font-size:13.5px">
+                                        % of Hours Used
+                                    </div>
+                                    <div class="col-lg-2 col-sm-2 col-xs-2 col-md-2 buttonCustomCss">
+                                        <span ng-show="department.percentageUsed!='' && department.percentageUsed!='NaN'">{{department.percentageUsed|parsePerInInt}}</span>
+                                        <span ng-show="department.percentageUsed=='NaN'">0</span>
+                                        <span ng-show="department.percentageUsed==''">0</span>
+                                    </div>
+                                </div>
+                                <div class="row  form-group">
+                                    <div class="col-lg-7 col-sm-7 col-xs-7 col-md-7 buttonCustomCss" style="text-align:left;font-size:13.5px">
+                                        Money Spent this {{dynamicText}}
+                                    </div>
+                                    <div class="col-lg-2 col-sm-2 col-xs-2 col-md-2 buttonCustomCss">
+                                        <span ng-show="department.moneySpent!='' && department.moneySpent!='NaN'">{{department.moneySpent|parsePerInInt}}</span>
+                                        <span ng-show="department.moneySpent=='NaN'">0</span>
+                                        <span ng-show="department.moneySpent==''">0</span>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12" style="padding:0px;">
+                                        <button type="button" class="buttonCustomCss" style="font-size:13.5px">alerts</button>
+                                        <button type="button" class="buttonCustomCss" id="half{{department._id}}" ng-class="checkPerFun(department.percentageUsed,department._id)" style="font-size:13.5px">50%</button>
+                                        <button type="button" class="buttonCustomCss" id="halfup{{department._id}}" ng-class="checkPerFun(department.percentageUsed,department._id)" style="font-size:13.5px">75%</button>
+                                        <button type="button" class="buttonCustomCss" id="full{{department._id}}" ng-class="checkPerFun(department.percentageUsed,department._id)" style="font-size:13.5px">100%</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-5 col-md-6 col-sm-6 col-xs-6 pull-left" id="meter{{department._id}}" ng-class="getSubCategories(department)" style="min-width: 220px; max-width: 220px; height:220px; margin: 0 auto"></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
+                        <div class="row">
+                            <div class="col-xs-4 col-lg-4 col-md-4 col-sm-4 ">
+                                <div class="buttonCustomCss">
+                                    Planned Sales
+                                </div>
+                            </div>
+                            <div class="col-xs-8 col-lg-8 col-md-8 col-sm-8 form-group">
+                                <!-- 		<input type="text" ng-class="{'saved':deptSaleSaved{{$index}}}" class="form-control" ng-enter="saveDeptBudgetedSale(department._id,department.budgetedSales,$index);" ng-model="department.budgetedSales" style="padding-right: 12px; padding-left: 12px;"/> -->
+                                <span class="form-control">{{department.budgetedSales}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4 col-lg-4 col-md-4 col-sm-4 ">
+                                <div class="buttonCustomCss">
+                                    Planned Wages
+                                </div>
+                            </div>
+                            <div class="col-xs-8 col-lg-8 col-md-8 col-sm-8 form-group">
+                                <span class="form-control">{{department.budgetedWages|parsePerInInt}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4 col-lg-4 col-md-4 col-sm-4 ">
+                                <div class="buttonCustomCss">
+                                    % of sales
+                                </div>
+                            </div>
+                            <div class="col-xs-8 col-lg-8 col-md-8 col-sm-8 form-group">
+                                <span class="form-control">{{department.budgetedWages *  100 /department.budgetedSales |filterPecentage}}</span>
+                                <!-- <span class="form-control" ng-hide="department.budgetedWages *  100 /department.budgetedSales |filterPecentage">0</span> -->
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4 col-lg-4 col-md-4 col-sm-4 ">
+                                <div class="buttonCustomCss">
+                                    Actual Sales
+                                </div>
+                            </div>
+                            <div class="col-xs-8 col-lg-8 col-md-8 col-sm-8 form-group">
+                                <!-- <input type="text" ng-class="{'saved':actDeptSaleSaved{{$index}}}" class="form-control" ng-enter="saveDeptActualSale(department._id,department.actualSales,$index);" ng-model="department.actualSales" style="padding-right: 12px; padding-left: 12px;"/> -->
+                                <span class="form-control">{{department.actualSales}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4 col-lg-4 col-md-4 col-sm-4 ">
+                                <div class="buttonCustomCss">
+                                    Actual Wages
+                                </div>
+                            </div>
+                            <div class="col-xs-8 col-lg-8 col-md-8 col-sm-8 form-group">
+                                <span class="form-control">{{department.moneySpent|parsePerInInt}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4 col-lg-4 col-md-4 col-sm-4 ">
+                                <div class="buttonCustomCss">
+                                    % of sales
+                                </div>
+                            </div>
+                            <div class="col-xs-8 col-lg-8 col-md-8 col-sm-8 form-group">
+                                <span class="form-control" ng-show="department.moneySpent *  100 /department.actualSales |filterPecentage">{{department.moneySpent *  100 /department.actualSales |filterPecentage}}</span>
+                                <span class="form-control" ng-hide="department.moneySpent *  100 /department.actualSales |filterPecentage">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" data-ng-repeat="subDept in subDepartments.subDepartments" ng-if="department.departmentId == subDept.departmentId">
+                    <br>
+                    <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12" style="font-size: 16px; font-weight: bold; padding: 0px 0px 5px; text-transform: capitalize;">
+                                {{department.departmentName}} <i class="icon-arrow-right"></i> {{subDept.subDeptName}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-7 col-md-6 col-sm-6 col-xs-6">
+                                <div class="row form-group">
+                                    <div class="col-lg-7 col-sm-7 col-xs-7 col-md-7 buttonCustomCss" style="text-align:left;font-size:13.5px">
+                                        Hours Worked this {{dynamicText}}
+                                    </div>
+                                    <div class="col-lg-2 col-sm-2 col-xs-2 col-md-2 buttonCustomCss">
+                                        {{subDept.workedHours | changeTimeFormatAllocate}}
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-lg-7 col-sm-7 col-xs-7 col-md-7 buttonCustomCss" style="text-align:left;font-size:13.5px">
+                                        Hours allocated this {{dynamicText}}
+                                    </div>
+                                    <div class="col-lg-2 col-sm-2 col-xs-2 col-md-2 buttonCustomCss">
+                                        <span ng-show="subDept.allocatedHours!='' && subDept.allocatedHours!='NaN'">{{subDept.allocatedHours| changeTimeFormatAllocate}}</span>
+                                        <span ng-show="subDept.allocatedHours=='NaN'">0</span>
+                                        <span ng-show="subDept.allocatedHours==''">0</span>
+                                    </div>
+                                    <!-- <div class="col-lg-2 col-sm-2 col-xs-2 col-md-2" style="padding-left: 0px;font-size:14px;"> 
+										<input id="{{subDept._id}}" ng-model="allocatedHours" type="text" data-ng-enter="assignSubHours(allocatedHours, subDept._id)" style="height:33px;width:100%;"/>
+									</div> -->
+                                </div>
+                                <div class="row  form-group">
+                                    <div class="col-lg-7 col-sm-7 col-xs-7 col-md-7 buttonCustomCss" style="text-align:left;font-size:13.5px">
+                                        % of Hours Used
+                                    </div>
+                                    <div class="col-lg-2 col-sm-2 col-xs-2 col-md-2 buttonCustomCss">
+                                        <span ng-show="subDept.percentageUsed!='' && subDept.percentageUsed!='NaN'">{{subDept.percentageUsed|parsePerInInt}}</span>
+                                        <span ng-show="subDept.percentageUsed=='NaN'">0</span>
+                                        <span ng-show="subDept.percentageUsed==''">0</span>
+                                    </div>
+                                </div>
+                                <div class="row  form-group">
+                                    <div class="col-lg-7 col-sm-7 col-xs-7 col-md-7 buttonCustomCss" style="text-align:left;font-size:13.5px">
+                                        Money Spent this {{dynamicText}}
+                                    </div>
+                                    <div class="col-lg-2 col-sm-2 col-xs-2 col-md-2 buttonCustomCss">
+                                        <span ng-show="subDept.moneySpent!='' && subDept.moneySpent!='NaN'">{{subDept.moneySpent|parsePerInInt}}</span>
+                                        <span ng-show="subDept.moneySpent=='NaN'">0</span>
+                                        <span ng-show="subDept.moneySpent==''">0</span>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12" style="padding:0px;">
+                                        <button type="button" class="buttonCustomCss" style="font-size:13.5px">alerts</button>
+                                        <button type="button" class="buttonCustomCss" id="half{{subDept._id}}" ng-class="checkPerFun(subDept.percentageUsed,subDept._id)" style="font-size:13.5px">50%</button>
+                                        <button type="button" class="buttonCustomCss" id="halfup{{subDept._id}}" ng-class="checkPerFun(subDept.percentageUsed,subDept._id)" style="font-size:13.5px">75%</button>
+                                        <button type="button" class="buttonCustomCss" id="full{{subDept._id}}" ng-class="checkPerFun(subDept.percentageUsed,subDept._id)" style="font-size:13.5px">100%</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-5 col-md-6 col-sm-6 col-xs-6 pull-left" id="subMeter{{subDept._id}}" ng-class="getSubsSubCategories(subDept)" style="min-width: 220px; max-width: 220px; height:220px; margin: 0 auto"></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
+                        <div class="row">
+                            <div class="col-xs-4 col-lg-4 col-md-4 col-sm-4 ">
+                                <div class="buttonCustomCss">
+                                    Planned Sales
+                                </div>
+                            </div>
+                            <div class="col-xs-8 col-lg-8 col-md-8 col-sm-8 form-group">
+                                <span class="form-control" ng-if="dynamicText!='day'">
+									{{subDept.budgetedSales}}
+								</span>
+
+
+                                <input ng-if="dynamicText=='day'" type="text" ng-class="{'saved':subDeptSaleSaved{{$index}},'error':subDeptSaleSaved{{$index}}=='errors','active-edit':!subDeptSaleSaved{{$index}} && subDeptSaleSaved{{$index}}!='errors'}" class="form-control" ng-enter="saveSubDeptBudgetedSale(subDept._id,subDept.budgetedSales,$index,myDate,subDept.allocatedHours);" ng-model="subDept.budgetedSales" style="padding-right: 12px; padding-left: 12px;" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4 col-lg-4 col-md-4 col-sm-4 ">
+                                <div class="buttonCustomCss">
+                                    Planned Wages
+                                </div>
+                            </div>
+                            <div class="col-xs-8 col-lg-8 col-md-8 col-sm-8 form-group">
+                                <span class="form-control">{{subDept.budgetedWages|parsePerInInt}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4 col-lg-4 col-md-4 col-sm-4 ">
+                                <div class="buttonCustomCss">
+                                    % of sales
+                                </div>
+                            </div>
+                            <div class="col-xs-8 col-lg-8 col-md-8 col-sm-8 form-group">
+                                <span class="form-control">{{subDept.budgetedWages *  100 /subDept.budgetedSales |filterPecentage}}</span>
+                                <!-- 	<span class="form-control" ng-hide="subDept.budgetedWages *  100 /subDept.budgetedSales |filterPecentage">0</span> -->
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4 col-lg-4 col-md-4 col-sm-4 ">
+                                <div class="buttonCustomCss">
+                                    Actual Sales
+                                </div>
+                            </div>
+                            <div class="col-xs-8 col-lg-8 col-md-8 col-sm-8 form-group">
+                                <span class="form-control" ng-if="dynamicText!='day'">
+									{{subDept.actualSales}}
+								</span>
+                                <!-- <span class="form-control">{{subDept.workedHours | changeTimeFormatAllocate}}</span> -->
+                                <input ng-if="dynamicText=='day'" type="text" class="form-control" ng-class="{'saved':actSubDeptSaleSaved{{$index}},'error':actSubDeptSaleSaved{{$index}}=='errors','active-edit':!actSubDeptSaleSaved{{$index}} && actSubDeptSaleSaved{{$index}}!='errors'}" ng-enter="saveSubDeptActualSale(subDept._id,subDept.actualSales,$index,myDate,subDept.allocatedHours,subDept);" ng-model="subDept.actualSales" style="padding-right: 12px; padding-left: 12px;" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4 col-lg-4 col-md-4 col-sm-4 ">
+                                <div class="buttonCustomCss">
+                                    Actual Wages
+                                </div>
+                            </div>
+                            <div class="col-xs-8 col-lg-8 col-md-8 col-sm-8 form-group">
+                                <span class="form-control">{{subDept.moneySpent|parsePerInInt}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4 col-lg-4 col-md-4 col-sm-4 ">
+                                <div class="buttonCustomCss">
+                                    % of sales
+                                </div>
+                            </div>
+                            <div class="col-xs-8 col-lg-8 col-md-8 col-sm-8 form-group">
+                                <span class="form-control">{{subDept.moneySpent *  100 /subDept.actualSales |filterPecentage}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </br>
+            </div>
+        </div>
+    </div>
+</div>

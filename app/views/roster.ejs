@@ -1,0 +1,321 @@
+<div class="main-container-inner">
+	<div class="page-content">
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 alert alert-success text-center" ng-if="showRosterSuccessMsg">
+				Roster has been sent successfully
+				<div class="pull-right" style="margin-top: -15px; margin-right: -10px; cursor: pointer;" ng-click="hideRosterMsg();">
+					x
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 alert alert-success text-center" ng-if="showRosterSuccess">
+				Roster has been copied for next period
+				<div class="pull-right" style="margin-top: -15px; margin-right: -10px; cursor: pointer;" ng-click="hideRosterMsg();">
+					x
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12">				
+				<div class="page-header">
+					<h1>
+						Timecloud
+						<small>
+							<i class="icon-double-angle-right"></i>
+							Roster
+						</small>
+					</h1>
+				</div>
+				<form class="form-inline rstForm">
+					<div class="">
+						<div ng-class="{'col-sm-5':!previousPeriod,'col-sm-4':previousPeriod}">
+							<label class="inline"> Dates: </label>
+							<input class="input-medium date-picker" data-ng-model="fromDate" id="id-date-picker-1" type="text" data-date-format="dd-mm-yyyy"  datepicker-popup="{{format}}"  is-open="opened1" max="'2045-06-22'" datepicker-options="dateOptions"  data-ng-change="searchDate(fromDate,toDate)" popover-placement="bottom" popover-trigger="mouseenter" popover="Enter Start Date for period you would like to view." popover-popup-delay="{{delayTime}}"/>
+							&nbsp;&nbsp;&nbsp;
+							<label class="inline"> To: </label>
+							<input  class="input-medium date-picker" data-ng-model="toDate"  id="id-date-picker-2" type="text"  data-date-format="dd-mm-yyyy"  datepicker-popup="{{format}}"  is-open="opened" max="'2045-06-22'" datepicker-options="dateOptions" data-ng-change="searchDate(fromDate,toDate)" popover-placement="bottom" popover-trigger="mouseenter" popover="Enter end Date for period you would like to view." popover-popup-delay="{{delayTime}}"/> &nbsp;
+						</div>
+						<div ng-class="{'col-sm-7':!previousPeriod,'col-sm-8':previousPeriod}">
+							<a popover-placement="bottom" ng-if="previousPeriod" popover-trigger="mouseenter" popover="Select to view Next Period" popover-popup-delay="{{delayTime}}" href="#/roster/{{previousPeriod | date: 'yyyy-MM-dd' }}" class="btn btn-primary no-border btn-sm ">Previous Period</a> &nbsp; &nbsp;
+							<a popover-placement="bottom" popover-trigger="mouseenter" popover="Select to view Current Period" popover-popup-delay="{{delayTime}}" href="#/roster" class="btn btn-primary no-border btn-sm ">Current Period</a> &nbsp; &nbsp;
+							<a popover-placement="bottom" popover-trigger="mouseenter" popover="Select to view Next Period" popover-popup-delay="{{delayTime}}" href="#/roster/{{nextPeriod | date: 'yyyy-MM-dd' }}" class="btn btn-primary no-border btn-sm ">Next Period</a> &nbsp; &nbsp;
+							<a popover-placement="bottom" popover-trigger="mouseenter" popover="Clear all shifts from current date moving forward for the displayed period. CAUTION–This is not reversible." popover-popup-delay="{{delayTime}}" class="btn btn-inverse no-border btn-sm " ng-click="clearAll(currentDate, nextPeriod)" >Clear all shifts</a>
+							<a popover-placement="bottom" popover-trigger="mouseenter" popover="Send Mail To Employees Which are on screen" popover-popup-delay="{{delayTime}}" class="btn btn-inverse no-border btn-sm " ng-click="sendMailToEmployees()" id="sendMailBtn">Send Mail</a>
+							&nbsp; &nbsp;
+
+							<a popover-placement="bottom" popover-trigger="mouseenter" popover="Select to view Next Period" popover-popup-delay="{{delayTime}}" href="" class="btn btn-primary no-border btn-sm" ng-click="copyToNextPeriod(currentDate, nextPeriod)" id="rosterCopyForNext">Copy To Next Period</a> &nbsp; &nbsp;
+						</div>
+					</div>
+					<br/><br/>
+					<div class="">							
+						<div class="col-sm-3 pull-right" style="padding:0px;" ng-if="subDepartmentList">
+							<label class="inline" popover-placement="right" popover-trigger="mouseenter" popover="Filter Roster by department " popover-popup-delay="{{delayTime}}"> <b>Sub-Department: </b></label>&nbsp;&nbsp;
+							<select data-ng-model="subDepartment" class="input-medium pull-right" id="form-field-select-2" ng-change="subDepartmentFilter(subDepartment)">
+								<option value="All">-All-
+								</option>
+								<option  ng-repeat="deptValue in subDepartmentList|filter:{parentDeptName:filterByDeptName}" value="{{deptValue.name}}">{{deptValue.name}}</option>
+							</select>
+						</div>
+						<div class="col-sm-3 pull-right" ng-if="departments.length>0">
+							<label class="inline" popover-placement="right" popover-trigger="mouseenter" popover="Filter Roster by department " popover-popup-delay="{{delayTime}}"> <b>Department: </b></label>&nbsp;&nbsp;
+							<select data-ng-model="department" class="input-medium ng-pristine ng-valid" id="form-field-select-2" ng-change="departmentFilter(department)">
+								<option value=''>All
+								</option>
+								<option sly-repeat="departmentValue in departments" value="{{departmentValue.name}}">
+									{{departmentValue.name}}</option>
+							</select>
+						</div>
+					</div>
+				</form>					
+			</div>
+		</div>
+		<div class="row form-group">			
+			<div class="col-lg-3 col-md-3 col-xs-12 col-sm-3">
+				<div class="row nestedDemo" style="padding: 0px;">
+					<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+						<div style="padding-top:27px; !important">
+							<div class="dropzones form-group">
+								<b>Shifts Lists</b>
+			        	<ul style="overflow-y: auto; margin: 0px; padding-left: 2px;">
+			        		<li class="col-lg-6 col-md-6 col-xs-6 col-xs-12" sly-repeat="shift in shiftList|filter:{tags:filterByDeptName}" dnd-draggable="shift" dnd-effect-allowed="move" ng-model="shift.name" style="padding: 5px;cursor:pointer;background-color:{{shift.color}}">
+			        			{{shift.name}}
+			        		</li>
+			        	</ul>
+			        </div>	        
+			      </div>
+			    </div>
+				</div>
+				<div class="row nestedDemo" style="padding: 0px;" ng-show="customShiftList"> 
+					<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+						<div style="padding-top:27px; !important">
+							<div class="dropzones form-group">
+								<b>Custom Shifts Lists</b>
+			        	<ul style="overflow-y: auto; margin: 0px; padding-left: 2px;">
+			        		<li class="col-lg-6 col-md-6 col-xs-6 col-xs-12" sly-repeat="shift in customShiftList" dnd-draggable="shift" dnd-effect-allowed="move" ng-model="shift.name" style="padding: 5px;cursor:pointer">
+			        			{{shift.name}}
+			        		</li>
+			        	</ul>
+			        </div>	        
+			      </div>			      
+			    </div>
+				</div>
+				<div class="row" style="padding: 0px;"> 
+					<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+						<div style="padding-top:27px; !important">
+							<div class="dropzones form-group">
+								<b>Create Custom Shift</b>
+			        	<form class="form-horizontal" role="form" name="shiftFrm" method="post">
+			        		<div class="row form-group">
+										<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+											<label>
+												<span popover-placement="top" popover-trigger="mouseenter" popover="This is the time that the shift starts. It is based on a 24hour clock. You can use the arrows or type the time in the boxes." popover-popup-delay="{{delayTime}}">Start Time </span>
+											</label>
+										</div>
+										<div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+											<input id="startTimetxt" class="form-control" type="text" min="01:00" max="24:00" data-ng-model="startTime" placeholder="HH:MM" ng-change="formatTime('startTimetxt')"/>
+										</div>
+										<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" style="padding:0px;">
+											<span popover-placement="top" popover-trigger="mouseenter" popover="Selecting the “limit” box means that you only pay for the hours of the shift and not extra. For example, if the shift starts at 9am but the employee clocks in early at 8.50am they will only be paid from 9am. However, if they clock in late it does not mean that they will be paid from 9am." popover-popup-delay="{{delayTime}}">
+												<label class="pull-left">&nbsp;
+													<input name="form-field-checkbox" type="checkbox" data-ng-model="shift.startLimit" class="ace" />
+													<span class="lbl" data-rel="popover" data-trigger="hover" data-placement="right" data-content="ticking the limit box means your employee won't get paid before the starttime" > Limit</span>
+												</label>
+											</span>
+										</div>
+									</div>
+									<div class="row form-group">
+										<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+											<label>
+												<span popover-placement="top" popover-trigger="mouseenter" popover="This is the time the shift finishes. It is based on a 24hour clock. You can use the arrows or type the time in the boxes." popover-popup-delay="{{delayTime}}">Finish Time </span>
+											</label>
+										</div>
+										<div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+											<input id="finishTimetxt" class="form-control" type="text" min="01:00" max="24:00" data-ng-model="finishTime" placeholder="HH:MM" ng-change="formatTime('finishTimetxt')"/>
+										</div>
+										<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" style="padding:0px;">
+											<span popover-placement="top" popover-trigger="mouseenter" popover="Selecting the “limit” box means that you only pay for the hours of the shift and no extra. For example, if the shift finishes at 5pm but the employee clocks out at 5.15pm, the employee will only be paid until 5pm." popover-popup-delay="{{delayTime}}">
+												<label class="pull-left">&nbsp;
+													<input name="form-field-checkbox" type="checkbox" data-ng-model="shift.finishLimit" class="ace" />
+													<span class="lbl" data-rel="popover" data-trigger="hover" data-placement="right" data-content="ticking the limit box means your employee won't get paid before the finishtime." > Limit</span>
+												</label>
+											</span>
+										</div>
+									</div>
+									<div class="row form-group" ng-show="overtime1">
+										<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+											<label>Normal Time </label>
+										</div>
+										<div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">									
+											<input id="ordinarytimetxt" class="form-control" type="text" min="01:00" max="24:00" data-ng-model="ordinarytime" placeholder="HH:MM" ng-change="formatTime('ordinarytimetxt')"/>
+										</div>
+									</div>
+									<div class="row form-group" ng-show="overtime2">
+										<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+											<label>Normal Time </label>
+										</div>
+										<div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+											<input id="ordinarytimeTxt" type="text" min="01:00" max="24:00" class="form-control" data-ng-model="ordinarytime" placeholder="HH:MM" ng-change="formatTime('ordinarytimeTxt')"/>
+										</div>
+									</div>
+									<div class="row form-group" ng-show="overtime2">
+										<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+											<label>Overtime 1</label>
+										</div>
+										<div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">										
+											<input id="overTime1txt" type="text" min="01:00" max="24:00" class="form-control" data-ng-model="overTime1" placeholder="HH:MM" ng-change="formatTime('overTime1txt')"/>
+										</div>
+									</div>
+									<div class="row form-group">
+										<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+											<label>
+												<span popover-placement="top" popover-trigger="mouseenter" popover="This is the amount of time deducted for breaks within the shift. So if they have 1 unpaid 30 minute lunch break then you will enter 30." popover-popup-delay="{{delayTime}}">Break Time</span>
+											</label>
+										</div>
+										<div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">										
+											<input id="breakTimetxt" class="form-control" type="text" min="01:00" max="24:00" data-ng-model="breakTime" placeholder="HH:MM" ng-change="formatTime('breakTimetxt')"/>
+										</div>
+									</div>
+									<div class="row form-group">
+										<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+											<label>
+												<span popover-placement="top" popover-trigger="mouseenter" popover="This is the amount of time before the break rule is applied. So if the break rule only applies if the employee works for 4 hours then you would add 4 in the box." popover-popup-delay="{{delayTime}}">Break After </span>
+											</label>
+										</div>
+										<div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+											<input type="text" id="breakAftertxt" data-ng-model="breakAfter" placeholder="HH:MM" ng-change="formatTime('breakAftertxt')" class="form-control"/>
+										</div>
+										<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" style="padding:0px;">
+											<label  popover-placement="top" popover-trigger="mouseenter" popover="This means that the employee will be paid for the breaks taken and it will be added back in to the paid hours." popover-popup-delay="{{delayTime}}">
+												<input name="form-field-checkbox" type="checkbox" data-ng-model="shift.breakIn" class="ace" />
+												<span class="lbl" data-rel="popover" data-trigger="hover" data-placement="right" data-content="ticking the limit box means your employee won't get paid before the finishtime." >Add Break</span>
+											</label>
+										</div>
+									</div>
+									<div class="row form-group" ng-show="showsecondBreak">
+										<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+											<label>
+												<span popover-placement="top" popover-trigger="mouseenter" popover="This is the amount of time deducted for breaks within the shift. So if they have 1 unpaid 30 minute lunch break then you will enter 30." popover-popup-delay="{{delayTime}}">Break Time2</span>
+											</label>
+										</div>
+										<div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">											
+											<input id="breakTimetxt2" class="form-control" type="text" min="01:00" max="24:00" data-ng-model="breakTime2" placeholder="HH:MM" ng-change="formatTime('breakTimetxt2')"/>
+										</div>
+									</div>
+									<div class="row form-group" ng-show="showsecondBreak">
+										<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+											<label>
+												<span popover-placement="top" popover-trigger="mouseenter" popover="This is the amount of time before the break rule is applied. So if the break rule only applies if the employee works for 4 hours then you would add 4 in the box." popover-popup-delay="{{delayTime}}">Break After2 </span>
+											</label>
+										</div>
+										<div class="col-lg-3 col-md-3 col-sm-4 col-xs-5">
+											<input type="text" id="breakAftertxt2" data-ng-model="breakAfter2" placeholder="HH:MM" ng-change="formatTime('breakAftertxt2')" class="form-control"/>
+										</div>
+										<div class="col-lg-2 col-md-2 col-sm-2 col-xs-3" style="padding:0px;">
+											<label  popover-placement="top" popover-trigger="mouseenter" popover="This means that the employee will be paid for the breaks taken and it will be added back in to the paid hours." popover-popup-delay="{{delayTime}}">
+												<input name="form-field-checkbox" type="checkbox" data-ng-model="shift.breakIn2" class="ace" />
+												<span class="lbl" data-rel="popover" data-trigger="hover" data-placement="right" data-content="ticking the limit box means your employee won't get paid before the finishtime." >Add Break2</span>
+											</label>
+										</div>
+									</div>									
+									<div class="clearfix form-actions">
+										<div class="col-md-offset-3 col-md-9">
+											<button type="button" class="btn btn-primary" data-ng-click="submitform()" popover-placement="top" popover-trigger="mouseenter" popover="Select to save the new shift." popover-popup-delay="{{delayTime}}">
+												<i class="icon-ok bigger-110"></i>Save
+											</button>
+										</div>
+									</div>
+								</form>
+			        </div>	        
+			      </div>
+			    </div>
+				</div>			
+			</div>
+			<div class="RosterDataFix col-lg-9 col-md-9 col-xs-12 col-sm-9" style="padding-left: 0px; padding-top: 27px;" id="GetDivOfHtml">
+				<br>
+				<table class="scroll" style="border-collapse: collapse;border-spacing: 0;" id="Roster">
+					<thead style="background: #f2f2f2 linear-gradient(to bottom,#f8f8f8 0px, #ececec 100%) repeat-x scroll 0 0;color: #707070;font-weight: normal;border-top: 1px solid #ddd;">
+						<tr ng-if="attendanceDatesRow">
+							<th class="center" style="border-bottom: 1px solid #ddd;border-left: 1px solid #ddd;border-right: 1px solid #ddd">
+								Depart.
+							</th>
+							<th class="center" ng-if="subDepartmentList.length>0" style="border-bottom: 1px solid #ddd;border-left: 1px solid #ddd;border-right: 1px solid #ddd">
+								Sub-Depart.
+							</th>
+							<th class="center" style="border-bottom: 1px solid #ddd;border-left: 1px solid #ddd;border-right: 1px solid #ddd">
+								No
+							</th>
+							<th class="center" style="border-bottom: 1px solid #ddd;border-left: 1px solid #ddd;border-right: 1px solid #ddd">
+								Name
+							</th>
+							<th class="center" sly-repeat="attandance in attendanceDatesRow" style="border-bottom: 1px solid #ddd;border-left: 1px solid #ddd;border-right: 1px solid #ddd">
+								{{attandance.date| dateFormat}}
+							</th>
+							<th class="center clearRowClass" style="border-bottom: 1px solid #ddd;border-left: 1px solid #ddd;border-right: 1px solid #ddd;">
+								Clear rows
+							</th>
+						</tr>
+					</thead>
+					
+					<tbody>
+						<tr sly-repeat="employee in rosterData|filter:{department:filterByDeptName,subDepartment:filterBySubDeptName}">
+							<td class="center"  style="border-bottom: 1px solid #ddd;border-left: 1px solid #ddd;border-right: 1px solid #ddd;word-break;break-all">
+								<p ng-if="employee.department">
+									{{employee.department}}
+								</p>
+								<p ng-if="!employee.department"> 
+									---
+								</p>
+							</td>
+							<td class="center" ng-if="subDepartmentList.length>0" style="border-bottom: 1px solid #ddd;border-left: 1px solid #ddd;border-right: 1px solid #ddd;word-break;break-all">
+								<p ng-if="employee.subDepartment"> 
+									{{employee.subDepartment}}
+								</p>
+								<p ng-if="!employee.subDepartment"> 
+									---
+								</p>								
+							</td>
+							<td class="center" style="border-bottom: 1px solid #ddd;border-left: 1px solid #ddd;border-right: 1px solid #ddd;word-break;break-all">
+								{{employee.employeeNo}}
+							</td>
+							<td class="center" style="border-bottom: 1px solid #ddd;border-left: 1px solid #ddd;border-right: 1px solid #ddd;word-break:break-all;width:100px;">
+								{{employee.firstName}}
+								{{employee.lastName}}
+								<!-- <span ng-bind="employee.firstName"></span> <span ng-bind="employee.lastName"></span> -->
+							</td>
+							<td class="center" style="border-bottom: 1px solid #ddd;border-left: 1px solid #ddd;border-right: 1px solid #ddd" sly-repeat="atnDate in attendanceDatesRow" >
+								<div class="nestedDemo" ng-if="atnDate.disabled=='true'">
+				        	<div class="dropzones" style="min-height:10px;">
+			            	<ul style="margin: 0px;min-height: 8px;">
+			            		<li sly-repeat="emps in employeeLists|filter:{employeeNo:employee.employeeNo,date:atnDate.date}:true" style="border:none;list-style:none;" id="{{atnDate.date}}" ng-class="addTheColourOfShift(emps)" class="testing{{emps._id}} testResetColor" >
+			            			{{emps.ExceptionAssign}}
+			            			{{emps.shift}}
+			            		</li>
+									  </ul>
+									</div>
+								</div>
+								<div class="nestedDemo" ng-if="atnDate.disabled=='false'">
+				        	<div class="dropzones" style="min-height:30px;">
+			            	<ul dnd-list="employeeLists" dnd-drop="dropCallbacks(event, index, item, external, type, employee.employeeNo, atnDate.date)" style="min-height: 28px;margin:0px;padding:0px;">
+			            		<li sly-repeat="emps in employeeLists|filter:{employeeNo:employee.employeeNo,date:atnDate.date}:true" id="{{atnDate.date}}" class="testing{{emps._id}} testResetColor" style="border:none;padding:0px;list-style:none;" ng-class="addTheColourOfShift(emps)" >
+								      	{{emps.shift}}
+								      	{{emps.ExceptionAssign}}
+								      	<div style="margin-top:-11px; font-size: 13px; opacity: 0.41;cursor:pointer;float:right;" ng-click="removeShiftForTheEmployee(emps.employeeNo,emps.shift,emps.companyId,emps.date)" class="removeCloseBtn">
+								      		x
+								      	</div>									       
+									    </li>
+									  </ul>
+									</div>
+								</div>
+							</td>
+							<td class="center clearRowClass" style="border-bottom: 1px solid #ddd;border-left: 1px solid #ddd;border-right: 1px solid #ddd">
+								<a popover-placement="top" popover-trigger="mouseenter" popover="Clear all displayed shifts for this employee" popover-popup-delay="{{delayTime}}" ng-click="clearRow(employee.employeeNo, currentDate, nextPeriod)" class="btn btn-inverse no-border btn-sm ">Clear shift</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div id="idOfTempArray"></div>
+	</div>
+</div>

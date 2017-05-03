@@ -1,0 +1,86 @@
+<style>
+#container{
+	padding-top: 0px !important;
+}
+</style>
+<div class="main-container-inner">
+				<div class="page-content">
+					<div class="row">
+						<div class="col-sm-12">					
+							<div class="page-header center">
+								<h1>
+								<b>Employee List</b> </br>
+									{{companyname}} 
+
+								</h1>
+								<h4> Period: {{start}} - {{end}}</h4>
+							</div> 
+							<div class="table-responsive">
+											<table id="sample-table-2" class="table table-striped table-bordered table-hover">
+												<thead>
+													<tr>													
+														<th class="center">
+															No
+
+														</th>
+														
+														<th class="center">
+															First Name
+
+														</th>
+														<th class="center">
+															Last Name
+
+														</th>
+														<th class="center">
+															Normal Time
+
+														</th>
+														<th class="center">
+															Total Time
+
+														</th>
+														
+													</tr>
+												</thead>
+
+		<tbody data-ng-repeat="employee in  employeeDataArray">
+												
+			<tr>
+				<td class="col-sm-1 center tdClass">
+					{{employee.employeeNo}}					
+				</td>
+				<td class="col-sm-2 center tdClass" >
+					{{employee.firstName}}
+				</td>
+				<td class="col-sm-2 center tdClass" >
+					{{employee.lastName}}
+				</td>
+				<td class="col-sm-2 center tdClass">
+					{{employee.normalTime | changeFormat}}
+				</td>
+				<td class="col-sm-2 center tdClass" >
+					{{employee.TotalAdjs | changeFormat }}
+				</td>
+				
+			</tr>			
+		</tbody>
+
+							</table>
+							<table id="sample-table-2" class="table table-striped table-bordered table-hover">
+							<tbody>
+								<tr>
+								<td class="col-sm-1 center"> </td>
+								<td class="col-sm-2 center"> </td>
+								<td class="col-sm-2 center"> </td>
+								<td class="col-sm-2 center"> {{ normalTimeTotal | changeFormat}} </td>
+								<td class="col-sm-2 center"> {{ Totaltime | changeFormat }} </td>
+								</tr>
+								</tbody>
+							</table>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+</div>

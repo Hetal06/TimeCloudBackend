@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns:ng="http://angularjs.org" id="ng-app" lang="en" data-ng-app="admin" ng-cloak >
+	<head>
+		<meta charset="utf-8" />
+		<title>Timecloud-Home</title>
+		<!--[if IE 8]><!--> <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /> <!--<![endif]-->
+			<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+		<meta name="description" content="Static &amp; Dynamic Tables" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<!-- basic styles -->
+
+		<link href="/css/bootstrap.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="/css/font-awesome.min.css" />
+	
+
+		<!--[if IE 7]>
+			<link rel="stylesheet" href="css/font-awesome-ie7.min.css" />
+		<![endif]-->
+
+		<!-- page specific plugin styles -->
+
+		<!-- fonts -->
+
+		<link rel="stylesheet" href="/css/ace-fonts.css" />
+
+		<!-- ace styles -->
+
+		<link rel="stylesheet" href="/css/ace.min.css" />
+		<link rel="stylesheet" href="/css/ace-rtl.min.css" />
+		<link rel="stylesheet" href="/css/ace-skins.min.css" />
+		<link rel="stylesheet" href="/css/styles.css" />
+		<link rel="stylesheet" href="/css/datepicker.css" />
+		
+		
+
+		<!--[if lte IE 8]>
+			<link rel="stylesheet" href="css/ace-ie.min.css" />
+		<![endif]-->
+
+		<!-- inline styles related to this page -->
+
+		<!-- ace settings handler -->
+		<script src="/js/ace-extra.min.js"></script>
+		<script src="/js/angular.min.js"></script>
+		<script src="/js/moment.min.js"></script>
+		<script src="/js/moment-timezone.js"></script>
+		<script src="/js/moment-timezone-data.js"></script>
+		<script src="/js/angular-route.js"></script>
+		<script src="/js/angular-sanitize.min.js"></script>  
+		<script src="/js/ui-bootstrap-tpls-0.9.0.js"></script>  
+
+
+		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+
+		<!--[if lt IE 9]>
+		<script src="js/html5shiv.js"></script>
+		<script src="js/respond.min.js"></script>
+		<![endif]-->
+		<!--[if lte IE 8]>
+				<script>
+					document.createElement('ng-include');
+					document.createElement('ng-pluralize');
+					document.createElement('ng-view');
+
+					// Optionally these for CSS
+					document.createElement('ng:include');
+					document.createElement('ng:pluralize');
+					document.createElement('ng:view');
+				</script>
+			<![endif]-->
+
+	</head>
+
+	<body>  
+	<% include adminheader.ejs %>
+<div id="container" > 
+	
+	<div data-ng-view=""></div>
+</div>
+
+
+	
+
+		<!-- basic scripts -->
+
+		<!--[if !IE]> -->
+
+		<script type="text/javascript">
+			/*window.jQuery || document.write("<script src='/js/jquery-2.0.3.min.js'>"+"<"+"/script>");*/
+			(function() {
+					window.XMLHttpRequest = window.XMLHttpRequest || (function() {
+							return new window.ActiveXObject("Microsoft.XMLHTTP");
+					});
+			})();
+
+		</script>
+
+		<!-- <![endif]-->
+
+		<!--[if IE]>
+<script type="text/javascript">
+ window.jQuery || document.write("<script src='js/jquery-1.10.2.min.js'>"+"<"+"/script>");
+</script>
+<![endif]-->
+
+		<script type="text/javascript">
+			if("ontouchend" in document) document.write("<script src='/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+			
+		</script>
+		<script src='/js/jquery-2.0.3.min.js'> </script>
+		<script src="/js/bootstrap.min.js"></script>
+		<script src="/js/typeahead-bs2.min.js"></script>
+
+		<!-- page specific plugin scripts -->
+
+		<script src="/js/jquery.dataTables.min.js"></script>
+		<script src="/js/jquery.dataTables.bootstrap.js"></script>
+		<script src="/js/bootstrap-datepicker.js" ></script>
+
+
+		<!-- ace scripts -->
+
+		<script src="/js/ace-elements.min.js"></script>
+		<script src="/js/ace.min.js"></script>
+
+		<!-- inline scripts related to this page -->
+		
+			</script>
+		 <script src="/js/datetimepicker.js"></script>
+	 
+			<script src="../../controllers/timecloud.js" ></script>
+			<script src="../../controllers/employee.js" ></script>
+			<script src="../../controllers/reports.js" ></script>
+			 <script src="../../controllers/admin.js" ></script>
+
+		<script type="text/javascript">
+			jQuery(function($) {
+				var oTable1 = $('#sample-table-2').dataTable( {
+				"aoColumns": [
+						{ "bSortable": false },
+						null, null,null, null, null,
+					{ "bSortable": false }
+				] } );
+				
+				
+				$('table th input:checkbox').on('click' , function(){
+					var that = this;
+					$(this).closest('table').find('tr > td:first-child input:checkbox')
+					.each(function(){
+						this.checked = that.checked;
+						$(this).closest('tr').toggleClass('selected');
+					});
+						
+				});
+			
+			
+				$('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+				function tooltip_placement(context, source) {
+					var $source = $(source);
+					var $parent = $source.closest('table')
+					var off1 = $parent.offset();
+					var w1 = $parent.width();
+			
+					var off2 = $source.offset();
+					var w2 = $source.width();
+			
+					if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
+					return 'left';
+				}
+			})
+		</script>
+	</body>
+</html>

@@ -1,0 +1,265 @@
+
+			<div class="main-container-inner">
+				<div class="page-content">
+					<div class="row">
+						
+							<div class="col-sm-3">
+								<!--links-->
+								<div class="page-header">
+							<h1><b>
+								Global Rules</b>
+								<!-- <small>
+									<i class="icon-double-angle-right"></i>
+									Static &amp; Dynamic Tables
+								</small> -->
+							</h1>
+						</div><!-- /.page-header -->
+								<div class="text-success">These rules are global across the entire system.</div>
+								<!-- -->
+							</div>
+							<div class="col-sm-9">
+
+						<div class="row">
+							<div class="col-xs-12">
+							<div class="page-header">
+						        <h1 popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}">
+						        Time Cloud
+						        <small>
+						         <i class="icon-double-angle-right"></i>
+						         Global Rules
+						        </small>
+						       </h1>
+						      </div><!-- /.page-header -->
+								<!-- PAGE CONTENT BEGINS -->
+								<div class="row">
+									<div class="col-xs-12">
+										<!-- Form-->
+										
+									<div ng-show = "message.globalErr != null">
+										<div id="errors" class="span3 alert alert-danger">{{message.globalErr}}</div>
+									</div>
+									<div ng-show = "message.rule != null">
+										<div id="errors" class="span3 alert alert-success">{{message.rule}}</div>
+									</div>
+										<form class="form-horizontal" role="form" name="global" method="post">
+												<!-- -->
+												
+												<div class="form-group">
+										<label class="col-sm-3"><span popover-placement="left" popover-trigger="mouseenter" popover="Allows you to set rounding rules. These rules apply globally and affect all shifts and shift patterns, except for the ones with ‘limits’ set on them. Limits override rounding. (Limits are set when setting up shifts)." popover-popup-delay="{{delayTime}}">Global Rounding </span></label>
+										<div class="col-sm-9">
+										<span popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}">
+											<input data-ng-change="description()" name="switch-field-1" data-ng-model="globalfm.isrounding" class="ace ace-switch ace-switch-5" type="checkbox" />
+											 
+														<span class="lbl"></span>
+										</div>
+									</div>
+									
+								<div ng-show="descriptionValue">
+									<div class="space-4"></div>
+									
+
+												<!-- -->	
+												<!-- IN/OUT-->
+									<input type="hidden" data-ng-model="globalfm.rounding"value="">
+										<div class="form-group">
+										<label class="col-sm-3"><span popover-placement="top" popover-trigger="mouseenter" popover="In/Out rounding means that the rounding rule is applied to both the in and out times. Total rounding means that the rounding is only applied to the total time." popover-popup-delay="{{delayTime}}">IN/OUT Rounding Or Total Hours Rounding </span></label>
+										<div class="col-sm-9">
+											
+											<div class="btn-group" data-toggle="buttons">
+  <label id="inout" class="btn btn-primary" data-ng-click="rounding('in/out')" popover-placement="top" popover-trigger="mouseenter" popover="Select In/Out if you want the rounding rules to apply to the in and the out clocking times." popover-popup-delay="{{delayTime}}">
+    <input  type="radio" name="options" id="option1"> IN/OUT
+  </label>
+  
+  <label id="totalH" class="btn btn-primary" data-ng-click="rounding('totalH')" popover-placement="right" popover-trigger="mouseenter" popover="Select Total H if you want the rounding rules to apply only to the total hours for that day." popover-popup-delay="{{delayTime}}">
+    <input  type="radio" name="options" id="option3">  TOTAL H
+  </label>
+</div>
+										</div>
+									</div>	
+<div id="in/out" ng-show="valueIn" ng-hide="valueR">
+									<div class="space-4"></div>
+									
+
+<input type="hidden" data-ng-model="globalfm.inRounding" value="">
+												<!-- -->	
+												<div class="form-group">
+										<label class="col-sm-3" for="form-field-1"><span popover-placement="top" popover-trigger="mouseenter" popover="Select which increments you would like to round to. You can either round in 5, 15, or 30 minute increments." popover-popup-delay="{{delayTime}}"><b>Start Time </b> Round to Closest(Minutes) </span>
+										</label>
+
+										<div class="col-sm-9">
+											<div class="btn-group" data-toggle="buttons">
+  <label id="5In" class="btn btn-primary" data-ng-click="inRoundingfn('5')" popover-placement="top" popover-trigger="mouseenter" popover="Select 5 min if you want to round to the closest 5 minutes." popover-popup-delay="{{delayTime}}">
+    <input  type="radio" name="options" id="option1">5 min		
+  </label>
+  
+  <label id="15In" class="btn btn-primary" data-ng-click="inRoundingfn('15')" popover-placement="top" popover-trigger="mouseenter" popover="Select 15 min if you want to round to the closest 15 minutes." popover-popup-delay="{{delayTime}}">
+    <input  type="radio" name="options" id="option2">  15 min
+  </label>
+  <label id="30In" class="btn btn-primary" data-ng-click="inRoundingfn('30')" popover-placement="top" popover-trigger="mouseenter" popover="Select 30 min if you want to round to the closest 30 minutes." popover-popup-delay="{{delayTime}}">
+    <input  type="radio" name="options" id="option3">  30 min
+  </label>
+</div><!--buttons-->
+										</div>
+									</div><!--form group-->
+									<div class="space-4"></div>
+									<div class="form-group">
+										<label class="col-sm-3" for="form-field-1"> <span popover-placement="top" popover-trigger="mouseenter" popover="Enter the number of minutes you would like to round up after. For example if you are rounding in 5 minute increments and you enter 3 to round up after, then if an employee finishes at 5.02pm their time will round to 5.00pm. If they finish at 5.03pm then their time will be rounded to 5.05pm." popover-popup-delay="{{delayTime}}">Round up after (Minutes)</span></label>
+
+										<div class="col-sm-9">
+											<input data-ng-model="globalfm.inroundupafter" type="text" id="form-field-1" placeholder="" class="col-xs-10 col-sm-5" popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}" />
+										</div>
+									</div>
+
+									<div class="space-4"></div>
+									
+												<!-- -->
+											<!-- -->	
+												<div class="form-group">
+										<label class="col-sm-3" for="form-field-1"><span popover-placement="top" popover-trigger="mouseenter" popover="Select which increments you would like to round to. You can either round in 5, 15, or 30 minute increments." popover-popup-delay="{{delayTime}}"><b>Finish Time </b> Round to Closest (Minutes) </span>
+										</label>
+<input type="hidden" data-ng-model="globalfm.outRounding">
+										<div class="col-sm-9">
+											<div class="btn-group" data-toggle="buttons">
+  <label id="5out" class="btn btn-primary" data-ng-click="outRoundingfn('5')" popover-placement="top" popover-trigger="mouseenter" popover="Select 5 min if you want to round to the closest 5 minutes." popover-popup-delay="{{delayTime}}">
+    <input  type="radio" name="options" id="option1">5 min		
+  </label>
+  
+  <label id="15out" class="btn btn-primary" data-ng-click="outRoundingfn('15')" popover-placement="top" popover-trigger="mouseenter" popover="Select 15 min if you want to round to the closest 15 minutes." popover-popup-delay="{{delayTime}}">
+    <input  type="radio" name="options" id="option3">  15 min
+  </label>
+  <label id="30out" class="btn btn-primary" data-ng-click="outRoundingfn('30')" popover-placement="top" popover-trigger="mouseenter" popover="Select 30 min if you want to round to the closest 30 minutes." popover-popup-delay="{{delayTime}}">
+    <input  type="radio" name="options" id="option3">  30 min
+  </label>
+</div><!--buttons-->
+										</div>
+									</div><!--form group-->
+									<div class="space-4"></div>
+									<div class="form-group">
+										<label class="col-sm-3" for="form-field-1"><span popover-placement="top" popover-trigger="mouseenter" popover="Enter the number of minutes you would like to round up after. For example if you are rounding in 5 minute increments and you enter 3 to round up after, then if an employee finishes at 5.02pm their time will round to 5.00pm. If they finish at 5.03pm then their time will be rounded to 5.05pm." popover-popup-delay="{{delayTime}}"> Round up after (Minutes)</span></label>
+
+										<div class="col-sm-9">
+											<input type="text" id="form-field-1" data-ng-model="globalfm.outroundupafter" placeholder="" class="col-xs-10 col-sm-5" popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}"/>
+										</div>
+									</div>
+									
+		
+		
+		</div>
+
+		<div id="totaldiv" ng-show="valueR" ng-hide="valueIn">
+									<div class="space-4"></div>
+									
+
+												<!-- -->
+											<!-- -->
+		
+												<div class="form-group">
+										<label class="col-sm-3" for="form-field-1"><span popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}">Round Total Time To Closet...Minute</span>
+										</label>
+<input type="hidden" data-ng-model="globalfm.closestMin">
+										<div class="col-sm-9">
+											<div class="btn-group" data-toggle="buttons">
+  <label id="5total" class="btn btn-primary" data-ng-click="totalTime('5')" popover-placement="top" popover-trigger="mouseenter" popover="Select 5 min if you want to round to the closest 5 minutes." popover-popup-delay="{{delayTime}}">
+    <input  type="radio" name="options" id="option1">5 min		
+  </label>
+  
+  <label id="15total" class="btn btn-primary" data-ng-click="totalTime('15')" popover-placement="top" popover-trigger="mouseenter" popover="Select 15 min if you want to round to the closest 15 minutes." popover-popup-delay="{{delayTime}}">
+    <input  type="radio" name="options" id="option3">  15 min
+  </label>
+  <label id="30otal" class="btn btn-primary" data-ng-click="totalTime('30')" popover-placement="top" popover-trigger="mouseenter" popover="Select 30 min if you want to round to the closest 30 minutes." popover-popup-delay="{{delayTime}}">
+    <input  type="radio" name="options" id="option3">  30 min
+  </label>
+</div><!--buttons-->
+										</div>
+									</div><!--form group-->
+									<div class="space-4"></div>
+									<div class="form-group">
+										<label class="col-sm-3" for="form-field-1" > <Span popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}">Round up after (Minutes)</span></label>
+
+										<div class="col-sm-9">
+											<input type="text" id="form-field-1" data-ng-model="globalfm.roundUpAfter" placeholder="" class="col-xs-10 col-sm-5" popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}"/>
+										</div>
+									</div>
+</div>
+									
+									</div>
+									<h3 ng-if="overtime1 || overtime2">Weekly OT</h3>
+											<div class="clearfix form-actions">
+							<div id="weeklyOT" >
+			
+
+							<div class="form-group" ng-show="overtime1">
+							
+										
+
+												<!-- -->	
+												<!-- Finish time-->
+												
+								<div class="form-group">
+
+
+										<label class="col-sm-3">Normal Time </label>
+
+										<div class="col-sm-9">
+											<input id="weeklyNTTxt" class="col-sm-2" type="text" min="01:00" max="24:00" class="gridtextBelow" data-ng-model="weeklyNT" placeholder="HH:mm" ng-change="formatTime('weeklyNTTxt')"/> 
+										</div>
+
+
+									</div>
+										
+									</div>
+	</div>
+									<div class="form-group" ng-show="overtime2">
+
+												<!-- -->	
+												<!-- Finish time-->
+												
+												<div class="form-group">
+										<label class="col-sm-3">Normal Time </label>
+										<div class="col-sm-9">
+											<input id="weeklyNTtxt" class="col-sm-2" type="text" min="01:00" max="24:00" class="gridtextBelow" data-ng-model="weeklyNT" placeholder="HH:mm" ng-change="formatTime('weeklyNTtxt')"/> 
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3"> Overtime 1 </label>
+										
+										<div class="col-sm-9">
+	                 						<input id="weeklyOT1txt" class="col-sm-2" type="text" min="01:00" max="24:00" class="gridtextBelow" data-ng-model="weeklyOT1" placeholder="HH:mm" ng-change="formatTime('weeklyOT1txt')"/> 
+										</div>
+										
+									</div>
+		</div>
+		
+										<div class="col-md-offset-3 col-md-9">
+											<button type="button" data-ng-click="submitform()" class="btn btn-primary" popover-placement="top" popover-trigger="mouseenter" popover="Select submit to save the global rounding rule." popover-popup-delay="{{delayTime}}">
+												<i class="icon-ok bigger-110"></i>
+												Save
+											</button>
+										</div>
+									</div><!--buttons submit-->
+							
+										</form>
+										<!-- -->
+										
+
+												
+									</div>
+								</div>
+
+							
+							</div><!-- /.col -->
+						</div><!-- /.row -->					
+							</div><!--col-sm-9-->
+						</div><!--row--fluid-->
+					<!-- pagecontent-->
+
+
+				
+
+				
+			</div><!-- /.main-container-inner -->
+
+		
+		</div><!-- /.main-container -->
+
+	

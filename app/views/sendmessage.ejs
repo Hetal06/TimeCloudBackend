@@ -1,0 +1,95 @@
+<div class="main-container-inner">
+	<div class="page-content">
+		<div class="row">			
+			<div class="col-sm-2">
+		
+			</div>
+			<div class="col-sm-10">
+	
+		
+			<div class="page-header">
+				<h1>
+					Time Cloud
+					<small>
+						<i class="icon-double-angle-right"></i>
+						 <span popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}"> Send Messages  </span>
+					</small>
+				</h1>
+			</div><!-- /.page-header -->
+				<div class="row">
+					<div class="col-sm-12">
+						</br>
+						<div class="row">
+							
+							<form id="report" class="form-horizontal" role="form" name="message" method="post">
+							<div ng-show = "messageSucess">
+								<div id="errors" class="span3 alert alert-success">{{messageSucess}}</div>
+							</div>
+							<div ng-show = "message.msgErr != null">
+								<div id="errors" class="span3 alert alert-danger">{{message.msgErr}}
+								</div>
+							</div>
+							
+
+							<div class="col-sm-12"> 
+								<div class="form-group">
+									<label class="col-sm-2 inline">
+										Subject:
+									</label>
+									<input type="text" id="form-field-1" data-ng-model="message.subject" placeholder="Enter Subject" class="col-xs-10 col-sm-5" />
+								</div>
+								</br>
+								
+
+								<div class="form-group">
+									<label class="col-sm-2">
+									 Message: </label>
+									<textarea rows="10" cols="55" data-ng-model="message.comment" ></textarea>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-3 inline">
+										Confirmation Required?
+									</label>	
+
+									<input type="checkbox" data-ng-model="message.confirmation">
+								</div>
+
+								<div class="form-group">
+									<label class="col-sm-6 inline">
+										Select Companies:
+									</label>
+									
+							    </div>	
+							    <div class="form-group col-lg-12">
+							    	<input class="" type="checkbox" data-ng-model="selectedAll" ng-click="checkAll()" />
+							    	<label class="inline">
+							    		Select All
+							    	</label>
+							    </div>
+							    
+
+							    <div ng-repeat="company in companyData" class="col-lg-3">
+								        <input name="companies" type="checkbox" checkbox-group value="{{company._id}}" ng-model="company.Selected"/>
+								        <label>{{company.companyname}}</label>
+								</div>	
+
+								<div class="form-group col-sm-12 text-right">
+									</br>	</br>
+									<button type="button" data-ng-click="submitform()" class="btn btn-primary ">
+										<i class="icon-ok bigger-110"></i>
+										Send Message
+									</button>
+								</div>
+
+							</div>
+							
+
+
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

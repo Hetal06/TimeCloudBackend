@@ -1,0 +1,182 @@
+<div class="main-container" id="main-container">
+	<div class="main-container-inner">
+		<div class="page-content">
+			<div class="row-fluid">
+				<div class="col-sm-3">
+					<div class="list-group ">
+						<a href="#" class="list-group-item active">
+							List of Archieve Employees(Click Employee to Edit)
+						</a>
+						<div data-ng-repeat="employee in archievedEmployee track by $index">
+							<a href="#/archievedEmployee/edit/{{employee._id}}" class="list-group-item"><span class="pull-left">{{employee.employeeNo}}) &nbsp;{{employee.firstName}} </span><i class="icon-edit pull-right"></i><div class="clearfix"></div></a>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-9">
+					<div class="page-header">
+						<h1>Time Cloud
+							<small>
+								<i class="icon-double-angle-right"></i>
+								Create Employee
+							</small>
+						</h1>
+					</div><!-- /.page-header -->
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="row">
+								<div class="col-xs-12">
+									<div class="space-4"></div>
+									<div ng-show = "message.employeeAdded != null">
+										<div id="errors" class="span3 alert alert-success">{{message.employeeAdded}}</div>
+									</div>
+									<form class="form-horizontal" role="form" name="employeeFrm" method="post">
+										<div class="form-group">
+											<label class="col-sm-3" for="form-field-1"> First Name </label>
+											<div class="col-sm-9">
+												<input disabled="true" type="text" id="form-field-1" data-ng-model="employee.firstName" placeholder="Enter Employee First Name" class="col-xs-10 col-sm-5" />
+											</div>
+											<div ng-show = "message.employeeErr != null">
+												<div id="errors" class="span3 alert alert-danger">{{message.employeeErr}}
+												</div>
+											</div>
+										</div>
+										<div class="space-4"></div>
+										<div class="form-group">
+											<label class="col-sm-3" for="form-field-1"> Last Name </label>
+											<div class="col-sm-9">
+												<input disabled="true"  type="text" id="form-field-1" data-ng-model="employee.lastName"placeholder="Enter Employee Last Name" class="col-xs-10 col-sm-5" />
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-3"> Administrator </label>
+											<div class="col-sm-9">
+												<input disabled="true"  name="switch-field-1" data-ng-model="employee.administrator" class="ace ace-switch ace-switch-5" type="checkbox" />
+												<span class="lbl"></span>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-3" for="form-field-1"> Email Address </label>
+											<div class="col-sm-9">
+												<input disabled="true"  type="text" id="form-field-1" data-ng-model="employee.email"placeholder="Enter Employee Email address(Username)" class="col-xs-10 col-sm-5" />
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-3" for="form-field-1"> Password </label>
+											<div class="col-sm-9">
+												<input disabled="true" type="password" id="form-field-1" placeholder="password" data-ng-model="employee.password" class="col-xs-10 col-sm-5" />
+											</div>
+										</div>
+										<div class="form-group" ng-show="showDepartment">
+											<label class="col-sm-3" for="form-field-1"> Department </label>
+											<div class="col-sm-9">
+												<select disabled="true"  data-ng-model="employee.department" class="col-xs-10 col-sm-5" id="form-field-select-2">
+													<option value='All'>Choose a Department
+													</option>					
+													<option  data-ng-repeat="departmentValue in departments track by $index" value="{{departmentValue.name}}">{{departmentValue.name}}</option>
+												</select>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-3"> Active </label>
+											<div class="col-sm-9">
+												<input name="switch-field-1" data-ng-model="employee.active" class="ace ace-switch ace-switch-5" type="checkbox" />
+												<span class="lbl"></span>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-3" for="form-field-1"> Rule </label>
+											<div class="col-sm-9">
+												<select disabled="true"  data-ng-model="employee.shift" class="col-xs-10 col-sm-5" id="form-field-select-2">
+													<option value='All'>Choose a Shift
+													</option>					
+													<option data-ng-repeat="shiftPattern in shiftPatternList track by $index" value="{{shiftPattern.name}}">{{shiftPattern.name}}</option>
+												</select>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-3" for="form-field-1"> Payroll Code </label>
+											<div class="col-sm-9">
+												<input disabled="true"  type="text" id="form-field-1" data-ng-model="employee.payrollCode"placeholder="Enter Payroll code" class="col-xs-10 col-sm-5" />
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-3" for="form-field-1"> Hourly Wage </label>
+											<div class="col-sm-9">
+												<input disabled="true"  type="text" id="form-field-1" data-ng-model="employee.hourlyRate"placeholder="Enter Hourly Wage" class="col-xs-10 col-sm-5" />
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-3" for="form-field-1"> Charge Out Rate </label>
+											<div class="col-sm-9">
+												<input disabled="true"  type="text" id="form-field-1" data-ng-model="employee.chargeoutRate"placeholder="Enter Hourly Charge Out Rate " class="col-xs-10 col-sm-5" />
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-3"> Allow Export </label>
+											<div class="col-sm-9">
+												<input disabled="true"  name="switch-field-1" data-ng-model="employee.allowExport" class="ace ace-switch ace-switch-5" type="checkbox" />
+												<span class="lbl"></span>
+											</div>
+										</div>
+										<div ng-show="showHolidays">
+											<div class="form-group">
+												<label class="col-sm-3" for="form-field-1"> Holiday Multiplier </label>
+												<div class="col-sm-9">
+													<select class="col-xs-10 col-sm-5" id="form-field-select-2">
+														<option value="AL">Select Holiday Multiplier</option>
+														<option value="AK">dep2</option>
+														<option value="AZ">dep3</option>
+													</select>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-sm-3" for="form-field-1"> Holiday Region </label>
+												<div class="col-sm-9">
+													<select class="col-xs-10 col-sm-5" id="form-field-select-2">
+														<option value="AL">Country only</option>
+														<option value="AK">dep2</option>
+														<option value="AZ">dep3</option>
+													</select>
+													<span class="help-inline col-xs-12 col-sm-7">
+														<span class="middle"> <small>(Note: if a region a selected then the regional holidays plus the country holidays will be used)</small></span>
+													</span>
+												</div>
+											</div>
+										</div>
+										<div class="clearfix form-actions">
+											<div class="col-md-offset-3 col-md-9">
+												<button type="button" class="btn btn-primary" data-ng-click="submitform()">
+													<i class="icon-ok bigger-110"></i>
+													Save
+												</button>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div><!-- /.col -->
+					</div><!-- /.row -->
+				</div><!--col-sm-9-->
+			</div><!--row--fluid-->
+			<script type="text/ng-template" id="inactive.html">
+				<div class="modal-header">
+					<h3>User Active</h3>
+				</div>
+				<div class="modal-body">
+					<h4> Select the date you want the employee to be Active on:</h4>
+					</br>
+					<div ng-show = "message.date != null">
+						<div id="errors" class="span3 alert alert-danger">{{message.date}}</div>
+					</div>
+					<label class="col-sm-3"> Date:  </label>
+					<input type="text" datepicker-popup="{{format}}" ng-model="dateStart" is-open="opened" max="'2045-06-22'" datepicker-options="dateOptions" close-text="Close" />
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-primary" ng-click="ok(dateStart)">OK</button>
+					<button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+				</div>
+			</script>
+	</div><!-- /.main-container-inner -->
+</div><!-- /.main-container -->
+
+

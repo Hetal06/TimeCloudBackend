@@ -1,0 +1,60 @@
+<div class="main-container-inner">
+	<div class="page-content">
+		<div class="row">
+			<div class="table-responsive">
+				<table id="sample-table-2" class="table table-striped table-bordered table-hover">
+					<thead>
+						<tr>
+							<th>
+								CompanyId
+							</th>
+							<th>
+								Company Name
+							</th>
+							<th>
+								Date
+							</th>
+							<th>
+								EmployeeNo
+							</th>
+							<th>
+								Total
+							</th>
+							<th>
+								Sub Total Hours
+							</th>
+							<th>
+								Status
+							</th>
+						</tr>
+					</thead>
+
+					<tbody data-ng-repeat="track in tracking">
+						<td>
+							{{track.companyId}}
+						</td>
+						<td>
+							{{track.companyName}}
+						</td>
+						<td>
+							{{track.date}}
+						</td>
+						<td>
+							{{track.employeeNo}}
+						</td>
+						<td>
+							{{track.total}}
+						</td>
+						<td>
+							{{track.gettotalhours}}
+						</td>
+						<td>
+							{{track.status}}
+						</td>
+
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

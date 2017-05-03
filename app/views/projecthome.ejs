@@ -1,0 +1,133 @@
+<div class="main-container-inner">
+    <div class="page-content">
+        <div class="row">
+            <div class="page-header">
+                <h1>Project
+									<small>
+										<i class="icon-double-angle-right"></i>
+										Home
+									</small>
+								</h1>
+            </div>
+            <!-- /.page-header -->
+            <div class="col-xs-12">
+                
+                <div>
+                    <form class="" role="search" id="searchfrm" ng-submit="getSearch()">
+                        <div>
+                            <input type="text" class="form-control" placeholder="Search" ng-model="searchtext" id="searchText">
+                        </div>
+                        <input type="submit" id="submit" value="Submit" style="visibility:hidden" />
+                    </form>
+                </div>
+                
+                <div class="row form-group">
+                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 text-right">
+                        <a href="#/archiveProject" popover-placement="top" popover-trigger="mouseenter" popover="Copy Database" popover-popup-delay="{{delayTime}}" class="btn btn-primary no-border">Archive Project</a>
+                    </div>
+                </div>
+                
+                <div class="table-header">
+                    Project Overview
+                </div>
+                
+                <div class="table-responsive">
+                    <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th> <label id="sort" popover-placement="top" popover-trigger="mouseenter" popover="Sort by Employee No" popover-popup-delay="{{delayTime}}"> Project </label></th>
+                                <th> <label id="sort" popover-placement="top" popover-trigger="mouseenter" popover="Sort by First Name" popover-popup-delay="{{delayTime}}"> Budget(H) / Budget($) </label> </th>
+                                <th> <label id="sort" popover-placement="top" popover-trigger="mouseenter" popover="Sort by Last Name" popover-popup-delay="{{delayTime}}">  Used(H) / Used($) </label> </th>
+                                <th>
+                                    <label id="sort" popover-placement="top" popover-trigger="mouseenter" popover="Sort by Shift Pattern" popover-popup-delay="{{delayTime}}">  % </label> </th>
+
+                                <th> <label id="sort" popover-placement="top" popover-trigger="mouseenter" popover="Sort by Department" popover-popup-delay="{{delayTime}}" style="width:20%"> Chart </label>
+                                </th>
+
+                                <th> <label id="sort" popover-placement="top" popover-trigger="mouseenter" popover="Sort by Status" popover-popup-delay="{{delayTime}}"> Status </label> </th>
+                            </tr>
+                        </thead>
+
+                        <tbody data-ng-repeat="project in projectlist| orderBy:'-active' | filter:searchtext">
+                            <tr>
+                                
+                                <td ng-if="project.active">
+                                    <a href="" ng-show="project.visible" ng-click="toggle(project)"><span class="glyphicon glyphicon-minus exp-clp-space" ></span></a>
+                                    <a href="" ng-show="!project.visible" ng-click="toggle(project)"><span class="glyphicon glyphicon-plus exp-clp-space" ></span></a>
+                                    <a href="#/editproject/{{project._id}}">{{project.projectname}}</a>
+                                    <table ng-show="project.visible">
+                                        <tbody data-ng-repeat="task in project.tasks|orderBy:_id">
+                                            <tr ng-if="task.calcInclude">
+                                                <td style="border:none;border-collapse:unset;">
+                                                    {{task.taskname}}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                                
+                                <td ng-if="!project.active">
+                                    <a href="" ng-show="project.visible" ng-click="toggle(project)"><span class="glyphicon glyphicon-minus exp-clp-space" ></span></a>
+                                    <a href="" ng-show="!project.visible" ng-click="toggle(project)"><span class="glyphicon glyphicon-plus exp-clp-space" ></span></a>
+                                    <a href="#/archievedProject/edit/{{project._id}}">{{project.projectname}}</a>
+                                    <table ng-show="project.visible">
+                                        <tbody data-ng-repeat="task in project.tasks|orderBy:_id">
+                                            <tr ng-if="task.calcInclude">
+                                                <td style="border:none;border-collapse:unset;">
+                                                    {{task.taskname}}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                                
+                                <td>
+                                    {{project.budgetH}} H / {{project.budget$}} $ {{showTasks}}<br/>
+                                    <table ng-show="project.visible">
+                                        <tbody data-ng-repeat="task in project.tasks|orderBy:_id">
+                                            <tr ng-if="task.calcInclude">
+                                                <td style="border:none;border-collapse:unset;text-align:end;padding-right: unset;table-layout: fixed;overflow:hidden;width:60px" ng-if="task.total">
+                                                    {{task.total | filterHours}}
+                                                </td>
+                                                <td style="border:none;border-collapse:unset;" ng-if="task.total==0 || task.total==''">
+                                                    &nbsp;
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </td>
+                                
+                                <td>
+                                	<span ng-if="project.projectJCTotal">{{project.projectJCTotal | filterHours}} H /  {{project.used$}} $ <br/>
+																	</span>
+                                  <span ng-if="project.projectJCTotal==0 || project.projectJCTotal==''">{{project.usedH }} H /  {{project.used$}} $ <br/>
+																	</span>
+                                    <!-- {{project.usedH}} H /  {{project.used$}} $ <br/> -->
+                                    <!--100 H / 2000 $ -->
+                                </td>
+
+                                <td>
+                                    {{project.usedH * 100 / project.budgetH | filterPecentage}} / {{project.used$ * 100 / project.budget$ | filterPecentage}}
+                                    <!-- 33% H  / 26% $ -->
+                                </td>
+
+                                <td my-attr="dollardiv_{{$index}}" id="dollardiv_{{$index}}" reset-dollarchart style="text-align: center;width:15%;">
+                                </td>
+
+                                <td>
+                                    <span ng-if="project.active">Active</span>
+                                    <span ng-if="!project.active">In-Active</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+        <!--rowfluid-->
+    </div>
+    <!-- /.main-container-inner -->
+</div>
+<!-- /.main-container -->

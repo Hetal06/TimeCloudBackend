@@ -1,0 +1,480 @@
+<!-- start -->
+<div class="main-container" id="main-container">
+	<div class="main-container-inner">
+		<div class="page-content">
+			<div class="row">				
+					<div class="col-sm-2" ng-show="quickSelectshow">
+						<b> Quick Select </b>
+						<div class="table-responsive employeetable">
+							<table id="sample-table-2" class="table table-striped table-bordered table-hover quickSelectemp">
+								<thead>
+									<tr>	
+										<th ng-click="sortByempNo()" > <label id="sort" popover-placement="top" popover-trigger="mouseenter" popover="Sort by Employee No" popover-popup-delay="{{delayTime}}"> No </label></th>
+										<th class="empname" ng-click="sortByName()"> <label id="sort" popover-placement="top" popover-trigger="mouseenter" popover="Sort by First Name" popover-popup-delay="{{delayTime}}"> First Name </label> </th>
+										<th ng-click="sortByLastName()">
+											<label id="sort" popover-placement="top" popover-trigger="mouseenter" popover="Sort by Last Name" popover-popup-delay="{{delayTime}}"> Last Name </label>
+										</th>
+									</tr>
+								</thead>									
+								<tbody data-ng-repeat="employee in employeeList track by $index">	
+										<td>
+											{{employee.employeeNo}}
+										</td>						
+										<td class="empname">
+											<a id="employee" style="cursor:pointer" data-ng-click="changeEmployee(employee.employeeNo,fromDate,toDate)" >
+													{{employee.firstName}}
+											</a>
+										</td>
+										<td>{{employee.lastName}}</td>
+								</tbody>
+							</table>
+						</div>					
+												
+					</div>
+					<div class="{{className}}">
+						<div class="page-header">
+							<h1>Timecloud <small> <i class="icon-double-angle-right"></i> Edit Attendance </small> </h1>
+						</div>
+						<div class="clearfix"></div>
+						<form>
+							<div class="row form-group">
+								<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+									<label class="inline" popover-placement="right" popover-trigger="mouseenter" popover="Select the employee you would like to view." popover-popup-delay="{{delayTime}}" > Selected User: </label>
+									<select data-ng-model="employee" class="input-medium" id="form-field-select-2" data-ng-change="changeEmployee(employee,fromDate,toDate)">	
+										<option  ng-selected="selectedEmp == employees.employeeNo" data-ng-repeat="employees in employeeList" value="{{employees.employeeNo}}"> {{employees.employeeNo}}) {{employees.firstName}} {{employees.lastName}}</option>
+									</select>
+									<label class="inline" popover-placement="top" popover-trigger="mouseenter" popover=" shows start date - you can select any start date by clicking on the box" popover-popup-delay="{{delayTime}}"> Dates: </label>
+									<input  class="input-medium date-picker" data-ng-model="fromDate" id="id-date-picker-1" style="width:94px" type="text" data-date-format="mm-dd-yyyy"  datepicker-popup="{{format}}"  is-open="opened1" max="'2045-06-22'" datepicker-options="dateOptions"  data-ng-change="searchDate(fromDate,toDate)"/>
+									<label class="inline" popover-placement="top" popover-trigger="mouseenter" popover="shows the finish date - you can select any finish date by clicking on the box" popover-popup-delay="{{delayTime}}"> To: </label>
+									<input  class="input-medium date-picker" data-ng-model="toDate"  id="id-date-picker-2" style="width:94px" type="text"  data-date-format="mm-dd-yyyy"  datepicker-popup="{{format}}"  is-open="opened" max="'2045-06-22'" datepicker-options="dateOptions" data-ng-change="searchDate(fromDate,toDate)" />
+									<a  popover-placement="top" popover-trigger="mouseenter" popover="click to go back to the previous pay period " popover-popup-delay="{{delayTime}}" class="btn btn-primary no-border btn-sm " ng-click="previousFn(prvDate, nextPrvDate)">Previous Period</a>
+									<a popover-placement="top" popover-trigger="mouseenter" popover="click to got to Next pay period" popover-popup-delay="{{delayTime}}" href="#/attendanceedit/{{selectedEmp}}/{{date | formatDate }}" class="btn btn-primary no-border btn-sm ">Next Period</a>
+									<div ng-if="selectedEmp == item.employeeNo" ng-repeat="item in (filteredItems = (employeeList))" ng-init="current=selectedEmp" style="display:inline-block;">
+										 <a popover-placement="top" popover-trigger="mouseenter" popover="click to got to Previous User" popover-popup-delay="{{delayTime}}" ng-click="current=filteredItems[$index - 1].employeeNo" href="#/attendanceedit/{{current}}/{{fromDate | formatDate}}/{{toDate | formatDate}}" class="btn btn-primary no-border btn-sm" ng-hide="$first">Previous User </a>							   
+								     <a popover-placement="top" popover-trigger="mouseenter" popover="click to got to Next User" popover-popup-delay="{{delayTime}}" ng-click="current=filteredItems[$index + 1].employeeNo" href="#/attendanceedit/{{current}}/{{fromDate|formatDate}}/{{toDate|formatDate}}" class="btn btn-primary no-border btn-sm" ng-hide="$last">Next User </a>
+								  </div>					
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+									
+
+									<label class="pull-right inline" popover-placement="right" popover-trigger="mouseenter" popover="Select the employee you would like to view." popover-popup-delay="{{delayTime}}" ng-if="showSecondTick" style="margin-left: 10px;"> 2nd tickbox: 
+										<input name="attendanceAll1" type="checkbox" id="attendanceAll1" value="attendanceAll1" class="ace aceSecond delete" ng-click="managerSignedForAll1()" />
+										<span class="lbl"></span>
+									</label>
+
+									<label class="pull-right inline" popover-placement="right" popover-trigger="mouseenter" popover="Select the employee you would like to view." popover-popup-delay="{{delayTime}}" > Select All: 
+										<input name="attendanceAll" type="checkbox" id="attendanceAll" value="attendanceAll" class="ace aceFirst delete" ng-click="managerSignedForAll()" />
+										<span class="lbl"></span>
+									</label>
+
+									<button id="quick" class="btn btn-sm btn-primary pull-right quick" popover-placement="top" popover-trigger="mouseenter" popover="Quick Select" popover-popup-delay="{{delayTime}}" data-ng-click="quickSelect()" style="margin: 2px 5px;">Quick Select</button>
+									<select data-ng-model="subDepartment" class="input-medium pull-right" id="form-field-select-2" ng-change="subDepartmentFilter(subDepartment)" style="margin-left: 5px;" data-ng-show="subDepartmentList">
+										<option value=''>-Sub Deparment-
+										</option>					
+										<option  data-ng-repeat="deptValue in subDepartmentList|filter:{parentDeptName:deptName}" value="{{deptValue.name}}" ng-selected="{{deptValue.name ==subDeptName}}">{{deptValue.name}}</option>
+									</select>
+									<div ng-show="departments">
+										<select data-ng-model="department" class="input-medium pull-right" id="form-field-select-2" ng-change="departmentFilter(department)" data-ng-hide="selectedDept">
+											<option value=''>All</option>
+											<option data-ng-repeat="departmentValue in departments" value="{{departmentValue.name}}" ng-selected="{{departmentValue.name ==deptName}}">{{departmentValue.name}}</option>
+										</select>
+										<select ng-disabled="true" data-ng-model="department" class="pull-right input-medium" id="form-field-select-2" ng-change="departmentFilter(department)" ng-show="selectedDept">
+											<option value=''>All</option>
+											<option  ng-selected="selectedDept == departmentValue.name" data-ng-repeat="departmentValue in departments" value="{{departmentValue.name}}">{{departmentValue.name}}</option>
+										</select>	
+									</div>								
+								</div>
+							</div>
+						</form>
+						<div class="row">
+							<div class="col-sm-12">
+
+								<div class="table-responsive">
+									<table id="sample-table-2" class="table table-striped table-bordered table-hover">
+										<thead></thead>
+										<tbody>											
+											<tr ng-style="attendance.definedColor"  data-ng-repeat="attendance in attendanceList">
+												<td style="width:135px">
+													{{attendance.date | dateFormat}}
+												</td>												
+												<td style="width:85px" class="action-buttons">
+													<div ng-click="openModel(attendance.attendanceId,attendance.date,showJobCosting )" style="display:inline-block">
+														<a class="blue ace-icon bigger-130 cursorCss" popover-placement="top" popover-trigger="mouseenter" popover="click to add times manually" popover-popup-delay="{{delayTime}}" for="form-field-1"> <i class="icon-plus"></i></a>
+													</div>
+													<div style="display:inline-block" ng-if="showJobCosting && attendance.checkinData.length>0" ng-click="openJCModel(attendance.attendanceId,attendance.date)" >
+														<a popover-placement="top" popover-trigger="mouseenter" popover=" Click to split time and assign diffrent JC" popover-popup-delay="{{delayTime}}" class="blue ace-icon bigger-130 cursorCss" ><i class="icon-plus-sign-alt"></i></a>
+													</div>
+													<div style="display:inline-block">
+														<a popover-placement="top" popover-trigger="mouseenter" popover=" Select the box next to the record you would like to delete then select delete. CAUTION – this is not reversible." popover-popup-delay="{{delayTime}}" ng-click="deleteRecords(attendance.attendanceId)" class="blue ace-icon bigger-130 cursorCss" ><i class="icon-trash"></i></a>
+													</div>
+												</td>
+												<td>
+													<table class="fix-table">
+														<tr ng-if="showJobCosting">
+															<div class="pull-right">
+																<td ng-repeat="atData in attendance.checkinData"
+																ng-class="{'td-effect in-td-effect':atData.label =='In','td-effect out-td-effect':atData.label =='Out' && atData.boxSize ==='small','td-effect out-td-effect-big':atData.label =='Out' && atData.boxSize ==='big'}">
+																	<input type="text" ng-style="atData.alterWorkCodeColor"  ng-model="atData.workCode" data-ng-enter="changeJC(attendance, atData)" ng-class="{'saved':JC{{atData.id}},'error':JC{{atData.id}}=='errors', 'gridtext':atData.workCode.length < 5, 'jctext':atData.workCode.length >= 5}" ng-change="detectJCChange(attendance.checkinData, $index);"  ng-if="atData.workCode && atData.label=='In'"/>
+																</td>
+															</div>
+														</tr>				
+														
+														<tr class="fix-table-row">
+															<div class="pull-right">		
+																<td ng-repeat="atData in attendance.checkinData" ng-class="{'out-gap':atData.label == 'Out', 'in-gap':atData.label == 'In'}" >
+		
+																	<div id="{{atData.id}}">
+																		<!-- <label ng-if="atData.workCode && atData.label=='In'" style="display: block;">JC</label>-->
+																	
+																
+																		<input ng-style="atData.alterColor" ng-class="{'out-clock-jc': atData.label == 'Out' && atData.workCode, 'saved':Time_{{$index}}_{{attendance.attendanceId}},'error':Time_{{$index}}_{{attendance.attendanceId}}=='errors'}" 
+																		 min="01:00" max="24:00" ng-model="atData.checktype" type="text" class="gridtext atn-clock {{$index}}_{{attendance.attendanceId}}" data-ng-enter="changeTime('{{$index}}_{{attendance.attendanceId}}',attendance.shiftType, atData.checktype, atData.label, attendance.date, attendance.attendanceId, atData.id, attendance.shift,atData.workCode)" id="{{atData.id}}" ng-change="OtherTime($index, attendance.attendanceId)"/>
+																		
+																		<label id="changeType" ng-dblclick="changeType(atData.id, attendance.attendanceId, atData.checktype)" style="display:inline;vertical-align: bottom;"> {{atData.label}}</label>
+
+																		<input  name="attendance" ng-if="atData.inid"  type="checkbox" id="{{atData.inid}}" value="{{atData.inid}}" class="{{attendance.date|date:'MM-dd-yyyy'}} delete checkbox-atn"/> 
+																		<input ng-if="atData.inid && atData.showConfirmBox" id="confirmIn{{attendance.attendanceId}}" type="checkbox" class="regular-checkbox checkbox-atn" name="selected"  ng-click="confirmTheTimeAdding('In',attendance)"/><label for="confirmIn{{attendance.attendanceId}}"></label>
+																		
+																		<input name="attendance" ng-if="atData.checkBoxid"  type="checkbox" id="{{atData.checkBoxid}}" value="{{atData.checkBoxid}}" class="{{attendance.date|date:'MM-dd-yyyy'}} delete checkbox-atn"/> 
+
+																		<input  ng-if="atData.checkBoxid && atData.showConfirmBox" type="checkbox"  id="confirmOut{{attendance.attendanceId}}"  name="selected" class="regular-checkbox checkbox-atn" ng-click="confirmTheTimeAdding('Out',attendance)"/><label for="confirmOut{{attendance.attendanceId}}"></label>
+
+																	</div>	
+
+																</td>		
+																<div class="pull-right" style="margin-top:10px">
+																	<label ng-if="attendance.stringExc" >
+																		<i ng-hide="attendance.holiday==false" style="cursor:pointer;" class="icon-remove bigger-110" ng-click="deleteHolidayForEmployee(attendance.attendanceId,attendance.employeeNo)"></i> {{attendance.stringExc}}
+																	</label>
+																</div>
+															</div>
+														</tr>
+													</table>
+												</td>
+												<td class="center" style="width:98px" ng-if="attendance.shiftType=='customShift'">
+													<span >{{attendance.shift}}</span>
+													<select id="selectid_{{attendance.attendanceId}}" popover-placement="top" popover-trigger="mouseenter" popover="Select the shift required for the day." popover-popup-delay="{{delayTime}}" class="input-small selectBox"  ng-model="shift" ng-change="shiftChange(shift, attendance.attendanceId, attendance.employeeNo, attendance.date)" style="background-color:{{attendance.shiftColor}}; color:black">
+														<option value=''>-Select-</option>
+														<option  data-ng-repeat="shift in shiftList|orderBy:'shiftorder'" value="{{shift.shiftName}}{{shift.value}}" style="background-color:{{shift.color}};color:black">
+															<span>{{shift.name}}</span>
+														</option>
+													</select>
+												</td>
+												<td class="center" style="width:98px" ng-if="attendance.shiftType!='customShift'">
+													<select id="selectid_{{attendance.attendanceId}}" popover-placement="top" popover-trigger="mouseenter" popover="Select the shift required for the day." popover-popup-delay="{{delayTime}}" class="input-small selectBox"  ng-model="shift" ng-change="shiftChange(shift, attendance.attendanceId, attendance.employeeNo, attendance.date)" style="background-color:{{attendance.shiftColor}}; color:black">
+														<option ng-selected="shift.name == checkShifts(shift.value,attendance.ExceptionAssign,attendance.shift)" data-ng-repeat="shift in shiftList|orderBy:'shiftorder'" value="{{shift.shiftName}}{{shift.value}}" style="background-color:{{shift.color}};color:black">
+															<span>{{shift.name}}</span>
+														</option>
+													</select>
+												</td>
+												<td style="width:65px">
+													<input popover-placement="top" popover-trigger="mouseenter" popover='Displays total time calculated after applying rules…'  ng-hide="{{attendance.flag}}" type="text" class="gridtext" value="{{attendance.totalRounded}}" ng-dblclick="changeTotalHours(attendance.attendanceId)"/>
+													<input ng-show="{{attendance.flag}}" type="text" class="gridtext" value="FLAG" />
+												</td>
+												<td class="center" style="width:100px">
+													<input  ng-model="attendance.managerSignedOff" ng-change="managerSigned(attendance.attendanceId)" ng-checked="attendance.managerSignedOff == true"  type="checkbox" class="ace aceFirst" name="managerSignoff" value="{{attendance.attendanceId}}"/>
+													<span class="lbl"></span>
+
+
+													<input  ng-model="attendance.managerSignedOff1" ng-change="managerSigned1(attendance.attendanceId)" ng-checked="attendance.managerSignedOff1 == true"  type="checkbox" class="ace  aceSecond" name="managerSignoff1" value="{{attendance.attendanceId}}" ng-if="showSecondTick"/>
+													<span class="lbl"></span>
+
+													<label popover-placement="left" popover-trigger="mouseenter" popover="Tick box for admin approval - when times are checked - this is not required" > ? </label>
+													<label ng-if="!attendance.comment" popover-placement="left" popover-trigger="mouseenter" popover="Add comments" style="cursor:pointer" ng-click="showCommentmodel(attendance.attendanceId, attendance.date, attendance.comment)" > <i class="icon-pencil"></i>
+													</label>
+													
+
+													<label ng-if="attendance.comment" popover-placement="left" popover-trigger="mouseenter" popover="{{attendance.comment}}" style="cursor:pointer"  ng-click="showCommentmodel(attendance.attendanceId, attendance.date, attendance.comment)"> <i class="icon-edit"></i> </label>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="table-responsive">
+									<table id="sample-table-2" class="table table-striped table-bordered table-hover">
+										<thead class="thin-border-bottom header-color-blue">
+											<tr>
+												<th class="center">
+												<label popover-placement="top" popover-trigger="mouseenter" popover="Shows you the normal time calculated for the period ." popover-popup-delay="{{delayTime}}">
+												Normal Time
+												</label>
+												</th>
+
+												<th class="center">
+												Over Time1
+												</th>
+												<th class="center">
+												Over Time2
+												</th>
+												<th class="center">
+												Exceptions
+												</th>
+												<th class="center"> 
+												Allowances
+												</th>
+												<th class="center">
+											Total
+												</th>
+												
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td
+												class="center">
+													<input  type="text" class="gridtextBelow" data-ng-model="normalTime" popover-placement="right" popover-trigger="mouseenter" popover="Shows you the normal time calculated for the period." popover-popup-delay=" {{delayTime}}"/>
+												</td>
+												<td class="center">
+													<input type="text" class="gridtextBelow"data-ng-model="overTime1" popover-placement="right" popover-trigger="mouseenter" popover="shows you the Over time 1 calculated for the period ( only if overtime is enabled)." popover-popup-delay=" {{delayTime}}"/>
+												</td>
+												<td class="center">
+													<input type="text" class="gridtextBelow" data-ng-model="overTime2" popover-placement="right" popover-trigger="mouseenter" popover="shows you the Over time 2 calculated for the period ( only if overtime is enabled)." popover-popup-delay=" {{delayTime}}"/>
+												</td>
+												<td class="center">
+													<input type="text" class="gridtextBelow" data-ng-model="Exception" popover-placement="right" popover-trigger="mouseenter" popover="shows you the exception times calculated for the period ( only if exceptions are defined)." popover-popup-delay=" {{delayTime}}"/>
+												</td>
+												<td class="center">
+													<input type="text" class="gridtextBelow" popover-placement="right" popover-trigger="mouseenter" popover="shows allowances allocated for period." popover-popup-delay=" {{delayTime}}"/>
+												</td>	
+												<td class="center">
+													<input type="text" class="gridtextBelow" data-ng-model="Total"   popover-placement="top" popover-trigger="mouseenter" popover="shows you the Total Time calculated for the period." popover-popup-delay=" {{delayTime}}"/>
+												</td>	
+												
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						<div id="modal-table" class="modal fade" tabindex="-1">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header no-padding">
+										<div class="table-header">
+											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+												<span class="white">&times;</span>
+											</button>
+											Results for "Latest Registered Domains
+										</div>
+									</div>
+									<div class="modal-body no-padding">
+										<table class="table table-striped table-bordered table-hover no-margin-bottom no-border-top">
+											<thead>
+												<tr>
+													<th>Domain</th>
+													<th>Price</th>
+													<th>Clicks</th>
+
+													<th>
+														<i class="icon-time bigger-110"></i>
+														Update
+													</th>
+												</tr>
+											</thead>
+
+											<tbody>
+												<tr>
+													<td>
+														<a href="#">ace.com</a>
+													</td>
+													<td>$45</td>
+													<td>3,330</td>
+													<td>Feb 12</td>
+												</tr>
+
+												<tr>
+													<td>
+														<a href="#">base.com</a>
+													</td>
+													<td>$35</td>
+													<td>2,595</td>
+													<td>Feb 18</td>
+												</tr>
+
+												<tr>
+													<td>
+														<a href="#">max.com</a>
+													</td>
+													<td>$60</td>
+													<td>4,400</td>
+													<td>Mar 11</td>
+												</tr>
+
+												<tr>
+													<td>
+														<a href="#">best.com</a>
+													</td>
+													<td>$75</td>
+													<td>6,500</td>
+													<td>Apr 03</td>
+												</tr>
+
+												<tr>
+													<td>
+														<a href="#">pro.com</a>
+													</td>
+													<td>$55</td>
+													<td>4,250</td>
+													<td>Jan 21</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="modal-footer no-margin-top">
+										<button class="btn btn-sm btn-danger pull-left" data-dismiss="modal">
+											<i class="icon-remove"></i>
+											Close
+										</button>
+
+										<ul class="pagination pull-right no-margin">
+											<li class="prev disabled">
+												<a href="#">
+													<i class="icon-double-angle-left"></i>
+												</a>
+											</li>
+
+											<li class="active">
+												<a href="#">1</a>
+											</li>
+
+											<li>
+												<a href="#">2</a>
+											</li>
+
+											<li>
+												<a href="#">3</a>
+											</li>
+
+											<li class="next">
+												<a href="#">
+													<i class="icon-double-angle-right"></i>
+												</a>
+											</li>
+										</ul>
+									</div>
+								</div><!-- /.modal-content -->
+							</div><!-- /.modal-dialog -->
+						</div><!-- PAGE CONTENT ENDS -->
+					</div><!-- /.col -->
+				</div><!-- /.row -->
+				<br/>				
+			</div><!--row--fluid-->
+			<script type="text/ng-template" id="employee.html">
+				<div class="modal-header">
+					<h3>Create Shift</h3>
+				</div>
+		<div class="modal-body">
+		<h4> Select a date of clocking</h4></br>
+		<div ng-show = "message.date != null">
+		<div id="errors" class="span3 alert alert-danger">{{message.date}}</div>
+		</div>
+		<label class="col-sm-3"> Date:  </label>
+		<input type="text" datepicker-popup="{{format}}" ng-model="dateStart" is-open="opened" max="'2045-06-22'" datepicker-options="dateOptions" close-text="Close" />
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-primary" ng-click="ok(dateStart)">OK</button>
+			<button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+			</div>
+		</script>
+		<script type="text/ng-template" id="checkTime.html">
+			<div class="modal-header">
+			<h3>Create In/Out</h3>
+			</div>
+			<div class="modal-body"> 
+				<div ng-show = "message.timeErr != null">
+					<div id="errors" class="span3 alert alert-danger">{{message.timeErr}}</div>
+					</div>
+					<div class="row">
+			<label class="col-sm-1"> In  </label>
+			<input  id="inTimetxt" class="col-sm-2" type="text" min="01:00" max="24:00"class="gridtextBelow" data-ng-model="atn.inTime" placeholder="HH:mm"  ng-change="formatTime(atn.inTime,'inTime')" ng-blur="formatTimeFinal(atn.inTime, 'inTime')"/>
+			
+			<label class="col-sm-1"> Out </label>
+			<input id="outTimetxt" class="col-sm-2" type="text" min="01:00" max="24:00" class="gridtextBelow" data-ng-model="atn.outTime" placeholder="HH:mm"  ng-change="formatTime(atn.outTime,'outTime')" ng-blur="formatTimeFinal(atn.outTime,'outTime')"/>
+
+			<label ng-show="showJobCosting" class="col-sm-3 center"> Work Code</label>
+			
+			<input  class="col-sm-2" type="text" ng-show="showJobCosting"class="gridtextBelow" data-ng-model="atn.workCode"/>
+		  </div>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-primary" ng-click="ok(atn.inTime, atn.outTime, atn.workCode)">OK</button>
+			<button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+		</div>
+		</script>
+		<script type="text/ng-template" id="addJC.html">
+			<div class="modal-header">
+			<h3>Update time and workcode</h3>
+			</div>
+			<div class="modal-body"> 
+				<div ng-show = "message.timeErr != null">
+					<div id="errors" class="span3 alert alert-danger">{{message.timeErr}}</div>
+					</div>
+			<div class="row">
+				
+				<div class="col-sm-4">
+				 <label class="col-sm-8">Work Code 1</label>
+				 <input   class="col-sm-4" class="gridtextBelow" type="text" data-ng-model="atn.JC1" />
+				</div>
+
+				<div class="col-sm-4">
+				 <label class="col-sm-5"> Time </label>
+				 <input class="col-sm-5" id="spliTime" type="text" min="01:00" max="24:00" class="gridtextBelow" data-ng-model="atn.time" placeholder="HH:mm" ng-change="formatTime(atn.time,'time')" ng-blur="formatTimeFinal(atn.time, 'time')"/>
+				</div>
+				 
+				<div class="col-sm-4">
+					<label class="col-sm-8">Work Code 2</label>	
+					<input  class="col-sm-4" type="text" class="gridtextBelow" data-ng-model="atn.JC2"/>
+				</div>	
+
+		  </div>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-primary" ng-click="ok(atn.JC1, atn.time, atn.JC2)">OK</button>
+			<button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+		</div>
+		</script>
+		<script type="text/ng-template" id="totalHours.html">
+		<div class="modal-header">
+			<h3>Edit Total Hours</h3>
+		</div>
+		<div class="modal-body"> 
+			<div ng-show = "message.timeErr != null">
+			<div id="errors" class="span3 alert alert-danger">{{message.timeErr}}</div>
+			</div>
+			<div class="row">
+				<label class="col-sm-2"> Total: </label>
+				<input  id="totalTxt" class="col-sm-2" type="text" min="01:00" max="24:00"class="gridtextBelow" data-ng-model="totalHour" placeholder="HH:mm" ng-change="formatTime(totalHour,'totalHour')" ng-blur="formatTimeFinal(totalHour,'totalHour')"/>	           	           	
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-primary" ng-click="ok(totalHour)">OK</button>
+			<button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+		</div>
+</script>	
+
+<script type="text/ng-template" id="comment.html">
+		<div class="modal-body"> 
+			<div ng-show = "message.commentErr != null">
+				<div id="errors" class="span3 alert alert-danger">{{message.commentErr}}</div>
+			</div>
+			<div class="row">
+				<label class="col-sm-2"> Add comments: </label>
+				
+			   <textarea name='comment' id='comment' data-ng-model="comment" rows="10" cols="50" ></textarea>
+						
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-primary" ng-click="ok(comment)">Save</button>           
+		</div>
+</script>				
+	</div>
+					<!-- pagecontent-->
+			</div><!-- /.main-container-inner -->
+		</div><!-- /.main-container -->

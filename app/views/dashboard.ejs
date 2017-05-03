@@ -1,0 +1,440 @@
+<div class="main-container-inner">
+	<div class="page-content page-header">
+		<div class="row form-group">
+			<div class="col-lg-3 col-md-3 col-xs-4 col-sm-4" style="padding: 0px;">
+				<h1 style="margin-left:0px;">Timecloud<small><i class="icon-double-angle-right"></i>
+					Admin Dashboard</small>
+				</h1>
+			</div>
+			<div class="col-lg-9 col-md-9 col-xs-8 col-sm-8" style="padding: 0px;">
+				<input type="text" class="form-control" placeholder="Search" ng-model="searchtext" id="searchText">
+			</div>
+		</div>
+		<!-- <div class="row">
+			<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 text-right" style="padding: 0px; margin-bottom: 5px;">
+				<a href="#/copyDataBase" popover-placement="top" popover-trigger="mouseenter" popover="Copy Database" popover-popup-delay="{{delayTime}}" class="btn btn-primary no-border">Copy Database</a>
+				<a href="" popover-placement="top" popover-trigger="mouseenter" popover="Change Report IP" popover-popup-delay="{{delayTime}}" class="btn btn-primary no-border" data-toggle="modal" data-target="#showReportModel">Change Report IP</a>
+			</div>
+		</div> -->
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 span3 alert alert-success" ng-show="messageSucess" id="errors">
+				{{messageSucess}}
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 table-header">
+				All Companies
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12" style="padding-left:0px;padding-right:0px;">
+				<table id="sample-table-2" class="table table-striped table-bordered table-hover">
+					<thead>
+						<tr>
+							<th id="companyname" ng-click="replaceTheSymbol('companyname');" class="main-cols">
+								Company Name <i class="icon-sort"></i>
+							</th>
+							<th id="firstname" ng-click="replaceTheSymbol('firstname');" class="main-cols">
+								Admin Name <i class="icon-sort"></i>
+							</th>
+							<th id="email" ng-click="replaceTheSymbol('email');" class="main-cols">
+								Admin email <i class="icon-sort"></i>
+							</th>
+							<th id="phone" ng-click="replaceTheSymbol('phone');" class="main-cols">
+								Phone No <i class="icon-sort"></i>
+							</th>
+							<th id="lastLoggedin" ng-click="replaceTheSymbol('lastLoggedin');" class="main-cols">
+								Last Logged in <i class="icon-sort"></i>
+							</th>
+							<th class="main-cols">
+								Clock 1/2/3
+							</th>
+							<th class="main-cols"> CompanyID
+							</th>
+							<th class="main-rows-no"> Active Users</th>
+							<th class="main-rows-no"> Max Active Users</th>
+							<th class="main-cols"> Actions </th>
+						</tr>
+					</thead>
+					<tbody data-ng-repeat="company in companyData|orderBy:sort|filter:searchtext track by $index">
+						<tr>
+							<td class="main-rows" ng-class="{'deative-account': company.isLocked}">
+								<a href="#/getCompanyEmployee/{{company._id}}">{{company.companyname}} </a>
+							</td>
+							<td class="main-rows" ng-class="{'deative-account': company.isLocked}">
+								{{company.firstname}}
+							</td>
+							<td class="main-rows" ng-class="{'deative-account': company.isLocked}">
+								{{company.email}}
+							</td>
+							<td class="main-rows" ng-class="{'deative-account': company.isLocked}">
+								{{company.phone}}
+							</td>
+							<td class="main-rows" ng-class="{'deative-account': company.isLocked}">
+								{{company.lastLoggedin | formatDate}}
+							</td>
+							<td class="main-rows-no" ng-class="{'deative-account': company.isLocked}">
+								<div class="form-group" style="width:165px;" id="Tag">
+									<li data-ng-repeat="passcode in company.passcode track by $index" ng-class="{'clock-style':$index==0 && company.passcode.length > 1}">
+
+										<span ng-class="{'label label-danger':passcode.clockNotctive,'label label-success':!passcode.clockNotctive}" style=" word-break: break-all;" ng-if="$index==0">{{passcode.no}}
+										</span>
+
+										<i class="icon-collapse icon-custom-color" ng-show="!company.visible && $index==0 && company.passcode.length > 1" ng-click="toggle(company)"></i>
+
+										<i class="icon-collapse-top icon-custom-color" ng-show="company.visible && $index==0 && company.passcode.length > 1" ng-click="toggle(company)"></i>
+										<span ng-class="{'label label-danger':passcode.clockNotctive,'label label-success':!passcode.clockNotctive}" style=" word-break: break-all;" ng-if="$index!=0 && company.visible">{{passcode.no}} </span>
+									</li>
+								</div>
+							</td>
+							<td class="main-rows" ng-class="{'deative-account': company.isLocked}">
+								{{company._id}}
+							</td>
+
+							<td class="main-rows-no" ng-class="{'deative-account': company.isLocked}">
+								<button class="btn btn-circle-md btn-success"><span>{{company.activeUsers}}</span>  </button>
+							</td>
+							<td class="main-rows-no" ng-class="{'deative-account': company.isLocked}">
+								<button class="btn btn-circle-md btn-info" ng-click="showInputText(company);" ng-if="!company.showTag"><span>{{company.maxActiveUsers}}</span>
+								</button>
+								<input type="text" id="manageLimit" ng-class="{'saved':company.maxUserSaved, 'error':company.maxUserSavedError}" data-ng-enter="changeCompanyDetail(company, 'max')" class="adminClassToDisable ace ace-switch ace-switch-5 ng-pristine ng-valid" data-ng-model="company.maxActiveUsers"
+												name="switch-field-1" ng-if="company.showTag" style="text-align:center; width:60px">
+							</td>
+							<td class="main-rows-no" ng-class="{'deative-account': company.isLocked}">
+								<button type="button" class="btn btn-primary btn-sm" style="margin-right:10px" popover-placement="top" popover-trigger="mouseenter" popover="Change the settings for the Selected Company" popover-popup-delay="{{delayTime}}" ng-click="showModel(company);">
+									<i class="icon-edit"></i>
+								</button>
+								<button type="button" ng-class="{'btn btn-danger btn-sm': !company.isLocked,'btn btn-success btn-sm': company.isLocked}" ng-click="changeCompanyDetail(company,'lock')">
+									<i ng-class="{'icon-lock': !company.isLocked,'icon-unlock': company.isLocked}"></i>
+								</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Modal -->
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="row">
+					<div class="col-lg-5 col-md-5 col-sm-5 col-xs-11">
+						Company Id :
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-11">
+						<h5 class="modal-title" id="myModalLabel"> {{company._id}}</h5>
+					</div>
+					<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-5 col-md-5 col-sm-5 col-xs-11">
+						Company Name :
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						<h5 class="modal-title" id="myModalLabel"> {{company.companyname}}</h5>
+					</div>
+				</div>
+				<div class="col-xs-12">&nbsp;</div>
+				<div class="row">
+					<!-- <div class="col-xs-12">
+						<div class="col-xs-2 pull-right">
+								<a popover-placement="right" popover-trigger="mouseenter" popover="Bring back archived employees by simply clicking on them and sliding active slider from no to yes " popover-popup-delay="{{delayTime}}" class="btn btn-primary" href="#/addreports/{{company._id}}">Reports</a>
+						</div>
+						<div class="col-xs-3 pull-right">
+									<a popover-placement="top" popover-trigger="mouseenter" popover="Bring back archived employees by simply clicking on them and sliding active slider from no to yes " popover-popup-delay="{{delayTime}}" class="btn btn-primary" href="#/addEmails/{{company._id}}">Add Emails</a>
+						</div>
+					</div>	 -->
+					<div class="col-xs-12">
+						<div class="col-xs-2 pull-right">
+							<button popover-placement="right" class="btn btn-primary" ng-click="openLink('reports',company._id)">Reports</button>
+						</div>
+						<div class="col-xs-3 pull-right">
+							<button popover-placement="right" class="btn btn-primary" ng-click="openLink('emails',company._id)">Add Emails</button>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<div class="modal-body">
+				<div class="row form-group">
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						Roster
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						<input type="checkbox" id="isRoster" data-ng-change="changeCompanyDetail(company)" class="adminClassToDisable ace ace-switch ace-switch-5 ng-pristine ng-valid" data-ng-model="company.isRoster" name="switch-field-1">
+						<span class="lbl"></span>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						Dashboard
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						<input type="checkbox" id="isdashboard" data-ng-change="changeCompanyDetail(company)" class="adminClassToDisable ace ace-switch ace-switch-5 ng-pristine ng-valid" data-ng-model="company.isdashboard" name="switch-field-1">
+						<span class="lbl"></span>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						Map
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						<input type="checkbox" id="isMap" data-ng-change="changeCompanyDetail(company)" class="adminClassToDisable ace ace-switch ace-switch-5 ng-pristine ng-valid" data-ng-model="company.isMap" name="switch-field-1">
+						<span class="lbl"></span>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						Hourly Wage
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						<input type="checkbox" id="ishourlywage" data-ng-change="changeCompanyDetail(company)" class="adminClassToDisable ace ace-switch ace-switch-5 ng-pristine ng-valid" data-ng-model="company.ishourlywage" name="switch-field-1">
+						<span class="lbl"></span>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						Scheduling
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						<input type="checkbox" id="isScheduling" data-ng-change="changeCompanyDetail(company)" class="adminClassToDisable ace ace-switch ace-switch-5 ng-pristine ng-valid" data-ng-model="company.isScheduling" name="switch-field-1">
+						<span class="lbl"></span>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						Holidays
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						<input type="checkbox" id="isHolidays" data-ng-change="changeCompanyDetail(company)" class="adminClassToDisable ace ace-switch ace-switch-5 ng-pristine ng-valid" data-ng-model="company.isHolidays" name="switch-field-1">
+						<span class="lbl"></span>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						New Mode for EmployeeNo
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						<input type="checkbox" id="isEmpNoNewMode" data-ng-change="changeCompanyDetail(company)" class="adminClassToDisable ace ace-switch ace-switch-5 ng-pristine ng-valid" data-ng-model="company.isEmpNoNewMode" name="switch-field-1">
+						<span class="lbl"></span>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						3G ID Mode
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						<input type="checkbox" id="is3GIdMode" data-ng-change="changeCompanyDetail(company)" class="adminClassToDisable ace ace-switch ace-switch-5 ng-pristine ng-valid" data-ng-model="company.is3GIdMode" name="switch-field-1">
+						<span class="lbl"></span>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						Auto Task
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						<input type="checkbox" id="isAutoTask" data-ng-change="changeCompanyDetail(company)" class="adminClassToDisable ace ace-switch ace-switch-5 ng-pristine ng-valid" data-ng-model="company.isAutoTask" name="switch-field-1">
+						<span class="lbl"></span>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						Charge Out Rate
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						<input type="checkbox" id="ischargeOutRate" data-ng-change="changeCompanyDetail(company)" class="adminClassToDisable ace ace-switch ace-switch-5 ng-pristine ng-valid" data-ng-model="company.ischargeOutRate" name="switch-field-1">
+						<span class="lbl"></span>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						Sub-Department
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						<input type="checkbox" id="isSubDepartmentEnable" data-ng-change="changeCompanyDetail(company)" class="adminClassToDisable ace ace-switch ace-switch-5 ng-pristine ng-valid" data-ng-model="company.isSubDepartmentEnable" name="switch-field-1">
+						<span class="lbl"></span>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						Department tags in shift
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						<input type="checkbox" id="isDepartmentTagsInShift" data-ng-change="changeCompanyDetail(company)" class="adminClassToDisable ace ace-switch ace-switch-5 ng-pristine ng-valid" data-ng-model="company.isDepartmentTagsInShift" name="switch-field-1">
+						<span class="lbl"></span>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						Add Timezone in Shift
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						<input type="checkbox" id="isTimeZoneForShift" data-ng-change="changeCompanyDetail(company)" class="adminClassToDisable ace ace-switch ace-switch-5 ng-pristine ng-valid" data-ng-model="company.isTimeZoneForShift" name="switch-field-1">
+						<span class="lbl"></span>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						Add Second Break in Shift
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						<input type="checkbox" id="isSecondBreakInShift" data-ng-change="changeCompanyDetail(company)" class="adminClassToDisable ace ace-switch ace-switch-5 ng-pristine ng-valid" data-ng-model="company.isSecondBreakInShift" name="switch-field-1">
+						<span class="lbl"></span>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						Project
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						<input type="checkbox" id="isProject" data-ng-change="changeCompanyDetail(company)" class="adminClassToDisable ace ace-switch ace-switch-5 ng-pristine ng-valid" data-ng-model="company.isProject" name="switch-field-1">
+						<span class="lbl"></span>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						Job Costing
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						<input type="checkbox" id="jobCosting" data-ng-change="changeCompanyDetail(company)" class="adminClassToDisable ace ace-switch ace-switch-5 ng-pristine ng-valid" data-ng-model="company.jobCosting" name="switch-field-1">
+						<span class="lbl"></span>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						Default JC
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						<input type="checkbox" id="defaultJC" data-ng-change="changeCompanyDetail(company)" class="adminClassToDisable ace ace-switch ace-switch-5 ng-pristine ng-valid" data-ng-model="company.isDefaultJC" name="switch-field-1">
+						<span class="lbl"></span>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						Second Tickbox
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						<input type="checkbox" id="secondTick" data-ng-change="changeCompanyDetail(company)" class="adminClassToDisable ace ace-switch ace-switch-5 ng-pristine ng-valid" data-ng-model="company.isSecondTick" name="switch-field-1">
+						<span class="lbl"></span>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						Unique Schedule for Department
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						<input type="checkbox" id="IsUniqueScheduling" data-ng-change="changeCompanyDetail(company)" class="adminClassToDisable ace ace-switch ace-switch-5 ng-pristine ng-valid" data-ng-model="company.IsUniqueScheduling" name="switch-field-1">
+						<span class="lbl"></span>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						Show Report System1
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						<input type="checkbox" id="IsEnableReportSystem1" data-ng-change="changeCompanyDetail(company)" class="adminClassToDisable ace ace-switch ace-switch-5 ng-pristine ng-valid" data-ng-model="company.IsEnableReportSystem1" name="switch-field-1">
+						<span class="lbl"></span>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						Show Allowances
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						<input type="checkbox" id="isallowances" data-ng-change="changeCompanyDetail(company)" class="adminClassToDisable ace ace-switch ace-switch-5 ng-pristine ng-valid" data-ng-model="company.isallowances" name="switch-field-1">
+						<span class="lbl"></span>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						Add Exception Total
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						<input type="checkbox" id="isExceptionTotal" data-ng-change="changeCompanyDetail(company)" class="adminClassToDisable ace ace-switch ace-switch-5 ng-pristine ng-valid" data-ng-model="company.isExceptionTotal" name="switch-field-1">
+						<span class="lbl"></span>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						Manage Leaves
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						<input type="checkbox" id="manageLeaves" data-ng-change="changeCompanyDetail(company)" class="adminClassToDisable ace ace-switch ace-switch-5 ng-pristine ng-valid" data-ng-model="company.manageLeaves" name="switch-field-1">
+						<span class="lbl"></span>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						Manage Exceptions
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						<input type="checkbox" id="manageExceptions" data-ng-change="changeCompanyDetail(company)" class="adminClassToDisable ace ace-switch ace-switch-5 ng-pristine ng-valid" data-ng-model="company.manageExceptions" name="switch-field-1">
+						<span class="lbl"></span>
+					</div>
+				</div>
+				<!-- <div class="row form-group">
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						Lock Account
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						<input type="checkbox" id="lockAccount" data-ng-change="changeCompanyDetail(company)" class="adminClassToDisable ace ace-switch ace-switch-5 ng-pristine ng-valid" data-ng-model="company.isLocked" name="switch-field-1">
+						<span class="lbl"></span>
+					</div>
+				</div> -->
+				<!-- 	<div class="row form-group">
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						Active Users
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						<input type="text" id="manageLimit" class="adminClassToDisable ace ace-switch ace-switch-5 ng-pristine ng-valid" data-ng-model="company.activeUsers" name="switch-field-1" ng-disabled=true>
+						<span class="lbl"></span>
+					</div>
+				</div> -->
+
+				<!-- 	<div class="row form-group">
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						 Max Active Users
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						<input type="text" id="manageLimit" ng-class="{'saved':maxUserSaved}" data-ng-enter="changeCompanyDetail(company)" class="adminClassToDisable ace ace-switch ace-switch-5 ng-pristine ng-valid" data-ng-model="company.maxActiveUsers" name="switch-field-1">
+						<span class="lbl"></span>
+					</div>
+				</div> -->
+
+				<div class="row form-group">
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						Days Limit
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						<input type="text" id="manageLimit" ng-class="{'saved':company.daysLimitSaved}" data-ng-enter="changeCompanyDetail(company,'max')" class="adminClassToDisable ace ace-switch ace-switch-5 ng-pristine ng-valid" data-ng-model="company.daysLimit" name="switch-field-1">
+						<span class="lbl"></span>
+					</div>
+				</div>
+
+				<div class="row form-group">
+					<div class="col-sm-6 col-xs-12">
+						Password
+					</div>
+					<div class="col-sm-6 col-xs-12">
+						<input ng-model="company.password" ng-class="{'saved':pwdUpdated}" type="text" data-ng-enter="changeCompanyPwd(company._id, company.password)" ng-focus="company.password ='';" class="adminClassToDisable ace ace-switch ace-switch-5" />
+
+						<span class="lbl"></span>
+					</div>
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>

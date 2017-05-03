@@ -1,0 +1,545 @@
+<div class="main-container" id="main-container">
+	<div class="main-container-inner">
+		<div class="page-content">
+			<div class="row">
+				<div class="col-sm-3">
+					<div class="page-header">
+						<h1><b>Setting</b></h1>
+					</div><!-- /.page-header -->
+					<div style="color:white">{{settingForm._id}}</div>
+				</div>
+				<div class="col-sm-9">
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="page-header">
+								<h1>Time Cloud
+									<small><i class="icon-double-angle-right"></i>
+										Settings
+									</small>
+								</h1>
+							</div><!-- /.page-header -->
+							<div ng-show = "message.phone != null">
+								<div id="errors" class="span3 alert alert-danger">{{message.phone}}</div>
+							</div>
+							<div ng-show = "message.country != null">
+								<div id="errors" class="span3 alert alert-danger">{{message.country}}</div>
+							</div>
+							<div ng-show = "message.company != null">
+								<div id="errors" class="span3 alert alert-danger">{{message.company}}</div>
+							</div>
+							<div ng-show = "message.setting != null">
+								<div id="errors" class="span3 alert alert-danger">{{message.setting}}</div>
+							</div>
+							<div ng-show = "message.success != null">
+								<div id="errors" class="span3 alert alert-success">{{message.success}}</div>
+							</div>
+							<div ng-show = "message.email != null">
+								<div id="errors" class="span3 alert alert-danger">{{message.email}}</div>
+							</div>
+							<div ng-show = "message.password != null">
+								<div id="errors" class="span3 alert alert-danger">{{message.password}}</div>
+							</div>
+							<div ng-show = "message.firstname != null">
+								<div id="errors" class="span3 alert alert-danger">{{message.firstname}}</div>
+							</div>
+
+							<div class="row">
+								<div class="col-xs-12">
+									<form class="form-horizontal" role="form" name="setting" method="post">
+										<div class="form-group">
+											<label class="col-sm-3" for="form-field-1"> <span popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}">Country</span> </label>
+											<div class="col-sm-9">
+												<select data-ng-model="settingForm.country" class="col-xs-10 col-sm-5" id="form-field-select-2">
+												<option value="">Choose a Country</option>
+												<option value="Pacific/Auckland">New Zealand</option>
+												<option value="Pacific/Rarotonga">Rarotonga</option>
+												<option value="Australia/Sydney">Sydney</option>
+												<option value="America/Los_Angeles">Los Angeles</option>
+												<option value="America/New_York">New York</option>
+												<option value="Asia/Kolkata">India</option>
+												</select>
+											</div>
+										</div>
+										<div class="space-4"></div>
+										<div class="form-group">
+											<label class="col-sm-3" for="form-field-1"> <span popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}"> Company Name </span> </label>
+											<div class="col-sm-9">
+												<input type="text" id="form-field-1" data-ng-model="settingForm.companyname" placeholder="Company Name" class="col-xs-10 col-sm-5" />
+											</div>
+										</div>
+										<div class="space-4"></div>
+										<div ng-show = "message.passcodeadded != null">
+											<div id="errors" class="span3 alert alert-success">{{message.passcodeadded}}</div>
+										</div>
+										<div class="form-group">
+											<div class="col-sm-3 no-padding-right" for="form-field-1">
+												<button class="btn btn-sm btn-primary" popover-placement="top" popover-trigger="mouseenter" popover="Enter the registration number of your time clock or device. If you haven’t received your timeclock yet then you can leave this until you do." popover-popup-delay="{{delayTime}}" data-ng-click="createpasscode()"><i class="icon-plus"></i>Register Device</button>
+											</div>
+											<div class="col-sm-9">
+												<input type="text" id="form-field-1" placeholder="Passcode" data-ng-model="settingForm.passcodeno" class="col-xs-10 col-sm-5" />
+											</div>
+										</div>
+										<div ng-show = "message.passcode != null">
+											<div id="errors" class="span3 alert alert-danger">{{message.passcode}}</div>
+										</div>
+										<div>
+											<div class="form-group" id="Tag">
+												<li data-ng-repeat="passcode in settingForm.passcodes">
+													<span ng-hide="passcode.clockNotctive" class="label label-success">{{passcode.no}} </span>
+													<span ng-show="passcode.clockNotctive" class="label label-danger">{{passcode.no}} </span>
+												</li>
+											</div>
+										</div>
+										<div class="space-4"></div>
+										<div ng-show = "message.departmentOption != null">
+											<div id="errors" class="span3 alert alert-danger">
+												{{message.departmentOption}}</div>
+											</div>
+											
+											<div class="form-group">
+												<label class="col-sm-3"><span popover-placement="top" popover-trigger="mouseenter" popover="Select yes if you have more than one department that you would like to allocate your staff to. This is good for grouping staff and reporting on different departments." popover-popup-delay="{{delayTime}}"> Are you Using Department </span></label>
+												<div class="col-sm-9">
+													<span popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}">
+														<input data-ng-change="departmentToggle()" data-ng-model="settingForm.isdepartments" name="switch-field-1" class="ace ace-switch ace-switch-5" type="checkbox" value="false" />
+														<span class="lbl"></span>
+													</span>
+												</div>
+											</div>
+											<div class="space-4"></div>
+											<div ng-show="departmentValue">
+												<div ng-show = "message.department != null">
+													<div id="errors" class="span3 alert alert-danger">{{message.department}}</div>
+												</div>
+												<div ng-show = "message.added != null">
+													<div id="errors" class="span3 alert alert-success">{{message.added}}</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-3 no-padding-right" for="form-field-1">
+														<button class="btn btn-sm btn-primary" data-ng-click="createdepartment()"><i class="icon-plus"></i>Save Department</button>
+													</div>
+													<div class="col-sm-9">
+														<input type="text" data-ng-model="settingForm.departmentname" id="form-field-1" placeholder="Department" class="col-xs-10 col-sm-5" />
+													</div>
+												</div>
+
+												<div class="form-group" id="Tag">
+													<li data-ng-repeat="department in settingForm.departments">
+														<span class="label label-warning">{{department.name}} <i class="icon-remove icon-white deleteDept" data-ng-click="deleteDepartment(department.name,department._id)"></i>
+														</span>
+													</li>
+												</div>
+												<div class="form-group">
+													<div class="col-lg-7 col-md-7 col-sm-7 col-xs-10">
+														<div ng-show = "message.mainDeparment != null">
+															<div id="errors" class="span3 alert alert-danger">{{message.mainDeparment}}</div>
+														</div>
+														<div ng-show = "message.successDeparment != null">
+															<div id="errors" class="span3 alert alert-success">{{message.successDeparment}}</div>
+														</div>
+													</div>
+												</div>
+												<div ng-show="showSubDept">
+													<div class="form-group">
+														<div class="col-sm-3 no-padding-right" for="form-field-1">
+															<button class="btn btn-sm btn-primary" data-ng-click="createSubDepartment()"><i class="icon-plus"></i>Save Sub-Department</button>
+														</div>
+														<div class="col-sm-9">
+															<select data-ng-model="settingForm.mainDeparment" class="col-xs-10 col-sm-5" id="form-field-select-2">
+																<option value="">Choose a 
+																	Department</option>
+																<option value="{{department.name}}" data-ng-repeat="department in settingForm.departments">{{department.name}}</option>
+															</select>
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-sm-3 no-padding-right" for="form-field-1">
+														</div>
+														<div class="col-sm-9">
+															<input type="text" data-ng-model="settingForm.subDeptName" id="form-field-1" placeholder="Enter Sub Department" class="col-xs-10 col-sm-5" />
+														</div>
+													</div>
+													<div class="form-group" id="Tag">
+														<li data-ng-repeat="subDept in settingForm.subDepartmentList">
+															<span class="label label-warning">{{subDept.name}}<i class="icon-remove icon-white deleteDept" data-ng-click="deleteSubDepartment(subDept.name,subDept._id)"></i>
+															</span>
+														</li>
+													</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-sm-3" for="form-field-1"> <span popover-placement="top" popover-trigger="mouseenter" popover="First name" popover-popup-delay="{{delayTime}}">First name </span></label>
+												<div class="col-sm-9">
+													<input type="text"  id="form-field-1" data-ng-model="settingForm.firstname" ng-pattern="/^[a-zA-Z]/"  placeholder="Firstname " class="col-xs-10 col-sm-5" />
+												</div>
+											</div>
+											<div class="space-4"></div>
+											<div class="form-group">
+												<label class="col-sm-3" for="form-field-1"> <span popover-placement="top" popover-trigger="mouseenter" popover="Last name" popover-popup-delay="{{delayTime}}">Last name </span></label>
+												<div class="col-sm-9">
+													<input type="text" id="form-field-1" data-ng-model="settingForm.lastname" placeholder="Lastname " class="col-xs-10 col-sm-5" />
+												</div>
+											</div>
+											<div class="space-4"></div>
+											<div class="form-group">
+												<label class="col-sm-3" for="form-field-1"> <span popover-placement="top" popover-trigger="mouseenter" popover="Email For login" popover-popup-delay="{{delayTime}}">Email address of username </span></label>
+												<div class="col-sm-9">
+													<input type="text" id="form-field-1" data-ng-model="settingForm.email" placeholder="Email" class="col-xs-10 col-sm-5" />
+												</div>
+											</div>
+											<div class="space-4"></div>
+											<div class="form-group">
+												<label class="col-sm-3" for="form-field-1"><span popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}"> Repeat email address</span> </label>
+												<div class="col-sm-9">
+													<input type="text" id="form-field-1" placeholder="Repeat Email" data-ng-model="settingForm.repeatEmail" class="col-xs-10 col-sm-5" />
+												</div>
+											</div>
+											<div class="space-4"></div>
+											<div class="form-group">
+												<label class="col-sm-3" for="form-field-1"> <span popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}">Enter admin password </span></label>
+												<div class="col-sm-9">
+													<input type="password"  data-ng-model="settingForm.pwd" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;" class="col-xs-10 col-sm-5" />
+												</div>
+											</div>
+											<div class="space-4"></div>
+											<div class="form-group">
+												<label class="col-sm-3" for="form-field-1"><span popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}"> Repeat admin password </span></label>
+												<div class="col-sm-9">
+													<input type="password" id="form-field-1" data-ng-model="settingForm.repeatPassword" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;" class="col-xs-10 col-sm-5" />
+												</div>
+											</div>
+											<div class="space-4"></div>
+											<div class="form-group">
+												<label class="col-sm-3" for="form-field-1"><span popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}" ng-pattern="/^[0-9]/" >Mobile Number</span></label>
+												<div class="col-sm-9">
+													<input type="text" id="form-field-1" data-ng-model="settingForm.mobile" placeholder="Mobile" class="col-xs-10 col-sm-5" />
+												</div>
+											</div>
+											<div class="space-4"></div>
+											<div class="form-group">
+												<label class="col-sm-3" for="form-field-1"><span popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}"> Phone number</span></label>
+												<div class="col-sm-9">
+													<input ng-minlength="6"type="text" id="form-field-1" data-ng-model="settingForm.phone" placeholder="Phone" ng-pattern="/^[0-9]/" class="col-xs-10 col-sm-5" />
+												</div>
+											</div>
+											<div class="space-4"></div>
+											<div class="form-group">
+												<label class="col-sm-3"> <span popover-placement="top" popover-trigger="mouseenter" popover="Select yes if you pay your employees overtime." popover-popup-delay="{{delayTime}}">Do you have an Overtime? </span></label>
+												<div class="col-sm-9">
+													<span popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}">
+														<input name="switch-field-1" data-ng-change="overtimeToggle()" data-ng-model="settingForm.isovertime" class="ace ace-switch ace-switch-5" type="checkbox" />
+														<span class="lbl"></span>
+													</span>
+												</div>
+											</div>
+											<div ng-show="overtimeValue">
+												<div class="form-group">
+													<label class="col-sm-3" for="form-field-1"> <span popover-placement="top" popover-trigger="mouseenter" popover="Select whether you pay your overtime daily or weekly." popover-popup-delay="{{delayTime}}">Overtime </span> </label>
+													<div class="col-sm-9">
+														<div class="btn-group" data-toggle="buttons">
+															<label id="daily" class="btn btn-primary active" data-ng-click="overtime('daily')" popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}">
+																<input type="radio"  ng-model="settingForm.overtimePeriod" name="overtime"  > Daily
+															</label>
+															<label id="weeklyOver" class="btn btn-primary" data-ng-click="overtime('weekly')" popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}">
+																<input type="radio"  name="overtime" ng-model="settingForm.overtimePeriod" >  Weekly
+															</label>
+														</div>
+													</div>
+												</div>
+												<div class="space-4"></div>
+												<div class="form-group">
+													<label class="col-sm-3" for="form-field-1"><span popover-placement="top" popover-trigger="mouseenter" popover="Select 1 if you only pay one type of overtime.Select 2 if you pay 2 types of overtime. " popover-popup-delay="{{delayTime}}"> Overtime levels </span> </label>
+													<div class="col-sm-9">
+														<div class="btn-group" data-toggle="buttons">
+															<label id="1" class="btn btn-primary active" data-ng-click="overtimeLevel(1)" popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}">
+																<input type="radio" ng-model="settingForm.overtimeLevel" name="options" id="option1"> 1
+															</label>
+															<label id="2" class="btn btn-primary" data-ng-click="overtimeLevel(2)" popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}">
+																<input type="radio" ng-model="settingForm.overtimeLevel" name="options" id="option3">  2
+															</label>
+														</div>
+													</div>
+												</div>
+											</div>
+												<div class="space-4"></div>
+												<div class="form-group">
+													<label class="col-sm-3" for="form-field-1"><span popover-placement="top" popover-trigger="mouseenter" popover="Select the day that your pay week starts. For example, if you pay Wednesday to Tuesday then you would select Wednesday." popover-popup-delay="{{delayTime}}"> Work start day</span></label>
+													<div class="col-sm-9">
+														<div class="btn-group" data-toggle="buttons">
+															<label id="mon" class="btn btn-primary active" data-ng-click="WeekdayStart('mon')" popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}">
+																<input type="radio" name="settingForm.WeekdayStart"> Mon
+															</label>
+															<label id="tues" class="btn btn-primary" data-ng-click="WeekdayStart('tues')" popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}">
+																<input type="radio" name="settingForm.WeekdayStart">  Tues
+															</label>
+															<label id="wed" class="btn btn-primary" data-ng-click="WeekdayStart('wed')" popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}">
+																<input type="radio" name="settingForm.WeekdayStart">  Wed
+															</label>
+															<label id="thurs" class="btn btn-primary" data-ng-click="WeekdayStart('thurs')" popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}">
+																<input type="radio" name="settingForm.WeekdayStart">  Thurs
+															</label>
+															<label id="fri" class="btn btn-primary" data-ng-click="WeekdayStart('fri')" popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}">
+																<input type="radio" name="settingForm.WeekdayStart">  Fri
+															</label>
+															<label id="sat" class="btn btn-primary" data-ng-click="WeekdayStart('sat')" popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}">
+																<input type="radio" name="settingForm.WeekdayStart">  Sat
+															</label>
+															<label id="sun" class="btn btn-primary" data-ng-click="WeekdayStart('sun')" popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}">
+																<input type="radio" name="settingForm.WeekdayStart">  Sun
+															</label>
+														</div>
+													</div>
+												</div>
+												<div class="space-4"></div>
+												<div ng-show = "message.allowanceOption != null">
+													<div id="errors" class="span3 alert alert-danger">{{message.allowanceOption}}</div>
+												</div>
+												<div ng-show = "message.allowanceadded != null">
+													<div id="errors" class="span3 alert alert-success">{{message.allowanceadded}}</div>
+												</div>
+												<div ng-show="hiddenValue">
+													<div class="form-group" ng-show="versions=='standard'">
+														<label class="col-sm-3" for="form-field-1"><span popover-placement="top" popover-trigger="mouseenter" popover="Allowances are any additional payments you may make to staff like meals or travel." popover-popup-delay="{{delayTime}}">Do you have allowances?</span></label>
+														<div class="col-sm-9">
+															<span popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}">
+																<input  data-ng-change="allowanceToggle()" name="switch-field-1" class="ace ace-switch ace-switch-5" data-ng-model="settingForm.isallowances" type="checkbox" />
+																<span class="lbl"></span>
+															</span>
+														</div>
+													</div>
+													<div class="space-4"></div>
+													<div ng-show="allowanceValue && versions=='standard'">
+														<div class="form-group">
+															<div class="col-sm-3 no-padding-right" for="form-field-1">
+																<button popover-placement="top" popover-trigger="mouseenter" popover="Type in the allowance you would like to add and then select “Add Allowance”" popover-popup-delay="{{delayTime}}" class="btn btn-sm btn-primary" data-ng-click="createallowance()"><i class="icon-plus"></i>Save Allowances</button>
+															</div>
+															<div class="col-sm-9">
+																<input type="text" id="form-field-1" data-ng-model="settingForm.allowancename" placeholder="Allowance" class="col-xs-10 col-sm-5" popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}"/>
+															</div>
+														</div>
+														<div ng-show = "message.allowance != null">
+															<div id="errors" class="span3 alert alert-danger">{{message.allowance}}</div>
+														</div>
+														<div class="form-group">
+															<div class="col-sm-12" ng-show="settingForm.allowances">
+																<div class="form-group" id="Tag">
+																	<li data-ng-repeat="allowance in settingForm.allowances">
+																		<span class="label label-warning">{{allowance.name}} </span>
+																	</li>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div ng-show="hiddenValue">
+														<div class="form-group" ng-show="versions=='standard'">
+															<label class="col-sm-3" for="form-field-1"><span popover-placement="top" popover-trigger="mouseenter" popover="Job costing allows you to allocate time to specific jobs." popover-popup-delay="{{delayTime}}">Enable JobCosting</span></label>
+															<div class="col-sm-9">
+																<span popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}">
+																	<input name="switch-field-1" class="ace ace-switch ace-switch-5" data-ng-model="settingForm.jobCosting" type="checkbox" />
+																	<span class="lbl"></span>
+																</span>
+															</div>
+														</div>
+														<div class="space-4"></div>
+														<div class="form-group">
+															<label class="col-sm-3" for="form-field-1"><span popover-placement="top" popover-trigger="mouseenter" popover="The roster function allows you to make rosters for different departments." popover-popup-delay="{{delayTime}}">Enable Roster</span></label>
+															<div class="col-sm-9">
+																<span popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}">
+																	<input name="switch-field-1" class="ace ace-switch ace-switch-5" data-ng-model="settingForm.isRoster" type="checkbox" />
+																	<span class="lbl"></span>
+																</span>
+															</div>
+														</div>
+														<div class="form-group" ng-show="versions=='standard'">
+															<label class="col-sm-3" for="form-field-1"><span popover-placement="top" popover-trigger="mouseenter" popover="The roster function allows you to make rosters for different departments." popover-popup-delay="{{delayTime}}">Enable project</span></label>
+															<div class="col-sm-9">
+																<span popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}">
+																	<input name="switch-field-1" class="ace ace-switch ace-switch-5" data-ng-model="settingForm.isProject" type="checkbox" />
+																	<span class="lbl"></span>
+																</span>
+															</div>
+															<div class="space-4"></div>
+														</div>
+														<!-- <div class="form-group">
+															<label class="col-sm-3" for="form-field-1"><span popover-placement="top" popover-trigger="mouseenter" popover="The roster function allows you to make rosters for different departments." popover-popup-delay="{{delayTime}}">Enable Dashboard</span></label>
+															<div class="col-sm-9">
+																<span popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}">
+																	<input name="switch-field-1" class="ace ace-switch ace-switch-5" data-ng-model="settingForm.isdashboard" type="checkbox" />
+																	<span class="lbl"></span>
+																</span>
+															</div>
+															<div class="space-4"></div>
+														</div> -->
+													</div>
+													<div class="space-4"></div>
+												</div>
+												<div class="form-group">
+													<label class="col-sm-3" for="form-field-1"><span popover-placement="top" popover-trigger="mouseenter" popover="Payroll export allows you to export a csv or excel file in order to transfer data to your payroll system." popover-popup-delay="{{delayTime}}">payroll export?</span></label>
+													<div class="col-sm-9">
+														<span popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}">
+															<input  data-ng-change="payrollToggle()" data-ng-model="settingForm.ispayroll" name="switch-field-1" class="ace ace-switch ace-switch-5" type="checkbox" />
+															<span class="lbl"></span>
+														</span>
+													</div>
+												</div>
+												<div class="space-4"></div>
+												<div ng-show="payrollValue">
+													<div class="form-group">
+														<label class="col-sm-3" for="form-field-1"><span popover-placement="top" popover-trigger="mouseenter" popover="Select which payroll system you will be using." popover-popup-delay="{{delayTime}}">export to </span> </label>
+														<div class="col-sm-9">
+															<div class="btn-group" data-toggle="buttons">
+																<label id="Ace" class="btn btn-primary" data-ng-click="payrollSystem('Ace')" popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}" style="margin-top:2px;">
+																	<input type="radio" name="settingForm.payrollSystem" id="option1"> Ace
+																</label>
+																<label id="MYOB" class="btn btn-primary" data-ng-click="payrollSystem('MYOB')" popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}" style="margin-top:2px;">
+																	<input type="radio" name="settingForm.payrollSystem" id="option3">  MYOB
+																</label>
+																<label id="IMS" class="btn btn-primary" data-ng-click="payrollSystem('IMS')" popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}" style="margin-top:2px;">
+																	<input type="radio" name="settingForm.payrollSystem" id="option3">  IMS
+																</label>
+																<label id="Crystal" class="btn btn-primary" data-ng-click="payrollSystem('Crystal')" popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}" style="margin-top:2px;">
+																	<input type="radio" name="settingForm.payrollSystem" id="option3">  Crystal
+																</label>
+																<label id="Datacom" class="btn btn-primary" data-ng-click="payrollSystem('Datacom')" popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}" style="margin-top:2px;">
+																	<input type="radio" name="settingForm.payrollSystem" id="option3">  Datacom
+																</label>
+																<label id="Chris21" class="btn btn-primary" data-ng-click="payrollSystem('Chris21')" popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}" style="margin-top:2px;">
+																	<input type="radio" name="settingForm.payrollSystem" id="option3">  Chris21
+																</label>
+																<label id="Ipayroll" class="btn btn-primary" data-ng-click="payrollSystem('Ipayroll')" popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}" style="margin-top:2px;">
+																	<input type="radio" name="settingForm.payrollSystem" id="option3">  Ipayroll
+																</label>
+																<label id="SmartPayroll" class="btn btn-primary" data-ng-click="payrollSystem('SmartPayroll')" popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}" style="margin-top:2px;">
+																	<input type="radio" name="settingForm.payrollSystem" id="option3">  Smart Payroll
+																</label>
+															  <label id="FivestarPayroll" class="btn btn-primary" data-ng-click="payrollSystem('FivestarPayroll')" popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}" style="margin-top:2px;">
+															  	<input type="radio" name="settingForm.payrollSystem" id="option3">Fivestar Payroll
+															  </label>
+
+															  <label id="MYOBEXO" class="btn btn-primary" data-ng-click="payrollSystem('MYOBEXO')" popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}"  style="margin-top:2px;">
+															  	<input type="radio" name="settingForm.payrollSystem" id="option3">  MYOB-EXO
+															  </label>
+
+															</div>
+
+															<div ng-show = "message.payroll != null">
+																<div id="errors" class="span3 alert alert-danger">{{message.payroll}}</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="space-4"></div>
+												<div class="form-group">
+													<label class="col-sm-3" for="form-field-1"><span popover-placement="top" popover-trigger="mouseenter" popover="Select your pay cycle period. " popover-popup-delay="{{delayTime}}"> Pay period</sapn></label>
+													<div class="col-sm-9">
+														<div class="btn-group" data-toggle="buttons">
+															<label id="weeklyP" class="btn btn-primary active" data-ng-click="payPeriod('weekly')" popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}">
+																<input type="radio" name="settingForm.payPeriod" id="option1"> Weekly
+															</label>
+															<label id="2weeksP" class="btn btn-primary" data-ng-click="payPeriod('2weeks')" popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}">
+																<input type="radio" name="settingForm.payPeriod" id="option3">  2 Weeks
+															</label>
+															<label id="monthlyP" class="btn btn-primary" data-ng-click="payPeriod('monthly')" popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}">
+																<input type="radio" name="settingForm.payPeriod" id="option3">  Monthly
+															</label>
+															<label id="4weeksP" class="btn btn-primary" data-ng-click="payPeriod('4weeks')" popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}">
+																<input type="radio" name="settingForm.payPeriod" id="option3">  4 Weeks
+															</label>
+														</div>
+													</div>
+												</div>
+												<div class="form-group" ng-show="ruleStart">
+													<label class="col-sm-3" for="form-field-1"> First Date of Rule </label>
+													<div class="col-sm-9">
+														<input type="text" datepicker-popup="{{format}}" show-weeks = false showTimezone = true timezone = '+0100' ng-model="settingForm.payPeriodStartDate" is-open="opened" max="'2045-06-22'" datepicker-options="dateOptions"  close-text="Close" />
+													</div>
+												</div>
+												<div id="errors" ng-if="message.period" class="span3 alert alert-danger">{{message.period}}</div>
+												<div class="space-4"></div>
+												<div ng-show="hiddenValue">
+													<div class="form-group" ng-show="versions=='standard'">
+														<label class="col-sm-3"  for="form-field-1"><span popover-placement="top" popover-trigger="mouseenter" popover="Select yes if you would like to record the employee charge out rate in the employee file. This is a good feature to use for reporting purposes." popover-popup-delay="{{delayTime}}">include charge out rate in emplyee details? </span></label>
+														<div class="col-sm-9">
+															<span popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}">
+																<input  data-ng-model="settingForm.ischargeOutRate" name="switch-field-1" class="ace ace-switch ace-switch-5" type="checkbox" />
+																<span class="lbl"></span>
+															</span>
+														</div>
+													</div>
+													<div class="space-4"></div>
+													<div class="form-group" ng-show="versions=='standard'">
+														<label class="col-sm-3"  for="form-field-1"><span popover-placement="top" popover-trigger="mouseenter" popover="Select yes if you would like to record the employee wage in the employee file. This is a good feature to use for reporting purposes." popover-popup-delay="{{delayTime}}">include hourly wage in emplyee details? </span></label>
+														<div class="col-sm-9">
+															<span popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}">
+																<input  data-ng-model="settingForm.ishourlywage" name="switch-field-1" class="ace ace-switch ace-switch-5" type="checkbox" />
+																<span class="lbl"></span>
+															</span>
+														</div>
+													</div>
+													<div class="space-4"></div>
+												</div>
+												<!-- ng-show="hiddenValue" -->
+												<div ng-show="hiddenValue">
+													<div class="form-group" ng-show="versions=='standard'">
+														<label class="col-sm-3"  for="form-field-1"><span popover-placement="top" popover-trigger="mouseenter" popover="Using public holidays allows you to account for New Zealand statutory holidays. If your payroll system already provides this function then it is best to use the function within your payroll system instead." popover-popup-delay="{{delayTime}}">Use Public Holidays? </span></label>
+														<div class="col-sm-9">
+															<span popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}">
+																<input  data-ng-model="settingForm.isHolidays" name="switch-field-1" class="ace ace-switch ace-switch-5" type="checkbox" />
+																<span class="lbl"></span>
+															</span>
+														</div>
+													</div>
+												</div>
+												<div class="space-4"></div>
+												<div ng-show="hiddenValue">
+													<div class="form-group">
+														<label class="col-sm-3"  for="form-field-1"><span popover-placement="top" popover-trigger="mouseenter" popover="This feature controls how quickly the help boxes appear when you hover over words. If you are less likely to need the help boxes then select ‘slow’. If you are likely to need the help then select ‘fast’." popover-popup-delay="{{delayTime}}">Smart help response time </span></label>
+														<div class="col-sm-9">
+															<div class="btn-group" data-toggle="buttons">
+																<label id="fastP" class="btn btn-primary active" data-ng-click="tooltipTime('400')"  popover-placement="top" popover-trigger="mouseenter" popover="Fast" popover-popup-delay="{{delayTime}}">
+																	<input type="radio" name="settingForm.tooltipDelayTime" id="option1" value="400"> Fast
+																</label>
+																<label id="mediumP" class="btn btn-primary" data-ng-click="tooltipTime('900')"  popover-placement="top" popover-trigger="mouseenter" popover="Medium" popover-popup-delay="{{delayTime}}">
+																	<input type="radio" name="settingForm.tooltipDelayTime" id="option2" value="900">  Medium
+																</label>
+																<label id="slowP" class="btn btn-primary" data-ng-click="tooltipTime('2000')"  popover-placement="top" popover-trigger="mouseenter" popover="Slow" popover-popup-delay="{{delayTime}}">
+																	<input type="radio" name="settingForm.tooltipDelayTime" id="option3" value="2000">  Slow
+																</label>
+															</div>
+															<!-- <input type="text" id="form-field-1" data-ng-model="settingForm.tooltipDelayTime" placeholder="Tooltip Delay Time in mili seconds" class="col-xs-10 col-sm-5" popover-placement="top" popover-trigger="mouseenter" popover="tooltip2" popover-popup-delay="{{delayTime}}"/> -->
+														</div>
+													</div>
+													<div class="space-4"></div>
+												</div>
+												<div class="clearfix form-actions">
+													<div class="col-md-offset-3 col-md-9">
+														<button type="button" class="btn btn-primary" data-ng-click="submitform()" popover-placement="top" popover-trigger="mouseenter" popover="Select submit to save your settings." popover-popup-delay="{{delayTime}}">
+															<i class="icon-ok bigger-110"></i>Save
+														</button>
+													</div>
+												</div>
+												<script type="text/ng-template" id="department.html">
+												<div class="modal-header">
+												<h3>Delete Department</h3>
+												</div>
+												<div class="modal-body">
+												<h4> Select a date from which date you wants to delete this department. </h4>
+												</br>
+												<div ng-show = "message.date != null">
+												<div id="errors" class="span3 alert alert-danger">{{message.date}}</div>
+												</div>
+												<label class="col-sm-3"> Date:  </label>
+												<input type="text" datepicker-popup="{{format}}" ng-model="dateStart" is-open="opened" max="'2045-06-22'" datepicker-options="dateOptions" close-text="Close" />
+												</div>
+												<div class="modal-footer">
+												<button class="btn btn-primary" ng-click="ok(dateStart)">OK</button>
+												<button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+												</div>
+												</script>
+											</form>
+										</div>
+									</div>
+								</div><!-- /.col -->
+							</div><!-- /.row -->
+						</div><!--col-sm-9-->
+					</div><!--row--fluid-->
+					<!-- pagecontent-->

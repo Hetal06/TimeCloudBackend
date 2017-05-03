@@ -1,0 +1,102 @@
+<div class="main-container-inner">
+	<div class="page-content">
+		<div class="row">			
+			<div class="col-sm-12">
+				<div class="page-header">
+					<h1>
+						Timecloud
+						<small>
+							<i class="icon-double-angle-right"></i>
+							Admin 
+						</small>
+					</h1>
+				</div><!-- /.page-header -->
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="row">
+							<div class="col-xs-12">	
+								<div ng-show = "messageSucess">
+									<div id="errors" class="span3 alert alert-danger">{{messageSucess}}</div>
+								</div>
+								<div ng-show = "Emailerr">
+									<div id="errors" class="span3 alert alert-danger">{{Emailerr}}
+									</div>
+								</div>						
+								<div class="table-header">
+									Custom Reports
+									<div class="pull-right">
+									<button class="btn btn-sm btn-primary" data-ng-click="addrow()"><i class="icon-plus"></i>Add Report</button>
+									</div>
+								</div>								
+								<div class="table-responsive">
+									<table id="sample-table-2" class="table table-striped table-bordered table-hover">
+										<thead>
+											<tr>	
+												<th> Active </th>
+												<th> ReportName </th>
+												<th> Link </th>
+												<th> Delete </th>
+											</tr>
+										</thead>
+										<tbody id="tbody">	
+											<tbody data-ng-repeat="reports in CustomreportsData track by $index">
+												<tr>
+													<td>
+														<select data-ng-model="reports.active" class="col-xs-10 col-sm-8" id="form-field-select-2" data-ng-change="saveReport(reports)">
+																<option value="true">True</option>
+																<option value="false">false</option>
+														</select>
+													</td>
+													<td>
+														<input  ng-model="reports.reportName" type="text"  data-ng-enter="saveReport(reports)" />	
+													</td>
+													<td>
+														<input  ng-model="reports.link" type="text"  data-ng-enter="saveReport(reports)" />	
+													</td>	
+													<td>
+														<button class="btn btn-primary" ng-click="deleterow(companyId, reports._id)"><i class="icon-trash"></i>Delete</button>
+													</td>											
+												</tr>
+											</tbody>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/ng-template" id="add.html">
+		<div class="modal-header">
+			<h3>Add Report</h3>
+		</div>
+    <div class="modal-body">  
+      <div ng-show = "message.reportxt != null">
+				<div id="errors" class="span3 alert alert-danger">{{message.reportxt}}</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3"> Report Name:  </label>
+				<input type="text" ng-model="report.reportName" />
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3"> Report IP:  </label>
+				<input type="text" ng-model="report.reportsIp" readonly/>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3"> Report Link:  </label>
+				<input type="text" ng-model="report.link" />
+			</div>
+			<div class="form-group" class="inline">
+				<label class="col-sm-3"> Active :  </label>
+				<input type="radio"  ng-model="report.active" value="true">  True <br/>
+				<input type="radio" ng-model="report.active" value="false" > False <br/>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-primary" ng-click="ok(report)">OK</button>
+			<button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+		</div>
+	</script> 
+</div>

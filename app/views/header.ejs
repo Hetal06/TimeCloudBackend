@@ -1,0 +1,180 @@
+<div id="header_container" ng-controller="headerController" ng-hide="{{hideHeader}}">
+	<div class="navbar navbar-default" id="navbar">
+		<div class="navbar-container" id="navbar-container">
+			<div class="navbar-header">
+        <button type="button" class="navbar-toggle pull-left" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>	         
+      </div>
+      <div class="navbar-collapse collapse" style="margin-right: -15px; margin-left: -15px;">
+				<ul class="nav navbar-nav" ng-if="showMenu">
+					<li class="light-blue" ng-show="showMaps">	
+						<a href="#/map"  popover-popup-delay="{{delayTime}}"  popover-placement="bottom" popover-trigger="mouseenter" popover="Return to your home screen from wherever you are" ng-click="toggleFn()">
+							<i class="icon-globe"></i>
+							<span >Map</span>
+						</a>
+					</li>
+					<li class="light-blue" ng-show="showDashboard">	
+						<a href="#/meterdashboard"  popover-popup-delay="{{delayTime}}"  popover-placement="bottom" popover-trigger="mouseenter" popover="Return to your home screen from wherever you are" ng-click="toggleFn()">
+							<i class="icon-dashboard"></i>
+							<span >Dashboard</span>
+						</a>
+					</li>
+					<li class="light-blue">							
+						<a href="#/home"  popover-popup-delay="{{delayTime}}"  popover-placement="bottom" popover-trigger="mouseenter" popover="Return to your home screen from wherever you are" ng-click="toggleFn()">
+							<i class="icon-home"></i>
+							<span >Home</span>
+						</a>
+					</li>
+					<li class="light-blue">
+						<!-- <a href="#/attendanceedit/{{employeeNo}}"  popover-popup-delay="{{delayTime}}"  popover-placement="bottom" popover-trigger="mouseenter" popover=" Look at the employees time stamps and totals for the day and edit them" ng-click="toggleFn()">
+							<i class="icon-file"></i>
+							<span>Attendance</span>
+						</a> -->
+						<a href=""  popover-popup-delay="{{delayTime}}"  popover-placement="bottom" popover-trigger="mouseenter" popover=" Look at the employees time stamps and totals for the day and edit them" ng-click="toggleFn('attendanceedit')">
+							<i class="icon-home"></i>
+							<span>Attendance</span>
+						</a>
+					</li>					
+					<li class="light-blue" >
+						<a href="#/shiftpattern" popover-placement="bottom" popover-trigger="mouseenter" popover="Set up your rules for days, weeks, rounding, holidays, leave" popover-popup-delay="{{delayTime}}" ng-click="toggleFn()">
+							<i class="icon-list-alt"></i>
+							<span>Shifts</span>
+						</a>
+					</li>
+					<li class="light-blue" ng-show="showRoster">
+						<a href="#/roster" popover-placement="bottom" popover-trigger="mouseenter" popover="Create your roster for your staff completely flexible " popover-popup-delay="{{delayTime}}" ng-click="toggleFn()">
+							<i class="icon-calendar"></i>
+							<span>Roster</span>								
+						</a>
+					</li>
+					<li class="light-blue" ng-show="showScheduling">							
+						<a href="#/scheduling"  popover-popup-delay="{{delayTime}}"  popover-placement="bottom" popover-trigger="mouseenter" popover="Display Scheduling for employees to assigns them shift" ng-click="toggleFn()">
+							<i class="icon-calendar"></i>
+							<span >Scheduling</span>
+						</a>
+					</li>
+					<li class="light-blue">
+						<a href="#/reports" popover-placement="bottom" popover-trigger="mouseenter" popover="View and print reports as well as export for payroll at the end of pay period" popover-popup-delay="{{delayTime}}" ng-click="toggleFn()">
+							<i class="icon-list"></i>
+							<span>Reports</span>
+						</a>
+					</li>
+					<li class="light-blue" ng-show="showProject">
+						<a href="/project/#/home" popover-placement="bottom" popover-trigger="mouseenter" popover="Create your roster for your staff completely flexible " popover-popup-delay="{{delayTime}}" ng-click="toggleFn()">
+							<i class="icon-screenshot"></i>
+							<span>Project</span>								
+						</a>
+					</li>
+					<li class="light-blue">
+						<a href="#/feedback" popover-placement="bottom" popover-trigger="mouseenter" popover="Inform us of any challenges or difficulties you might have " popover-popup-delay="{{delayTime}}" ng-click="toggleFn()">
+							<i class="icon-edit bigger-120"></i>
+							<span>Support</span>
+						</a>
+					</li>	
+					<!-- 	<li class="light-blue">
+						<a href="" popover-placement="bottom" popover-trigger="mouseenter" popover="Inform us of any challenges or difficulties you might have " popover-popup-delay="{{delayTime}}" ng-click="toggleFn()">
+							<i class="icon-film bigger-120"></i>
+							<span>Help Videos</span>
+						</a>
+					</li>		 -->
+
+					  <li class="dropdown light-blue">
+		          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+		          	<i class="icon-film bigger-120"></i>
+								<span>Help Videos</span> 
+								<span class="caret caret-white"></span>
+							</a>
+		          <ul class="dropdown-menu scrollable-menu">
+		            <li ng-repeat="video in helpVideos" ng-if="helpVideos.length>0">
+		            	<a href="https://editmytime.com/videos/{{video.path}}" ng-if="video.path" target="_blank"> <i class="icon-play-circle icon-space-right"></i> {{video.name}}</a>
+		            	<a href="" target="_blank"  ng-if="!video.path"> <i class="icon-play-circle icon-space-right"></i> {{video.name}}</a>
+		            </li>
+		            <li ng-if="helpVideos.length==0"><a href=""> No videos </a></li>
+	 						</ul>
+		        </li>				
+
+				</ul>
+
+				<ul class="nav navbar-nav navbar-right">
+					 <li class="light-blue">					 
+						<a  href="#/usermessages" popover-placement="bottom" popover-trigger="mouseenter" popover-popup-delay="{{delayTime}}"  popover="Messages">
+				        	<i class="icon-envelope"></i>
+				        	<span ng-show="messages" class="notification-counter">{{messages}}</span>
+				    	</a>
+				    </li>
+					<li class="light-blue">
+						<a  href="#/settings" popover-placement="bottom" popover-trigger="mouseenter" popover-popup-delay="{{delayTime}}"  popover="Change your companies setup as well as enable extra features" ng-click="toggleFn()">
+							<i class="icon-cog"></i>
+							<span >Settings</span>
+						</a>
+					</li>
+
+					<li class="light-blue">
+						<a  href="/logout" popover-placement="bottom" popover-trigger="mouseenter" popover-popup-delay="{{delayTime}}"  popover="Leave the App" ng-click="toggleFn('logout')">
+							<i class="icon-off"></i>
+							<span>Logout</span>
+						</a>
+					</li>
+					
+				</ul><!-- /.ace-nav -->
+			</div><!-- /.navbar-header -->
+		</div><!-- /.container -->
+	</div>
+
+	<script type="text/ng-template" id="instantmessage.html">
+    <div class="modal-header">
+        <h3>Message</h3>
+    </div>
+    <div class="modal-body">
+    	<div class="form-group">
+            <label> Subject : </label> 
+            <span>
+             {{msgData.subject}}
+            </span>
+            
+        </div>
+        </br>
+        <div class="form-group">
+            <label> Message : </label> 
+            <span>
+             {{msgData.message}}
+            </span>
+            
+        </div>
+        <div class="row pull-right">
+         
+        	<label class="col-sm-12 inline">
+               Please confirm you have read it by ticking the box
+            </label>                                    
+            <input class="pull-right" type="checkbox" id="confirm">
+         
+        </div>
+        
+    </div>
+    <div class="modal-footer">
+             
+        <button class="btn btn-primary" ng-click="ok(msgData._id)">Close Message</button>        
+    </div>
+  </script>	
+
+  <!-- videos -->
+  <script type="text/ng-template" id="videos.html">
+  	<div class="modal-dialog" style="padding: 0;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" ng-click="cancel()" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">{{videoHeader}}</h4>
+            </div>
+            <div class="modal-body">
+                <iframe id="cartoonVideo" width="560" height="315" ng-src="{{myLink}}" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+  </script>
+
+	<div class="clearfix"></div>
+</div>

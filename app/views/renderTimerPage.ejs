@@ -1,0 +1,47 @@
+<html>
+	<head>
+		<title>calculateWeeklyOt</title>
+		<script src='/js/jquery-2.0.3.min.js'> </script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$("#msg").html("Please start running reports in 5 min");
+				var $setTheTimerForMinute = $("#setTheTimerForMinute");
+		    function update() {
+	    		var myTime = $setTheTimerForMinute.html();
+	        if(myTime=="05:00") {
+	        	$("#msg").html('');
+	        	$("#setTheTimerForMinute").html("Calculating WeeklyOt...");
+	        	var data = {datas:14};
+	        	$.ajax({
+						  type: "get",
+						  url: '/weeklyOtFlagOfCompany',
+						  data: data,
+						  success: function(data) {
+						  	if(data===true) {
+						  		$("#setTheTimerForMinute").html("Calculating WeeklyOt finished");
+						  	}
+						  }
+						});
+	        } else {
+		        var ss = myTime.split(":");
+		        var dt = new Date();
+		        dt.setHours(0);
+		        dt.setMinutes(ss[0]);
+		        dt.setSeconds(ss[1]);
+		        var dt2 = new Date(dt.valueOf() + 1000);
+		        var temp = dt2.toTimeString().split(" ");
+		        var ts = temp[0].split(":");
+		        $setTheTimerForMinute.html(ts[1]+":"+ts[2]);
+		        setTimeout(update, 1000);
+		      }
+		    }
+		    setTimeout(update, 1000);
+			})
+		</script>
+	</head>
+	<body>
+		<div id="msg"></div>
+		<div id="setTheTimerForMinute">00:00
+		</div>
+	</body>
+</html>

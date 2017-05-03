@@ -1,0 +1,289 @@
+<div class="main-container" id="main-container">
+	<div class="main-container-inner">
+		<div class="page-content">
+			<div class="row">
+				<div class="col-sm-3">
+					<div class="list-group ">
+						<a class="list-group-item active">
+							List of Employees (Click Employee to Edit)
+						</a>						
+						<div class="list-group-item">  	
+					  	<input type="text" class="form-control" placeholder="Search" ng-model="searchtext" id="searchText">
+					  </div>
+					  <div data-ng-repeat="employee in employeeList|filter:searchtext track by $index">  	
+					  	<a popover-placement="top" popover-trigger="mouseenter" popover=" Click to Edit " popover-popup-delay="{{delayTime}}" href="#/employee/edit/{{employee._id}}" class="list-group-item"><span class="pull-left"> {{employee.employeeNo}}) {{employee.firstName}} {{employee.lastName}}</span><i class="icon-edit pull-right"></i><div class="clearfix"></div></a>
+					  </div>
+					</div>
+				</div>
+				<div class="col-sm-9">
+					<div class="page-header">
+						<h1>
+							Time Cloud
+							<small>
+								<i class="icon-double-angle-right"></i>
+								Create Employee
+							</small>
+						</h1>
+					</div>
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="row">
+								<div class="col-xs-12">
+									<div class="space-4"></div>
+										<div ng-show = "message.employeeAdded != null">
+											<div id="errors" class="span3 alert alert-success">{{message.employeeAdded}}</div>
+										</div>
+										<div ng-show = "message.employeeErr != null">
+											<div id="errors" class="span3 alert alert-danger">{{message.employeeErr}}
+											</div>
+										</div>
+										<form class="form-horizontal" role="form" name="employeeFrm" method="post">
+											<div class="form-group">
+												<label popover-placement="top" popover-trigger="mouseenter" popover="Enter Employee First Name - this is required" popover-popup-delay="{{delayTime}}" class="col-sm-3" for="form-field-1"> First Name </label>
+												<div class="col-sm-9">
+													<input type="text" id="form-field-1" data-ng-model="employee.firstName" placeholder="Enter Employee First Name" class="col-xs-10 col-sm-5" />
+												</div>
+											</div>
+											<div class="space-4"></div>
+											<div class="form-group">
+												<label popover-placement="top" popover-trigger="mouseenter" popover="Enter Employee Last Name - this is required" popover-popup-delay="{{delayTime}}" class="col-sm-3" for="form-field-1"> Last Name </label>
+												<div class="col-sm-9">
+													<input type="text" id="form-field-1" data-ng-model="employee.lastName"placeholder="Enter Employee Last Name" class="col-xs-10 col-sm-5" />
+												</div>
+											</div>
+											<div class="form-group">
+												<label popover-placement="top" popover-trigger="mouseenter" popover="Set to YES to assign this user Full admin rights" popover-popup-delay="{{delayTime}}" class="col-sm-3"> Administrator </label>
+												<div class="col-sm-9">
+													<input name="switch-field-1" data-ng-model="employee.administrator" class="ace ace-switch ace-switch-5" type="checkbox" data-ng-change="admin(employee.administrator)"/>
+													<span class="lbl"></span>
+												</div>
+											</div>
+											<div  class="form-group">
+												<label popover-placement="top" popover-trigger="mouseenter" popover=" Enter Employee email address - this is required - if no email is available make one up using firstnamelastname@companyname.com" popover-popup-delay="{{delayTime}}" class="col-sm-3" for="form-field-1"> Email Address </label>
+												<div class="col-sm-9">
+													<input type="email" id="form-field-1" data-ng-model="employee.email"placeholder="Enter Employee Email address (Username)" class="col-xs-10 col-sm-5" />
+												</div>
+											</div>
+											<div ng-show="password">
+												<div class="form-group">
+													<label popover-placement="top" popover-trigger="mouseenter" popover="tooltip" popover-popup-delay="{{delayTime}}" class="col-sm-3" for="form-field-1"> Password </label>
+													<div class="col-sm-9">
+														<input type="password" id="form-field-1" placeholder="Password" data-ng-model="employee.password" class="col-xs-10 col-sm-5" />
+													</div>
+												</div>
+											</div>
+											<div class="form-group" ng-hide="true">
+												<label class="col-sm-3" for="form-field-1" > Pin </label>
+												<div class="col-sm-9">
+													<input type="text" id="form-field-1" data-ng-model="employee.pin" class="col-xs-10 col-sm-5" placeholder="Enter Pin"/>
+												</div>
+											</div>
+											<div ng-show="showDepartment">
+												<div class="form-group">
+													<label popover-placement="top" popover-trigger="mouseenter" popover="Select the department the employee belongs to. These were set up in your settings. If the required department isn’t showing then go back to settings to add it." popover-popup-delay="{{delayTime}}" class="col-sm-3" for="form-field-1"> Department </label>
+													<div class="col-sm-9">
+														<select data-ng-model="employee.department" class="col-xs-10 col-sm-5" id="form-field-select-2">
+															<option value=''>Choose a Department</option>
+															<option  data-ng-repeat="departmentValue in departments track by $index" value="{{departmentValue.name}}">{{departmentValue.name}}</option>
+														</select>
+													</div>
+												</div>
+											</div>
+											<div ng-show="subDepartmentList">
+												<div class="form-group">
+													<label popover-placement="top" popover-trigger="mouseenter" popover="Select the sub-department the employee belongs to. These were set up in your settings. If the required department isn’t showing then go back to settings to add it." popover-popup-delay="{{delayTime}}" class="col-sm-3" for="form-field-1"> Sub-Department </label>
+													<div class="col-sm-9">
+														<select data-ng-model="employee.subDepartment" class="col-xs-10 col-sm-5" id="form-field-select-2">
+															<option value="">Choose a Sub-Department</option>
+															<option data-ng-repeat="deptValue in subDepartmentList|filter:{parentDeptName:employee.department} track by $index" value="{{deptValue.name}}">{{deptValue.name}}</option>
+														</select>
+													</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<label popover-placement="top" popover-trigger="mouseenter" popover="When set to YES employee will show on home screen - if set to NO employee will be found in Archived employees " popover-popup-delay="{{delayTime}}" class="col-sm-3"> Active </label>
+												<div class="col-sm-9">
+													<input name="switch-field-1" data-ng-model="employee.active" class="ace ace-switch ace-switch-5" type="checkbox" />
+													<span class="lbl"></span>
+												</div>
+											</div>
+											<div class="form-group">
+												<label popover-placement="top" popover-trigger="mouseenter" popover="Assign the rules for the employees work week by selecting from drop down menu. If you have not yet created shift pattern you can use the default OPEN one and updated it later. To set up shift patterns got to Shifts in the menu" popover-popup-delay="{{delayTime}}" class="col-sm-3" for="form-field-1"> Shift Pattern </label>
+												<div class="col-sm-9">
+													<select data-ng-model="employee.shift" class="col-xs-10 col-sm-5" id="form-field-select-2">
+														<option ng-selected="{{shiftPattern.name == employee.shift}}" data-ng-repeat="shiftPattern in shiftPatternList track by $index" value="{{shiftPattern.name}}">{{shiftPattern.name}}</option>
+													</select>
+												</div>
+											</div>
+											<div ng-show="payrollData">
+									
+									<!-- -->
+<!--payroll code-->
+										<div class="form-group">
+										<label popover-placement="top" popover-trigger="mouseenter" popover="Enter the code that identifies your employee in your payroll software - this will only be used for payroll export - if you don’t have this information now you can always add it later - this field is not required" popover-popup-delay="{{delayTime}}" class="col-sm-3" for="form-field-1"> Payroll Code </label>
+
+										<div class="col-sm-9">
+											<input type="text" id="form-field-1" data-ng-model="employee.payrollCode"placeholder="Enter Payroll Code" class="col-xs-10 col-sm-5" />
+										</div>
+									</div>
+									</div>
+									<div ng-show="showhourlywage">
+									
+
+
+									<!-- -->
+<!--horuly code-->
+										<div class="form-group">
+										<label popover-placement="top" popover-trigger="mouseenter" popover="Not required -Enter the employee's Hourly wage - this will enable the software to run certain reports for you " popover-popup-delay="{{delayTime}}" class="col-sm-3" for="form-field-1"> Hourly Wage </label>
+
+										<div class="col-sm-9">
+											<input type="text" id="hourlyWage" data-ng-model="employee.hourlyRate" placeholder="Enter Hourly Wage" ng-change="formatHourlyWage(employee.hourlyRate)" ng-blur="setHourlyWage(employee.hourlyRate)" class="adminClassToDisable col-xs-10 col-sm-5" />
+											
+										</div>
+									</div>
+									</div>
+
+									<div ng-show="showchargeoutrate">
+										
+										<!-- -->
+	<!--change rate code-->
+											<div class="form-group">
+											<label popover-placement="top" popover-trigger="mouseenter" popover="tooltip" popover-popup-delay="{{delayTime}}" class="col-sm-3" for="form-field-1"> Charge Out Rate </label>
+
+											<div class="col-sm-9">
+												<input type="text" id="form-field-1" data-ng-model="employee.chargeoutRate"placeholder="Enter Hourly Charge Out Rate " class="col-xs-10 col-sm-5" />
+											</div>
+										</div>
+									</div>
+
+									<div ng-show="defaultJCStatus">
+										<div class="form-group">
+											<label popover-placement="top" popover-trigger="mouseenter" popover="Allow to update JC when no Work code has been specify in particular attendance" popover-popup-delay="{{delayTime}}" class="col-sm-3" for="form-field-1"> Default JC</label>
+											<div class="col-sm-9">
+												<input type="text" id="defaultJC" data-ng-model="employee.defaultJC"placeholder="Enter Default JC" class="adminClassToDisable col-xs-10 col-sm-5" ng-change="formateJC(employee.defaultJC)" ng-blur="formateJC(employee.defaultJC)"/>
+											</div>
+										</div>
+									</div>
+						<!-- 		
+									<div class="form-group">
+										<label popover-placement="top" popover-trigger="mouseenter" popover="" popover-popup-delay="{{delayTime}}" class="col-sm-3" for="form-field-1">Job</label>
+
+										<div class="col-sm-9">
+											<input type="text" id="form-field-1" data-ng-model="employee.job" placeholder="Enter Job" class="col-xs-10 col-sm-5" />
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label popover-placement="top" popover-trigger="mouseenter" popover="" popover-popup-delay="{{delayTime}}" class="col-sm-3" for="form-field-1">Task Id</label>
+
+										<div class="col-sm-9">
+											<input type="text" id="form-field-1" data-ng-model="employee.taskId" placeholder="Enter Task Id" class="col-xs-10 col-sm-5" />
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label popover-placement="top" popover-trigger="mouseenter" popover="" popover-popup-delay="{{delayTime}}" class="col-sm-3" for="form-field-1">Staff Id</label>
+
+										<div class="col-sm-9">
+											<input type="text" id="form-field-1" data-ng-model="employee.staffId" placeholder="Enter Staff Id" class="col-xs-10 col-sm-5" />
+										</div>
+									</div> -->
+									<div ng-show="payrollData">
+									
+										<!-- -->
+										<!-- Active-->
+										<div class="form-group">
+											<label popover-placement="top" popover-trigger="mouseenter" popover="Allow Export - If you have employees or contractors that you don’t want to export to payroll then set to No - otherwise leave at default - YES" popover-popup-delay="{{delayTime}}" class="col-sm-3"> Allow Export </label>
+											<div class="col-sm-9">
+												<input name="switch-field-1" data-ng-model="employee.allowExport" class="ace ace-switch ace-switch-5" type="checkbox" />
+															<span class="lbl"></span>
+											</div>
+										</div>
+									</div>
+
+									<div ng-show="showDepartment && employee.administrator">
+										<div class="form-group">
+											<label popover-placement="top" popover-trigger="mouseenter" popover="Add Permision for subadmin to view employees of which departments they able to see" popover-popup-delay="{{delayTime}}" class="col-sm-3"> Add Departments Permision</label>
+											<div class="col-sm-5">
+												<div class="row">
+													<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+														<input type="checkbox" id="selectAllDept" ng-click="selectAllDept();" />Select All Departments
+													</div>		
+												</div>
+												<div class="row">
+													<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" data-ng-repeat="dept in departments track by $index">
+														<input type="checkbox" id="{{dept._id}}" ng-click="addDepartmentName(dept._id,dept.name);" class="selectAllDept" name="departmentName" value="{{dept.name}}"/>{{dept.name}}
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div ng-show="showHolidays">
+									<div class="form-group">
+										<label popover-placement="top" popover-trigger="mouseenter" popover="tooltip" popover-popup-delay="{{delayTime}}" class="col-sm-3" for="form-field-1"> Holiday Multiplier </label>
+
+										<div class="col-sm-9">
+												<select class="col-xs-10 col-sm-5" id="form-field-select-2">
+																<option value="AL">Select Holiday Multiplier</option>
+																<option value="AK">dep2</option>
+																<option value="AZ">dep3</option>
+															
+															
+															</select>
+										</div>
+									</div>
+									
+									<!-- -->
+									<!-- region-->
+									<div class="form-group">
+										<label popover-placement="top" popover-trigger="mouseenter" popover="tooltip" popover-popup-delay="{{delayTime}}" class="col-sm-3" for="form-field-1"> Holiday Region </label>
+
+										<div class="col-sm-9">
+												<select class="col-xs-10 col-sm-5" id="form-field-select-2">
+																<option value="AL">Country only</option>
+																<option value="AK">dep2</option>
+																<option value="AZ">dep3</option>
+															
+															
+															</select>
+
+											<span class="help-inline col-xs-12 col-sm-7">
+												<span class="middle"> <small>(Note: if a region a selected then the regional holidays plus the country holidays will be used)</small></span>
+											</span>
+										</div>
+									</div>
+									</div>
+									
+									<!-- -->
+								
+									<!-- -->
+<div class="clearfix form-actions">
+										<div class="col-md-offset-3 col-md-9">
+											<button id="createEmp" popover-placement="top" popover-trigger="mouseenter" popover="Click to submit and save changes" popover-popup-delay="{{delayTime}}" type="button" class="btn btn-primary" data-ng-click="submitform()">
+												<i class="icon-ok bigger-110"></i>
+												Save
+											</button>
+										</div>
+									</div>
+										</form>
+									
+									</div>
+								</div>
+
+								
+							</div><!-- /.col -->
+						</div><!-- /.row -->
+							</div><!--col-sm-9-->
+						</div><!--row--fluid-->
+					<!-- pagecontent-->
+
+
+				
+
+				
+			</div><!-- /.main-container-inner -->
+
+		
+		</div><!-- /.main-container -->
+
+

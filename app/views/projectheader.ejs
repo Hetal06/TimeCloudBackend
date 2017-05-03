@@ -1,0 +1,143 @@
+	
+<div id="header_container" ng-controller="headerController" >
+
+	<div class="navbar navbar-default" id="navbar">
+
+		<div class="navbar-container" id="navbar-container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle pull-left" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>	         
+			</div>
+
+			<div class="navbar-collapse collapse">
+				<ul class="nav navbar-nav" >
+					<li class="light-blue">
+						<a href="#/home"  popover-popup-delay="{{delayTime}}"  popover-placement="bottom" popover-trigger="mouseenter" popover="Home" ng-click="toggleFn()">
+							<i class="icon-home"></i>
+							<span >Home</span>
+						</a>
+					</li>						
+
+						<!-- <li class="light-blue" >
+							<a href="" popover-placement="bottom" popover-trigger="mouseenter" popover="Dashboard" popover-popup-delay="{{delayTime}}" ng-click="toggleFn()">
+								<i class="icon-dashboard"></i>
+								<span>Dashboard</span>
+							</a>
+						</li> -->
+
+						<li class="light-blue">
+							<a href="#/newproject" popover-placement="bottom" popover-trigger="mouseenter" popover="Projects" popover-popup-delay="{{delayTime}}" ng-click="toggleFn()">
+								<i class="icon-hdd"></i>
+								<span>Projects</span>								
+							</a>
+						</li>
+
+						<li class="light-blue">
+							<a href="#/employeesProject/{{employeeNo}}" popover-placement="bottom" popover-trigger="mouseenter" popover="Projects" popover-popup-delay="{{delayTime}}" ng-click="toggleFn()">
+								<i class="icon-hdd"></i>
+								<span>employee Wise Project</span>
+							</a>
+						</li>
+
+
+						<li class="light-blue">
+							<a href="" popover-placement="bottom" popover-trigger="mouseenter" popover="Reports" popover-popup-delay="{{delayTime}}" ng-click="toggleFn()">							
+								<i class="icon-list"></i>
+								<span>Reports</span>
+							</a>
+						</li>
+
+
+						<li class="light-blue">
+							<a href="/index/#/home" popover-placement="bottom" popover-trigger="mouseenter" popover="Go to Timecloud" popover-popup-delay="{{delayTime}}" ng-click="toggleFn()">
+								<i class="icon-time"></i>
+								<span>Timecloud</span>								
+							</a>
+						</li>
+
+						<li class="light-blue">
+							<a href="/index/#/feedback" popover-placement="bottom" popover-trigger="mouseenter" popover="Support" popover-popup-delay="{{delayTime}}" ng-click="toggleFn()">
+								<i class="icon-edit bigger-120"></i>
+								<span>Support</span>
+							</a>
+						</li>
+
+						<li class="dropdown light-blue">
+		          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+		          	<i class="icon-film bigger-120"></i>
+								<span>Help Videos</span> 
+								<span class="caret caret-white"></span>
+							</a>
+		          <ul class="dropdown-menu scrollable-menu">
+		            <li ng-repeat="video in helpVideos" ng-if="helpVideos.length>0">
+		            	<a href="{{video.path}}" target="_blank" ng-if="video.path"> <i class="icon-play-circle icon-space-right"></i> {{video.name}}</a>
+		            	<a href="#" target="_blank"  ng-if="video.path"> <i class="icon-play-circle icon-space-right"></i> {{video.name}}</a>
+		            </li>
+		            <li ng-if="helpVideos.length==0"><a href=""> No videos </a></li>
+
+	 						</ul>
+		        </li>				
+						
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+
+						<li class="light-blue">
+							<a  href="/index/#/settings" popover-placement="bottom" popover-trigger="mouseenter" popover-popup-delay="{{delayTime}}"  popover="Change your companies setup as well as enable extra features" ng-click="toggleFn()">
+								<i class="icon-cog"></i>
+								<span >Settings</span>
+							</a>
+
+							
+						</li>
+
+						<li class="light-blue">
+							<a  href="/logout" popover-placement="bottom" popover-trigger="mouseenter" popover-popup-delay="{{delayTime}}"  popover="Leave the App" ng-click="toggleFn()">
+								<i class="icon-off"></i>
+								<span>Logout</span>
+							</a>
+						</li>
+					</ul><!-- /.ace-nav -->
+				</div><!-- /.navbar-header -->
+			</div><!-- /.container -->
+		</div>
+		<script type="text/ng-template" id="instantmessage.html">
+		<div class="modal-header">
+		<h3>Message</h3>
+		</div>
+		<div class="modal-body">            
+		<div class="form-group">
+		<label> Subject : </label> 
+		<span>
+		{{msgData.subject}}
+		</span>
+
+		</div>
+		</br>
+		<div class="form-group">
+		<label> Message : </label> 
+		<span>
+		{{msgData.message}}
+		</span>
+
+		</div>
+		<div class="row pull-right">
+
+		<label class="col-sm-12 inline">
+		Please confirm you have read it by ticking the box
+		</label>                                    
+		<input class="pull-right" type="checkbox" id="confirm">
+
+		</div>
+
+		</div>
+		<div class="modal-footer">
+
+		<button class="btn btn-primary" ng-click="ok(msgData._id)">Close Message</button>        
+		</div>
+		</script>	
+		<div class="clearfix"></div>
+	</div>
