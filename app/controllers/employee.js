@@ -14,7 +14,10 @@ var mongoose = require('mongoose'),
     customShifts = mongoose.model('customShifts'),
     scheduling = mongoose.model('scheduling'),
     AttendanceMysql = mongoose.model('AttendanceMysql'),
-    empFn = require('../../functions/employeefn.js');
+    empFn = require('../../functions/employeefn.js'),
+    jwtauth = require('../../jwtauth.js'),
+    jwt = require('jsonwebtoken'),
+    configDB = require('../../config/config');
 
 var nodeExcel = require('excel-export');
 var xml = "././public/xml/styles.xml";
@@ -7399,13 +7402,42 @@ exports.getUserdata = function(req, res) {
 
 // Mobile API
 exports.employeeHome = function(req, res) {
+
+    console.log("---------------\n\n req.body",req.body);
+    var UserAllData={};
+    var token = req.body.token || req.query.token || req.headers['token'];
+    if (token) {
+        jwt.verify(token, configDB.conn_conf.secret, function(err, decoded) {
+            if (err) {
+                return res.json({
+                    success: false,
+                    message: 'Failed to authenticate token.',
+                    data: err
+                });
+            } else {
+                console.log("------\n line 7418",decoded);
+                UserAllData = decoded_doc;
+                console.log("line 7420",UserAllData);
+                } 
+        });
+        
+    }
+    // console.log("-------\n\n line 7493",UserAllData);    
+
     var id = req.header('Authorization');
+
+    console.log("-----\n\n line 7430 id ....",id);
+
     var companyId = '';
+
     if (id) {
         companyId = id;
+
     } else {
         companyId = req.session.user;
     }
+    console.log("-----\n\n line 7440 id ....",companyId);
+
     if (req.session.subadmin) {
         Employee.find({
             'companyId': companyId,
@@ -7423,10 +7455,12 @@ exports.employeeHome = function(req, res) {
     } else {
         Employee.find({
             'companyId': companyId,
+            // 'email': 'hetal@gmail.com',
             'active': true
         }).sort({
             'employeeNo': 'asc'
         }).exec(function(err, EmployeeData) {
+            console.log("employeeData",EmployeeData);
             res.json({
                 "EmployeeData": EmployeeData
             });
@@ -7489,6 +7523,27 @@ exports.userCurrentCheckin = function(req, res) {
 
 // Mobile API
 exports.insertCheckins = function(req, res) {
+
+    console.log("---------------\n\n req.body",req.body);
+    var UserAllData={};
+    var tokenCheckIn = req.body.token || req.query.token || req.headers['token'];
+    if (token) {
+        jwt.verify(token, configDB.conn_conf.secret, function(err, decoded) {
+            if (err) {
+                return res.json({
+                    success: false,
+                    message: 'Failed to authenticate token.',
+                    data: err
+                });
+            } else {
+                console.log("------\n line 7418",decoded);
+                UserAllData = decoded_doc;
+                console.log("line 7420",UserAllData);
+                } 
+        });
+        
+    }
+
     var id = req.body.userid;
     var employeeNo = req.body.employeeNo;
     var checktype = req.body.checktype;
@@ -7663,7 +7718,7 @@ exports.employeeHomeDataDepartment = function(req, res) {
                 "EmployeeData": EmployeeData
             });
         });
-}
+    }
 
 
 

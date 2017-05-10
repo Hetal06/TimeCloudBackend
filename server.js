@@ -18,8 +18,18 @@ var flash    = require('connect-flash'),
 	helpers = require('view-helpers'),
 	Moment = require('moment-timezone');
 var configDB = require('./config/config');
-// var wamp = require('./wamp');
+var express      = require('express')
+var cookieParser = require('cookie-parser')
+ var session = require('express-session');
+ var express = require('express')
+var app = express()
+// app.use(cookieParser("scretkey"))// var wamp = require('./wamp');
+// var apiRoute = express();
+var jwtauth = require('./jwtauth.js');
+// var router = express.Router();
 
+// router.use(jwtauth, require('./jwtauth'));
+// app.use(session({secret: 'keyboard cat'}))
 // var enforce = require('express-sslify');
 
 
@@ -225,8 +235,9 @@ console.log(s +'sdas');*/
 // }, app).listen(port);
 
 
+app.use('/',jwtauth.tokenCtrl);
 
-
+console.log("port start ",port);
 app.listen(port);
 // app.timeout = 30000;
  /*var startTime = new Date();

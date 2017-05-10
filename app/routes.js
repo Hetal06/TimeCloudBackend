@@ -35,7 +35,11 @@ var mongoose = require('mongoose'),
     areaCtrl = require('../app/controllers/newCron'),
     scriptsCtrl = require('../app/controllers/scripts'),
     http = require('http'),
-    async = require('async');
+    async = require('async'),
+    jwt     = require("jsonwebtoken"),
+    configDB = require('../config/config');
+
+
 
 module.exports = function(app, passport) {
     app.get('/testCheck', function(req, res) {
@@ -83,12 +87,33 @@ module.exports = function(app, passport) {
         console.log(req.body);
         var email = new RegExp(["^", req.body.email, "$"].join(""), "i");
         console.log("line 84",req.body.email);
-        if (email && req.body.pwd) {
+        var token="";
+
+        // var receivedValues = {"email" : req.body.email, "password" : req.body.pwd};
+        //     var token = jwt.sign(receivedValues, configDB.conn_conf.secret,
+        //     {
+        //      expiresIn: 1440 * 60 * 30 // expires in 1440 minutes
+        //     });
+            
+            // console.log("created token ",token);
+            console.log("email------line 104 ",req.body.email);
+            console.log("pwd------line 104 ",req.body.pwd);
+
+
+        if (req.body.pwd) {
+
+            console.log("--------------\nif----------------",email);
             SuperAdmin.findOne({
                 'email': email
             }, function(err, adminData) {
-                console.log("line 89",adminData);
+                console.log("--------------line 113 adminData----------------",adminData);
+                console.log("--------------line 140 err----------------",err);
+                // var token = jwt.sign(adminData, configDB.conn_conf.secret,
+                //     {
+                //      expiresIn: 1440 * 60 * 30 // expires in 1440 minutes
+                //     });
                 if (adminData) {
+                    console.log("--------------\n\n adminData",adminData);
                     console.log("line-91 if superadmin");
                     if (!adminData.validPassword(req.body.pwd)) {
                         console.log(" line-93 if");
@@ -97,9 +122,9 @@ module.exports = function(app, passport) {
                             "message": "Paasowrd is incorrect",
                         });
                     } else {
-                        console.log("line-99 else");
-
+                        console.log("--------------else----------------");
                         res.status(200).send({
+                            "token":token,
                             "type": "admin",
                             "admin": req.body.email
                         });
@@ -109,14 +134,21 @@ module.exports = function(app, passport) {
                     }
 
                 } else {
-                    console.log("line-111 not a super");
+                    console.log("--------------line 135 else----------------");
                     employee.findOne({
                         'email': email
-                    }, function(err, user) {
                         
+                    }, function(err, user) {
+                        console.log("--------------\n\n line 139 user----------------",user);
+                        console.log("--------------line 140 err----------------",err);
+                        token = jwt.sign(user, configDB.conn_conf.secret,
+                            {
+                             expiresIn: 1440 * 60 * 30 // expires in 1440 minutes
+                            });
+                          console.log("--------------line 148 token----------------",token);
                         if (err) throw err;
                         if (!user) {
-                            console.log("line-117 User not found");
+                            console.log("line-141 User not found");
                             // res.json(false);
                             // res.json({
                             //     "message": "Unfortunately we could not find your account",
@@ -127,7 +159,8 @@ module.exports = function(app, passport) {
                                 "message": "Unfortunately we could not find your account",
                             });
                         } else {
-                            console.log("line 128",user);
+                            console.log("====\n\n line 152",user);
+
                             Company.findById(user.companyId, function(err, companyDetail) {
                                 if (companyDetail) {
                                     if (user.pin == req.body.pwd) {
@@ -154,6 +187,7 @@ module.exports = function(app, passport) {
                                             // });
 
                                             res.status(200).send({
+                                                "token":token,
                                                 "type": "user",
                                                 'user': user.companyId,
                                                 'employeeNo': user.employeeNo,
@@ -199,6 +233,7 @@ module.exports = function(app, passport) {
                                                                 //     'adminType': "mainAdmin"
                                                                 // });
                                                                 res.status(200).send({
+                                                                    "token":token,
                                                                     "type": "mainAdmin",
                                                                     'user': user.companyId,
                                                                     'employeeNo': user.employeeNo,
@@ -226,6 +261,7 @@ module.exports = function(app, passport) {
                                                         // console.log("set session...");
                                                         // console.log(req.session);
                                                         res.status(200).send({
+                                                            "token":token,
                                                             "type": "mainAdmin",
                                                             'user': user.companyId,
                                                             'email': user.email
@@ -281,11 +317,26 @@ module.exports = function(app, passport) {
                                                     req.session.loginTime = Moment().format('hh:mm:ss');
                                                     // console.log("set session.");
                                                     // console.log(req.session);
+                                                    
+
+
+                                                    ;
+                                                    // console.log("created data ",data);
+                                                  // });
+
                                                     res.status(200).send({
+                                                        'token':token,
                                                         'user': req.session.user,
-                                                        'adminType': user.adminType
+                                                        'adminType': user.adminType,
+                                                        'email':user.email
                                                     });
-                                                    // console.log(req.session);
+
+                                                    
+                                                    // res.json({
+                                                    //     'success': true,
+                                                    //     'data': user
+                                                    // })
+                                                   
                                                     function scriptRun() {
                                                         cronCtrl.calculateWeeklyOtRecal1(req.session.user);
                                                     }
@@ -519,6 +570,7 @@ module.exports = function(app, passport) {
     });
     /* Signup */
     app.post('/signup', function(req, res) {
+        console.log("sigh up");
         var country = req.body.country;
         var firstname = req.body.firstname;
         var lastname = req.body.lastname;
