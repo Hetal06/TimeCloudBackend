@@ -85,8 +85,8 @@ timecloud.config(function($routeProvider, $locationProvider, $wampProvider) {
 
     // Init    
     $wampProvider.init({
-        // url: 'ws://localhost:8080/ws',
-        url: 'ws://219.88.253.55:8080/ws',
+        url: 'ws://localhost:8080/ws',
+        // url: 'ws://219.88.253.55:8080/ws',
         realm: 'realm1'
             //Any other AutobahnJS options
     });

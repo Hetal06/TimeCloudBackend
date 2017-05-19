@@ -178,7 +178,7 @@ var checkOut = function(backOut){
     // readClock.stop();
     // exportAttendance.stop();
     scriptsCtrl.changeChekingTypeForProject(function(status){
-       console.log("9) workcode set out time for all %s",status);
+       console.log("9) workcode set out time for all  line 181 ------ %s",status);
        backOut(true);
     });
 }
@@ -187,7 +187,7 @@ var setOutForIInn = new CronJob({
     cronTime: '18 * * * * *',
     onTick:checkOut,
     onComplete: function() {
-        console.log("onComplete setOutForIInn");
+        console.log("onComplete setOutForIInn line 190---------");
         // readFromMySQL.start();
         // calProject.start();
         // addAttendance.start();
@@ -217,7 +217,7 @@ var checkDays = function(backDays){
     readClock.stop();
     exportAttendance.stop();
     attendanceCronCtrl.newAttendance(function(status){
-      console.log("Attendances new days entries done %s",status);
+      console.log("Attendances new days entries done line 220-------- %s",status);
       backDays(true);
     });
 }
@@ -248,4 +248,4 @@ process.on('uncaughtException', function(err) {
     console.log(err.stack);
 });
 
-app.listen(3001);
+app.listen(4001);

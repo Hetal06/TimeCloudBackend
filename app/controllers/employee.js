@@ -7274,6 +7274,7 @@ exports.postData = function(req, res) {
                         $ne: '00:00:00'
                     }
                 }).exec(function(err, atnData) {
+                    console.log("*****\n\n line 7277 atnData",atnData);
                     if (atnData) {
                         atnData.forEach(function(attendanceData) {
                             var id = attendanceData._id;
@@ -7471,6 +7472,27 @@ exports.employeeHome = function(req, res) {
 // Mobile API
 exports.userCurrentCheckin = function(req, res) {
     //console.log('userCurrentCheckin');
+    // var insertCheckInsToken={};
+    // var token = req.body.token || req.query.token || req.headers['token'];
+    // console.log("---------------\n\n line 7530 token",token);
+    // if (token) {
+    //     jwt.verify(token, configDB.conn_conf.secret, function(err, decoded) {
+    //         if (err) {
+    //             return res.json({
+    //                 success: false,
+    //                 message: 'Failed to authenticate token.',
+    //                 data: err
+    //             });
+    //         } else {
+    //             console.log("------\n line 7418",decoded);
+    //             token = decoded_doc;
+    //             console.log("line 7420",token);
+    //             } 
+    //     });
+        
+    // }
+
+    // if(token){
     var companyId = req.body.userid;
     var employeeNo = req.body.employeeNo;
     var today = Moment.utc().format('YYYY-MM-DD');
@@ -7519,34 +7541,56 @@ exports.userCurrentCheckin = function(req, res) {
             })
         }
     });
+
+    // }else{
+    //     console.log("======= \n\n line 7545");
+    // }
+
+    
 }
 
 // Mobile API
 exports.insertCheckins = function(req, res) {
 
-    console.log("---------------\n\n req.body",req.body);
-    var UserAllData={};
-    var tokenCheckIn = req.body.token || req.query.token || req.headers['token'];
-    if (token) {
-        jwt.verify(token, configDB.conn_conf.secret, function(err, decoded) {
-            if (err) {
-                return res.json({
-                    success: false,
-                    message: 'Failed to authenticate token.',
-                    data: err
-                });
-            } else {
-                console.log("------\n line 7418",decoded);
-                UserAllData = decoded_doc;
-                console.log("line 7420",UserAllData);
-                } 
-        });
+    // console.log("------------------------------\n\n line 7554 req.body",req.body);
+    // var insertCheckInsToken={};
+    // var token = req.body.token || req.query.token || req.headers['token'];
+    // console.log("-------------------------------\n\n line 7557 token",token);
+    // if (token) {
+    //     jwt.verify(token, configDB.conn_conf.secret, function(err, decoded) {
+    //         if (err) {
+    //             return res.json({
+    //                 success: false,
+    //                 message: 'Failed to authenticate token.',
+    //                 data: err
+    //             });
+    //         } else {
+    //             console.log("------\n line 7567",decoded);
+    //             insertCheckInsToken = decoded_doc;
+    //             console.log("line 7569",insertCheckInsToken);
+    //             } 
+    //     });
         
-    }
+    // }
+    
+    // var id = req.header('token');
+
+    // console.log("-----\n\n line 7577 id ....",id);
+
+
+    // var companyId = '';
+
+    // if (id) {
+    //     companyId = id;
+
+    // } else {
+    //     companyId = req.session.user;
+    // }
+    // console.log("-----\n\n line 7588 id ....",companyId);
 
     var id = req.body.userid;
     var employeeNo = req.body.employeeNo;
-    var checktype = req.body.checktype;
+    var checktype = req.body.checkType;
     var SN = "";
     var Jobcode = req.body.Jobcode;
     var time = req.body.timeIn;
@@ -7556,7 +7600,11 @@ exports.insertCheckins = function(req, res) {
     var address = req.body.address;
     //console.log(Jobcode + 'Jobcode');
     //console.log(time +'time');
-    //console.log(checktime+'checktime');
+    console.log("checkType----7603",checktype);
+    console.log("checkType----7603",id);
+    console.log("checkType----7603",employeeNo);
+
+    console.log('-----------------line 7602 id'+id);
     Company.find({
         '_id': id
     }).limit(1).exec(function(err, dataRec) {
@@ -7615,17 +7663,38 @@ exports.checkuserpin = function(req, res) {
 
 // Mobile API
 exports.currentCheckin = function(req, res) {
-    console.log("res,",res);
+        
+    var insertCheckInsToken={};
+    var token = req.body.token || req.query.token || req.headers['token'];
     
+    if (token) {
+        jwt.verify(token, configDB.conn_conf.secret, function(err, decoded) {
+            if (err) {
+                return res.json({
+                    success: false,
+                    message: 'Failed to authenticate token.',
+                    data: err
+                });
+            } else {
+                insertCheckInsToken = decoded_doc;
+                } 
+        });
+        
+    }
+      
     var id = req.header('Authorization')
+    console.log("-----\n\n line 7688 id ....",id);
     var companyId = '';
     if (id) {
         companyId = id;
     } else {
         companyId = req.session.user
     }
-    Company.findById(req.session.user, function(err, companyData) {
-        console.log("companyData",companyData);
+
+    console.log("-----\n\n line 7710 id ....",companyId);
+
+    Company.findById(companyId, function(err, companyData) {
+        
         if (companyData) {
             var today = Moment.utc().tz(companyData.country).format('YYYY-MM-DD');
             //console.log(today +'today');

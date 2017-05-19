@@ -313,20 +313,22 @@ exports.checkEmpNumbersExistinDb = function(req,res) {
 };
 
 exports.changeChekingTypeForProject = function(callback) {
-		console.log("9) workcode set out time ----->");
+		console.log("9) workcode set out time ----  line 316 ->");
 		Company.find({}).exec(function(err, CompanyData) {
 				var n = 0;
 				var previousDate = Moment.utc().subtract('days', 2);
 				var currentDate = Moment.utc().add('days', 1);
-				console.log(previousDate.format('YYYY-MM-DD'));
-				console.log(currentDate.format('YYYY-MM-DD'));
+				console.log("--------\n\n line 321",previousDate.format('YYYY-MM-DD'));
+				console.log("--------\n\n line 322",currentDate.format('YYYY-MM-DD'));
 
 				async.eachSeries(CompanyData, function(dataCompany, callbackComp) {
+
 						if (dataCompany) {
+
 								n++;
 								
 								if (dataCompany.jobCosting) {
-										
+										console.log("----------------\n\n line 325 ",dataCompany.jobCosting);
 										Attendance.find({
 												"companyId": dataCompany._id,
 												"date": {
@@ -344,8 +346,8 @@ exports.changeChekingTypeForProject = function(callback) {
 										}).exec(function(err, data) {
 												
 												if (data.length > 0) {
-														console.log("atn length %s",data.length);
-														console.log("company %s %s",dataCompany.companyname,dataCompany._id);
+														console.log("------------\n\n line 349 atn length %s",data.length);
+														console.log("------------\n\n line 349 company %s %s",dataCompany.companyname,dataCompany._id);
 														var atnCnt = 0;
 														async.eachSeries(data, function(atnData, callbackAtn) {
 																atnCnt++;
@@ -553,8 +555,9 @@ exports.changeChekingTypeForProject = function(callback) {
 																}
 														}) //Data
 												} else {
-														console.log("no attendance with successive IN's -------------> already Done");
+														console.log("no attendance with successive IN's -----line 558--------> already Done");
 														if(CompanyData.length === n){
+															console.log("=======\n\n line 560",CompanyData.length);
 																callback(true);
 														}else{
 																callbackComp();

@@ -30,6 +30,7 @@ exports.calculateAttendance = function(req, res){
 					Attendance.find({'companyId':companyId,"date":{$gte:previousDate,$lte:currentDate},'readFlag':false,$or: [{'checkin.checkType': { $exists: true}  }, { 'holiday':  true}]}).sort({'_id':'asc'}).exec(function(err, data){
 						// console.log("data length" +data.length);
                         if(data.length>0){ 
+                            console.log("------\n\n line 33 data.length",data.length);
 							var adminDetails = {email:dataCompany.email,userType:"mainAdmin"};
 							var newAtn =0;
                             async.eachSeries(data, function(employeeAttendance, callbackAtn) {
@@ -87,7 +88,7 @@ exports.newAttendance = function(callbackAtn) {
                 if(compnayCount === CompanyData.length){
                     console.log("********Day creation success ************");
                     console.log("================ COMPANY %d / %d======================",compnayCount,CompanyData.length);
-                    console.log('6) Attendances new days entries done'); 
+                    console.log('6) Attendances new days entries done line 90'); 
                     callbackAtn(true);   
                 }
 
@@ -95,6 +96,7 @@ exports.newAttendance = function(callbackAtn) {
                     'companyId': companyId,
                     'active': true
                 }, function(err, employeeData) {
+                    console.log("-------\n line 98 employeeData",employeeData);
                     if (employeeData.length > 0) {
                         async.eachSeries(employeeData, function(dataEmp, callbackEmp) {
                             employeeCount++;
@@ -102,7 +104,7 @@ exports.newAttendance = function(callbackAtn) {
                             var shift = dataEmp.shift;
                             var firstName = dataEmp.firstName;
                             var lastName = dataEmp.lastName;
-                            console.log("Employee --------------> ");
+                            console.log("Employee -------------->line 105 ");
                             console.log("employee : %s %s %s", firstName, lastName, employeeNo);
 
                             async.waterfall([function(next) {

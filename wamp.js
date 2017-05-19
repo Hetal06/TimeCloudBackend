@@ -5,8 +5,8 @@ var wamp = require('./wamp_session');
 var autobahn = require('autobahn');
 
 var connection = new autobahn.Connection({
-   // url: 'ws://localhost:8080/ws',
-   url: 'ws://219.88.253.55:8080/ws',
+   url: 'ws://localhost:8080/ws',
+   // url: 'ws://219.88.253.55:8080/ws',
    realm: 'realm1'
 });
 // openssl req -nodes -new -x509 -keyout wamp_server.key  -out wamp_server.crt

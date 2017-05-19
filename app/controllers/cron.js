@@ -898,7 +898,7 @@ exports.readData = function(req, res) {
             client.query(readQuery, function(err, attendance) {
                 if (!err) {
                     if (attendance && attendance.length > 0) {
-                        console.log("attendance............." + attendance.length);
+                        console.log("attendance.............line 901" + attendance.length);
                         global.recordid = 0;
                         var atnCnt = 0;
                         // sync
@@ -909,6 +909,7 @@ exports.readData = function(req, res) {
                             var badgeQuery = "SELECT TRIM(LEADING '0' FROM badgenumber) as badgenumber FROM userinfo where userid =" + employeeNo;
                             // console.log("Badge Query " + badgeQuery);
                             client.query(badgeQuery, function(err, userBadgeData) {
+                                console.log("======\n\n line 912 userBadgeData", userBadgeData);
                                 if (!err) {
                                     if (userBadgeData) {
                                         var attendanceMysql = new AttendanceMysql();
@@ -980,10 +981,11 @@ exports.readData = function(req, res) {
 exports.insertAttendanceData = function(req, res) {
     /* This will read checkins data from AttendanceMysql collections and write 
     into attendace collection accroding to date, userid and SN(passcode of the company)*/
-    console.log("read data from attendance my sqlsssssssss............................");
+    console.log("read data from attendance my sqlsssssssss.......line 983.....................");
     AttendanceMysql.find({}).sort({
         '_id': -1
     }).exec(function(err, dataAttendance) {
+        console.log("-----------------------------------------------------\n\n line 987 dataAttendance",dataAttendance);
         if (dataAttendance) {
             dataAttendance.forEach(function(dataA) {
                 // async.eachSeries(dataAttendance, function(dataA, callback){
@@ -996,16 +998,18 @@ exports.insertAttendanceData = function(req, res) {
                 var workCode = dataA.workCode;
                 var chTime = new Date(Date.parse(dataA.checkTime)).toUTCString();
 
-                console.log("chTime ------------------>" + chTime);
+                console.log("chTime -------line 999-----------> " + chTime);
+
                 var checkType = dataA.checkType;
                 if (dataA.checkType == '4' || dataA.checkType == '5' || dataA.checkType == '6' || dataA.checkType == '7' || dataA.checkType == '8') {
                     checkType = "I";
                 }
+               
                 var date = Moment.utc(chTime).format('YYYY-MM-DD');
                 var start = Moment.utc(date).subtract('days', 1).format('YYYY-MM-DD');
                 var end = Moment.utc(date).add('days', 1).format('YYYY-MM-DD');
                 var projectWorkFlag = false;
-
+               
                 if (workCode && workCode != '0')
                     projectWorkFlag = true;
 
@@ -1014,6 +1018,8 @@ exports.insertAttendanceData = function(req, res) {
                 Company.find({
                     'passcode.no': SN
                 }, function(err, datas) {
+
+                     // console.log("-------- -=========\n\n line 1018 ",datas)
                     if (datas.length > 0) {
                         var companyCnt = 0;
                         async.eachSeries(datas, function(data, callbackCompany) {
