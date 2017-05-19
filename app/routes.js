@@ -107,7 +107,7 @@ module.exports = function(app, passport) {
                 'email': email
             }, function(err, adminData) {
                 console.log("--------------line 113 adminData----------------",adminData);
-                console.log("--------------line 140 err----------------",err);
+                // console.log("--------------line 140 err----------------",err);
                 // var token = jwt.sign(adminData, configDB.conn_conf.secret,
                 //     {
                 //      expiresIn: 1440 * 60 * 30 // expires in 1440 minutes
@@ -140,7 +140,7 @@ module.exports = function(app, passport) {
                         
                     }, function(err, user) {
                         console.log("--------------\n\n line 139 user----------------",user);
-                        console.log("--------------line 140 err----------------",err);
+                        // console.log("--------------line 140 err----------------",err);
                         token = jwt.sign(user, configDB.conn_conf.secret,
                             {
                              expiresIn: 1440 * 60 * 30 // expires in 1440 minutes
