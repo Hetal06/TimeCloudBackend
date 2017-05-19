@@ -98,6 +98,7 @@ module.exports = function(app, passport) {
             // console.log("created token ",token);
             console.log("email------line 104 ",req.body.email);
             console.log("pwd------line 104 ",req.body.pwd);
+            console.log("pwd------line 104 ",token);
 
 
         if (req.body.pwd) {
@@ -140,12 +141,12 @@ module.exports = function(app, passport) {
                         
                     }, function(err, user) {
                         console.log("--------------\n\n line 139 user----------------",user);
-                        // console.log("--------------line 140 err----------------",err);
+                        console.log("--------------line 140 err----------------",configDB.conn_conf.secret);
                         token = jwt.sign(user, configDB.conn_conf.secret,
                             {
                              expiresIn: 1440 * 60 * 30 // expires in 1440 minutes
                             });
-                          console.log("--------------line 148 token----------------",token);
+                        console.log("--------------line 148 token----------------",token);
                         if (err) throw err;
                         if (!user) {
                             console.log("line-141 User not found");
@@ -330,6 +331,9 @@ module.exports = function(app, passport) {
                                                         'adminType': user.adminType,
                                                         'email':user.email
                                                     });
+
+                                                    console.log("line 333=========mobileLogin token ----->",token);
+                                                    console.log("line 333=========User id",req.session.user);
 
                                                     
                                                     // res.json({
