@@ -141,7 +141,7 @@ module.exports = function(app, passport) {
                         
                     }, function(err, user) {
                         console.log("--------------\n\n line 139 user----------------",user);
-                        console.log("--------------line 140 err----------------",configDB.conn_conf.secret);
+                        console.log("--------------line 140 err----------------",configDB);
                         token = jwt.sign(user, configDB.conn_conf.secret,
                             {
                              expiresIn: 1440 * 60 * 30 // expires in 1440 minutes
